@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Description hover flash**: Eliminated visual flash when hovering over short description
+
 ## [2.17.2] - 2025-10-30
 
 ### Added

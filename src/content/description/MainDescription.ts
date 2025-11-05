@@ -200,10 +200,17 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
         return;
     }
 
-    // Create the text content
-    const span = document.createElement('span');
-    span.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap';
-    span.dir = 'auto';
+    // Create the parent span with YouTube's exact structure
+    const parentSpan = document.createElement('span');
+    parentSpan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap';
+    parentSpan.dir = 'auto';
+    parentSpan.setAttribute('role', 'text');
+    
+    // Create the inner wrapper span (YouTube's structure)
+    const innerSpan = document.createElement('span');
+    innerSpan.className = 'yt-core-attributed-string--link-inherit-color';
+    innerSpan.dir = 'auto';
+    innerSpan.style.color = 'rgb(255, 255, 255)';
     
     // URL regex pattern
     const urlPattern = /(https?:\/\/[^\s]+)/g;
@@ -212,23 +219,25 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
     const lines = description.split('\n');
     lines.forEach((line, index) => {
         const parts = line.split(urlPattern);
-        parts.forEach((part, partIndex) => {
+        parts.forEach((part) => {
             if (part.match(urlPattern)) {
-                span.appendChild(createUrlLink(part));
+                innerSpan.appendChild(createUrlLink(part));
             } else if (part) {
-                // Replace the timestamp logic by:
                 const fragment = createTimestampFragment(part);
-                span.appendChild(fragment);
+                innerSpan.appendChild(fragment);
             }
         });
         if (index < lines.length - 1) {
-            span.appendChild(document.createElement('br'));
+            innerSpan.appendChild(document.createElement('br'));
         }
     });
+    
+    // Assemble the structure: parentSpan > innerSpan > content
+    parentSpan.appendChild(innerSpan);
 
     // Use the utility function to insert the span into both containers
-    insertDescriptionSpan(attributedString, span);
-    insertDescriptionSpan(snippetAttributedString, span);
+    insertDescriptionSpan(attributedString, parentSpan);
+    insertDescriptionSpan(snippetAttributedString, parentSpan);
 
     setupDescriptionContentObserver(id);
 }
@@ -429,6 +438,10 @@ export function setupDescriptionContentObserver(id: string) {
     function setupObserver() {
         //descriptionLog('Setting up description content observer');
         
+        // Track last known text to avoid unnecessary restorations
+        let lastKnownText = getCurrentDescriptionText(descriptionElement as HTMLElement);
+        let isProcessing = false; // Prevent concurrent restorations
+        
         descriptionContentObserver = new MutationObserver((mutations) => {
             // Skip if we don't have a cached description to compare with
             if (!cachedDescription) {
@@ -436,43 +449,60 @@ export function setupDescriptionContentObserver(id: string) {
                 return;
             }
             
-            // Add a small delay to allow YouTube to finish its modifications
-            setTimeout(() => {
-                // Make sure descriptionElement still exists in this closure
-                if (!descriptionElement) return;
-                
-                const currentText = getCurrentDescriptionText(descriptionElement as HTMLElement);
-                if (!currentText) return;
-                
-                // Compare similarity instead of exact match
-                const similarity = calculateSimilarity(normalizeText(currentText, true), normalizeText(cachedDescription, true));
-                
-                // Consider texts similar if they match at least 75%
-                const isOriginal = similarity >= 0.75;
-                if (isOriginal) return;
-                
-                
-                //descriptionLog(`currentText: ${normalizeText(currentText, true)}`);
-                //descriptionLog(`cachedDescription: ${normalizeText(cachedDescription, true)}`);
-                //descriptionLog(`Similarity: ${(similarity * 100).toFixed(1)}%`);
-                
-                descriptionLog('Description content changed by YouTube, restoring original');
-                
-                // Temporarily disconnect to prevent infinite loop
-                descriptionContentObserver?.disconnect();
-                
-                // Update with original description - ensure cachedDescription isn't null
-                updateDescriptionElement(descriptionElement as HTMLElement, cachedDescription as string, id);
-                
-                // Reconnect observer
-                if (descriptionContentObserver) {
-                    descriptionContentObserver.observe(descriptionElement, {
-                        childList: true,
-                        subtree: true,
-                        characterData: true
-                    });
-                }
-            }, 50); // 50ms delay
+            // Skip if already processing a restoration
+            if (isProcessing) return;
+        
+            // Make sure descriptionElement still exists in this closure
+            if (!descriptionElement) return;
+            
+            const currentText = getCurrentDescriptionText(descriptionElement as HTMLElement);
+            if (!currentText) return;
+            
+            // CRITICAL: Only proceed if text actually changed
+            if (currentText === lastKnownText) {
+                // Text hasn't changed, ignore these mutations
+                return;
+            }
+            
+            // Update last known text immediately to prevent duplicate processing
+            lastKnownText = currentText;
+            
+            // Compare similarity instead of exact match
+            const similarity = calculateSimilarity(normalizeText(currentText, true), normalizeText(cachedDescription, true));
+            
+            // Consider texts similar if they match at least 75%
+            const isOriginal = similarity >= 0.75;
+            if (isOriginal) return;
+            
+            //descriptionLog(`currentText: ${normalizeText(currentText, true)}`);
+            //descriptionLog(`cachedDescription: ${normalizeText(cachedDescription, true)}`);
+            //descriptionLog(`Similarity: ${(similarity * 100).toFixed(1)}%`);
+            
+            descriptionLog('Description content changed by YouTube, restoring original');
+            
+            // Mark as processing to prevent concurrent restorations
+            isProcessing = true;
+            
+            // Temporarily disconnect to prevent infinite loop
+            descriptionContentObserver?.disconnect();
+            
+            // Update with original description - ensure cachedDescription isn't null
+            updateDescriptionElement(descriptionElement as HTMLElement, cachedDescription as string, id);
+            
+            // Update last known text after restoration
+            lastKnownText = getCurrentDescriptionText(descriptionElement as HTMLElement);
+            
+            // Reconnect observer
+            if (descriptionContentObserver) {
+                descriptionContentObserver.observe(descriptionElement, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+            }
+            
+            // Reset processing flag
+            isProcessing = false;
         });
         
         // Start observing - ensure descriptionElement isn't null
