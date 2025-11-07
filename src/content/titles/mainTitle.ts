@@ -14,6 +14,7 @@ import { waitForElement } from "../../utils/dom";
 import { TitleDataEvent } from "../../types/types";
 import { titleCache, fetchTitleInnerTube, fetchTitleOembed } from "./index";
 import { isNewYouTubePlayer } from "../../utils/video";
+import { isMobileSite } from "../../utils/navigation";
 
 
 let mainTitleContentObserver: MutationObserver | null = null;
@@ -269,7 +270,16 @@ function updateMiniplayerTitleElement(element: HTMLElement, title: string, video
 
 // --- Main Title Function
 export async function refreshMainTitle(): Promise<void> {
-    const mainTitle = document.querySelector('h1.ytd-watch-metadata > yt-formatted-string') as HTMLElement;
+    // Determine if we're on mobile site
+    const isMobile = isMobileSite();
+    
+    // Use appropriate selector based on site type
+    const mainTitleSelector = isMobile 
+        ? 'h2.slim-video-information-title span.yt-core-attributed-string'
+        : 'h1.ytd-watch-metadata > yt-formatted-string';
+    
+    const mainTitle = document.querySelector(mainTitleSelector) as HTMLElement;
+    
     if (mainTitle && window.location.pathname === '/watch') {
         //mainTitleLog('Processing main title element');
         const videoId = new URLSearchParams(window.location.search).get('v');
