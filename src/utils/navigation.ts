@@ -8,13 +8,19 @@
  */
 
 // Function to dynamically check if current page is search results
-export function isSearchResultsPage(): boolean {
+function isSearchResultsPage(): boolean {
     return window.location.pathname === '/results'
         || window.location.pathname === '/feed/history'
         || window.location.pathname === '/feed/subscriptions';
 }
 
 
-export function isVideoPage(): boolean {
+function isVideoPage(): boolean {
     return window.location.pathname === '/watch';
 }
+
+function isMobileSite(): boolean {
+    return window.location.hostname === 'm.youtube.com';
+}
+
+export { isSearchResultsPage, isVideoPage, isMobileSite };
