@@ -9,6 +9,7 @@
 
 import { ExtensionSettings } from "../../types/types";
 import { audioLog, audioErrorLog } from '../../utils/logger';
+import { isMobileSite } from '../../utils/navigation';
 
 
 async function syncAudioLanguagePreference() {
@@ -25,6 +26,10 @@ async function syncAudioLanguagePreference() {
 }
 
 export async function handleAudioTranslation() {   
+    if (isMobileSite()) {
+        //audioLog('Mobile site detected, skipping audio translation script injection.');
+        return;
+    }
     await syncAudioLanguagePreference();
     const script = document.createElement('script');
     script.src = browser.runtime.getURL('dist/content/scripts/audioScript.js');

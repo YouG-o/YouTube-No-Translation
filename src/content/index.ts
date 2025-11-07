@@ -21,6 +21,7 @@ import { refreshDescription } from './description/MainDescription';
 import { handleAudioTranslation } from './audio/audioIndex';
 import { handleSubtitlesTranslation } from './subtitles/subtitlesIndex';
 import { maybeShowSupportToast } from './SupportToast/toast';
+import { isMobileSite } from '../utils/navigation';
 
 
 coreLog('Content script starting to load...');
@@ -69,7 +70,11 @@ async function initializeFeatures() {
 
     currentSettings?.titleTranslation && initializeTitleTranslation();
 
-    currentSettings?.audioTranslation?.enabled && initializeAudioTranslation();
+    if (!isMobileSite()) {
+        currentSettings?.audioTranslation?.enabled && initializeAudioTranslation();
+    } else {
+        coreLog('Mobile site detected; skipping audio translation initialization.');
+    }
 
     currentSettings?.descriptionTranslation && initializeDescriptionTranslation();
 
