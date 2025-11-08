@@ -6,6 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../styles/main.css">
         <title id="extensionTitle"></title>
+        <!-- Hidden SVG definitions for reuse -->
+        <svg style="display: none;">
+            <defs>
+                <!-- Desktop icon -->
+                <symbol id="icon-desktop" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z"/>
+                </symbol>
+            </defs>
+        </svg>
     </head>
     
     <body class="w-[300px] bg-gray-700">
@@ -53,12 +62,19 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <h2 class="text-sm font-medium text-white">Audio tracks</h2>
+                            <!-- Desktop only badge -->
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-blue-900/40 text-blue-300 rounded border border-blue-500/30" title="This feature is only available on desktop browsers">
+                                <svg class="w-3 h-3" aria-hidden="true">
+                                    <use href="#icon-desktop"></use>
+                                </svg>
+                                Desktop only
+                            </span>
                             <div class="relative group tooltip">
                                 <svg class="w-4 h-4 text-gray-400 cursor-help group hover:text-gray-300" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>
                                 <span class="absolute z-20 bottom-full left-0 ml-[-20px] mb-2 w-[220px] px-3 py-2 text-xs text-white bg-gray-900/95 rounded-md shadow-lg whitespace-normal opacity-0 pointer-events-none invisible group-hover:opacity-100 group-hover:visible transition-opacity">
-                                    Switch to preferred audio track.
+                                    Switch to preferred audio track. Unfortunately, this feature is not available on the mobile version of YouTube for now (m.youtube.com).
                                 </span>
                             </div>
                         </div>
