@@ -8,6 +8,7 @@
  */
 
 import { browsingThumbnailsErrorLog, browsingThumbnailsLog } from '../../utils/logger';
+import { isMobileSite } from '../../utils/navigation';
 
 // Store observers for lazy-loaded thumbnails
 const thumbnailObservers = new Map<HTMLImageElement, MutationObserver>();
@@ -108,8 +109,14 @@ function setupThumbnailObserver(thumbnailImg: HTMLImageElement, videoId: string)
  */
 export function restoreOriginalThumbnail(videoId: string, titleElement: HTMLElement): void {
     try {
+        const isMobile = isMobileSite();
+        
         // Find the closest parent that contains both the title and thumbnail
-        const commonParent = titleElement.closest('ytd-rich-grid-media, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-item-renderer, ytd-grid-video-renderer, .yt-lockup-view-model');
+        const parentSelectors = isMobile
+            ? 'ytm-video-with-context-renderer, ytm-video-card-renderer, ytm-compact-video-renderer'
+            : 'ytd-rich-grid-media, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-item-renderer, ytd-grid-video-renderer, .yt-lockup-view-model';
+        
+        const commonParent = titleElement.closest(parentSelectors);
         
         if (!commonParent) {
             return;
@@ -145,7 +152,7 @@ export function restoreOriginalThumbnail(videoId: string, titleElement: HTMLElem
             thumbnailImg.setAttribute('ynt-thumbnail', 'processed');
             
             browsingThumbnailsLog(
-                `Updated thumbnail from translated to original for video %c${videoId}%c`,
+                `Updated thumbnail from translated to original for video %c${videoId}%c (${isMobile ? 'mobile' : 'desktop'})`,
                 'color: #4ade80',
                 'color: #fca5a5'
             );
