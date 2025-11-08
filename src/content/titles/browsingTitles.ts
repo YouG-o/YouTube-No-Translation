@@ -13,6 +13,7 @@ import { currentSettings } from '../index';
 import { normalizeText } from '../../utils/text';
 import { extractVideoIdFromUrl } from '../../utils/video';
 import { isYouTubeDataAPIEnabled } from '../../utils/utils';
+import { isMobileSite } from '../../utils/navigation';
 import { shouldProcessSearchDescriptionElement, batchProcessSearchDescriptions } from '../description/searchDescriptions';
 import { titleCache, fetchTitleInnerTube, fetchTitleOembed } from './index';
 import { restoreOriginalThumbnail } from '../Thumbnails/browsingThumbnails';
@@ -381,16 +382,35 @@ export async function refreshBrowsingVideos(): Promise<void> {
     // Set new debounce timer
     browsingTitlesDebounceTimer = window.setTimeout(async () => {
         
-        // Select classic video titles
-        const classicTitles = Array.from(document.querySelectorAll('#video-title')) as HTMLElement[];
+        const isMobile = isMobileSite();
+        let browsingTitles: HTMLElement[] = [];
+        
+        if (isMobile) {
+            // Mobile selectors
+            const mobileTitles = Array.from(
+                document.querySelectorAll(
+                    'ytm-video-with-context-renderer h3.media-item-headline > span.yt-core-attributed-string, ' +
+                    'ytm-video-card-renderer h4.video-card-title > span.yt-core-attributed-string, ' +
+                    'h4.YtmCompactMediaItemHeadline > span.yt-core-attributed-string'
+                )
+            ) as HTMLElement[];
+            
+            browsingTitles = mobileTitles;
+            //browsingTitlesLog(`Found ${browsingTitles.length} mobile browsing titles to process`);
+        } else {
+            // Desktop selectors
+            // Select classic video titles
+            const classicTitles = Array.from(document.querySelectorAll('#video-title')) as HTMLElement[];
 
-        // Select recommended video titles (new format)
-        const recommendedTitles = Array.from(
-            document.querySelectorAll('a.yt-lockup-metadata-view-model__title > span.yt-core-attributed-string, a.yt-lockup-metadata-view-model-wiz__title > span.yt-core-attributed-string')
-        ) as HTMLElement[];
+            // Select recommended video titles (new format)
+            const recommendedTitles = Array.from(
+                document.querySelectorAll('a.yt-lockup-metadata-view-model__title > span.yt-core-attributed-string, a.yt-lockup-metadata-view-model-wiz__title > span.yt-core-attributed-string')
+            ) as HTMLElement[];
 
-        // Merge both lists
-        const browsingTitles = [...classicTitles, ...recommendedTitles];
+            // Merge both lists
+            browsingTitles = [...classicTitles, ...recommendedTitles];
+            //browsingTitlesLog(`Found ${browsingTitles.length} desktop browsing titles to process`);
+        }
 
         // Collect all video IDs that need processing
         const videosToProcess: Array<{ titleElement: HTMLElement; videoId: string; videoUrl: string; currentTitle: string }> = [];
@@ -463,7 +483,7 @@ export async function refreshBrowsingVideos(): Promise<void> {
                             translatedVideoIds.push(videoId);
                         }
                     } catch (error) {
-                        browsingTitlesErrorLog(`Failed to update recommended title:`, error);
+                        browsingTitlesErrorLog(`Failed to update browsing title:`, error);
                     }
                 } finally {
                     processingVideos.delete(videoId);
