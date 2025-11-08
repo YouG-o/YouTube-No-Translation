@@ -415,8 +415,13 @@ function recommendedVideosObserver() {
 function searchResultsObserver() {
     cleanupSearchResultsVideosObserver();
 
+    const isMobile = isMobileSite();
+    const containerSelector = isMobile 
+        ? 'ytm-section-list-renderer' 
+        : 'ytd-section-list-renderer #contents';
+
     // --- Observer for search results
-    waitForElement('ytd-section-list-renderer #contents').then((contents) => {
+    waitForElement(containerSelector).then((contents) => {
         let pageName = null;
         if (window.location.pathname === '/results') {
             pageName = 'Search';
@@ -428,7 +433,7 @@ function searchResultsObserver() {
             pageName = 'Unknown';
         }
       
-        browsingTitlesLog(`Setting up ${pageName} results videos observer`);
+        browsingTitlesLog(`Setting up ${pageName} results videos observer (${isMobile ? 'mobile' : 'desktop'})`);
 
         waitForFilledVideoTitles().then(() => {
             refreshBrowsingVideos();
@@ -436,31 +441,64 @@ function searchResultsObserver() {
         });
         
         searchObserver = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.type === 'childList' && 
-                    mutation.addedNodes.length > 0 && 
-                    mutation.target instanceof HTMLElement) {
-                    const titles = mutation.target.querySelectorAll('#video-title');
-                    if (titles.length > 0) {
-                        if (searchDebounceTimer !== null) {
-                            clearTimeout(searchDebounceTimer);
-                        }
-                        searchDebounceTimer = window.setTimeout(() => {
-                            browsingTitlesLog(`${pageName} page mutation debounced`);
-                            refreshShortsAlternativeFormat();
-                            refreshBrowsingVideos().then(() => {
-                                setTimeout(() => {
-                                    refreshBrowsingVideos();
-                                    refreshShortsAlternativeFormat();
-                                }, 1000);
-                                setTimeout(() => {
-                                    refreshBrowsingVideos();
-                                    refreshShortsAlternativeFormat();
-                                }, 2000);
-                            });
-                            searchDebounceTimer = null;
-                        }, OBSERVERS_DEBOUNCE_MS);
+            if (isMobile) {
+                // Mobile: simpler check - any childList mutation triggers refresh
+                let hasChanges = false;
+                for (const mutation of mutations) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        hasChanges = true;
                         break;
+                    }
+                }
+                
+                if (hasChanges) {
+                    if (searchDebounceTimer !== null) {
+                        clearTimeout(searchDebounceTimer);
+                    }
+                    searchDebounceTimer = window.setTimeout(() => {
+                        browsingTitlesLog(`${pageName} page mutation debounced (mobile)`);
+                        refreshShortsAlternativeFormat();
+                        refreshBrowsingVideos().then(() => {
+                            setTimeout(() => {
+                                refreshBrowsingVideos();
+                                refreshShortsAlternativeFormat();
+                            }, 1000);
+                            setTimeout(() => {
+                                refreshBrowsingVideos();
+                                refreshShortsAlternativeFormat();
+                            }, 2000);
+                        });
+                        searchDebounceTimer = null;
+                    }, OBSERVERS_DEBOUNCE_MS);
+                }
+            } else {
+                // Desktop: original logic (check for #video-title elements)
+                for (const mutation of mutations) {
+                    if (mutation.type === 'childList' && 
+                        mutation.addedNodes.length > 0 && 
+                        mutation.target instanceof HTMLElement) {
+                        const titles = mutation.target.querySelectorAll('#video-title');
+                        if (titles.length > 0) {
+                            if (searchDebounceTimer !== null) {
+                                clearTimeout(searchDebounceTimer);
+                            }
+                            searchDebounceTimer = window.setTimeout(() => {
+                                browsingTitlesLog(`${pageName} page mutation debounced`);
+                                refreshShortsAlternativeFormat();
+                                refreshBrowsingVideos().then(() => {
+                                    setTimeout(() => {
+                                        refreshBrowsingVideos();
+                                        refreshShortsAlternativeFormat();
+                                    }, 1000);
+                                    setTimeout(() => {
+                                        refreshBrowsingVideos();
+                                        refreshShortsAlternativeFormat();
+                                    }, 2000);
+                                });
+                                searchDebounceTimer = null;
+                            }, OBSERVERS_DEBOUNCE_MS);
+                            break;
+                        }
                     }
                 }
             }
