@@ -15,6 +15,7 @@ import { currentSettings } from './index';
 import { extractVideoIdFromUrl, extractVideoIdFromWatchFlexy } from '../utils/video';
 import { applyVideoPlayerSettings } from '../utils/videoSettings';
 import { waitForElement, waitForFilledVideoTitles } from '../utils/dom';
+import { isMobileSite } from '../utils/navigation'
 
 import { refreshMainTitle, refreshEmbedTitle, refreshMiniplayerTitle, cleanupMainTitleContentObserver ,cleanupIsEmptyObserver, cleanupPageTitleObserver, cleanupEmbedTitleContentObserver, cleanupMiniplayerTitleContentObserver } from './titles/mainTitle';
 import { refreshBrowsingVideos, cleanupAllBrowsingTitlesElementsObservers } from './titles/browsingTitles';
@@ -651,7 +652,10 @@ let urlChangeDebounceTimer: number | null = null;
 const URL_CHANGE_DEBOUNCE_MS = 250;
 
 export function setupUrlObserver() {
-    coreLog('Setting up URL observer');    
+    coreLog('Setting up URL observer');
+
+    const isMobile = isMobileSite();
+
     // --- Standard History API monitoring
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
@@ -674,11 +678,19 @@ export function setupUrlObserver() {
         handleUrlChange();
     });
     
-    // --- YouTube's custom page data update event
-    window.addEventListener('yt-page-data-updated', () => {
-        coreLog('YouTube page data updated');
-        handleUrlChange();
-    });
+    if (isMobile) {
+        // --- Mobile: Use state-navigateend event
+        window.addEventListener('state-navigateend', () => {
+            coreLog('Mobile SPA navigation completed (state-navigateend)');
+            handleUrlChange();
+        });
+    } else {
+        // --- Desktop: Use yt-page-data-updated event
+        window.addEventListener('yt-page-data-updated', () => {
+            coreLog('Desktop page data updated (yt-page-data-updated)');
+            handleUrlChange();
+        });
+    }
     
     // --- YouTube's custom SPA navigation events
     /*
