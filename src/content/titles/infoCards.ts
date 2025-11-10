@@ -56,7 +56,7 @@ class InfoCardDataManager {
      */
     clear(): void {
         this.dataMap.clear();
-        titlesLog('InfoCard data cleared');
+        //titlesLog('InfoCard data cleared');
     }
 
     /**

@@ -182,5 +182,5 @@ export function cleanupThumbnailObservers(): void {
         img.removeAttribute('ynt-thumbnail');
     });
     
-    browsingThumbnailsLog('Thumbnail observers cleaned up');
+    //browsingThumbnailsLog('Thumbnail observers cleaned up');
 }
