@@ -1,20 +1,43 @@
 import { fetchChannelNameDataAPI, fetchChannelNameInnerTube, shouldUpdateChannelName } from "./mainChannelName";
 import { getOriginalChannelDescriptionDataAPI, getOriginalChannelDescriptionInnerTube } from "./channelDescription";
 import { isYouTubeDataAPIEnabled, getChannelIdFromInnerTube } from "../../utils/utils";
+import { isMobileSite } from "../../utils/navigation";
 import { currentSettings } from "../index";
 import { coreErrorLog } from "../../utils/logger";
 
 /**
- * Updates the channel name and description in all ytd-channel-renderer elements on the search results page.
+ * Updates the channel name and description in all channel renderer elements on the search results page.
+ * Supports both desktop (ytd-channel-renderer) and mobile (ytm-compact-channel-renderer).
  */
 export async function patchChannelRendererBlocks(): Promise<void> {
-    const channelRenderers = document.querySelectorAll('ytd-channel-renderer');
+    const isMobile = isMobileSite();
+    
+    // Select appropriate renderer based on platform
+    const rendererSelector = isMobile ? 'ytm-compact-channel-renderer' : 'ytd-channel-renderer';
+    const channelRenderers = document.querySelectorAll(rendererSelector);
+    
     for (const renderer of channelRenderers) {
-        // Extract the handle from the @handle in the subscribers element
-        const handleElement = renderer.querySelector('yt-formatted-string#subscribers');
-        const handleText = handleElement?.textContent?.trim() || "";
-        const handleMatch = handleText.match(/@([a-zA-Z0-9_-]+)/);
-        const handle = handleMatch ? handleMatch[1] : null;
+        // Extract the handle - different selectors for mobile/desktop
+        let handle: string | null = null;
+        
+        if (isMobile) {
+            // Mobile: handle is in .YtmCompactMediaItemByline (e.g., "@Nowtech")
+            const bylineElements = renderer.querySelectorAll('.YtmCompactMediaItemByline span.yt-core-attributed-string');
+            for (const byline of bylineElements) {
+                const text = byline.textContent?.trim() || "";
+                if (text.startsWith('@')) {
+                    handle = text.substring(1); // Remove '@'
+                    break;
+                }
+            }
+        } else {
+            // Desktop: handle is in #subscribers element (e.g., "@Nowtech • 435K subscribers")
+            const handleElement = renderer.querySelector('yt-formatted-string#subscribers');
+            const handleText = handleElement?.textContent?.trim() || "";
+            const handleMatch = handleText.match(/@([a-zA-Z0-9_-]+)/);
+            handle = handleMatch ? handleMatch[1] : null;
+        }
+        
         if (!handle) continue;
 
         let channelId: string | null = null;
@@ -32,14 +55,20 @@ export async function patchChannelRendererBlocks(): Promise<void> {
             originalChannelName = await fetchChannelNameInnerTube(handle, channelId);
         }
 
-        // Replace the channel name if needed
-        const nameElement = renderer.querySelector('ytd-channel-name #text');
+        // Replace the channel name if needed - different selectors for mobile/desktop
+        const nameElement = isMobile 
+            ? renderer.querySelector('.YtmCompactMediaItemHeadline span.yt-core-attributed-string')
+            : renderer.querySelector('ytd-channel-name #text');
+        
         const currentName = nameElement?.textContent?.trim() || null;
         if (nameElement && shouldUpdateChannelName(originalChannelName, currentName)) {
             nameElement.textContent = originalChannelName || "";
         }
 
-        // Fetch the original channel description
+        // Skip description on mobile (doesn't exist in mobile renderer)
+        if (isMobile) continue;
+
+        // Fetch the original channel description (desktop only)
         let originalDescription: string | null = null;
         if (isYouTubeDataAPIEnabled(currentSettings)) {
             const data = await getOriginalChannelDescriptionDataAPI({ handle });
@@ -53,7 +82,7 @@ export async function patchChannelRendererBlocks(): Promise<void> {
             }
         }
 
-        // Replace the description if needed
+        // Replace the description if needed (desktop only)
         const descElement = renderer.querySelector('yt-formatted-string#description');
         if (descElement && originalDescription && descElement.textContent?.trim() !== originalDescription) {
             descElement.textContent = originalDescription;
