@@ -11,7 +11,10 @@
 import { descriptionLog, descriptionErrorLog } from "../../utils/logger";
 import { getChannelHandle, getChannelIdFromDom, getChannelIdFromInnerTube, isYouTubeDataAPIEnabled } from "../../utils/utils";
 import { normalizeText } from "../../utils/text";
+import { isMobileSite } from "../../utils/navigation";
+
 import { currentSettings } from "../index";
+import { setupMobilePanelObserver } from "../Mobile/mobilePanel";
 
 
 /**
@@ -257,9 +260,13 @@ export async function refreshChannelShortDescription(): Promise<void> {
     // Setup modal observer if description was updated OR if it was previously updated
     const previewElement = document.querySelector('yt-description-preview-view-model');
     const previewTextSpan = previewElement ? previewElement.querySelector('.yt-core-attributed-string') as HTMLSpanElement | null : null;
-    
+
     if (originalDescription !== null && previewTextSpan?.hasAttribute('data-original-updated')) {
-        observeChannelDescriptionModal(originalDescription);
+        if (!isMobileSite()) {
+            observeChannelDescriptionModal(originalDescription);
+        } else {
+            setupMobilePanelObserver();
+        }
     }
 }
 

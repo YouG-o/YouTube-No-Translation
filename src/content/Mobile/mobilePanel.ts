@@ -11,17 +11,20 @@ import { coreLog, mainTitleLog, descriptionLog } from '../../utils/logger';
 import { extractVideoIdFromUrl } from '../../utils/video';
 import { normalizeText } from '../../utils/text';
 import { waitForElement } from '../../utils/dom';
+import { getChannelHandle } from '../../utils/utils';
 import { currentSettings } from '../index';
 import { fetchMainTitle } from '../titles/mainTitle';
 import { updateDescriptionElement, fetchOriginalDescription } from '../description/MainDescription';
 import { descriptionCache } from '../description/index';
+import { getOriginalChannelDescriptionInnerTube, getOriginalChannelDescriptionDataAPI } from '../channel/channelDescription';
+import { isYouTubeDataAPIEnabled, getChannelIdFromInnerTube } from '../../utils/utils';
 
 
 let mobilePanelObserver: MutationObserver | null = null;
 
 
 /**
- * Updates the title inside the mobile panel
+ * Updates the title inside the mobile video panel
  */
 async function updateMobilePanelTitle(videoId: string): Promise<void> {
     const titleElement = document.querySelector('panel-container .primary-info .title span.yt-core-attributed-string') as HTMLElement;
@@ -57,13 +60,13 @@ async function updateMobilePanelTitle(videoId: string): Promise<void> {
 
 
 /**
- * Updates the description inside the mobile panel
+ * Updates the description inside the mobile video panel
  */
-async function updateMobilePanelDescription(videoId: string): Promise<void> {
+async function updateMobilePanelVideoDescription(videoId: string): Promise<void> {
     const descriptionContainer = document.querySelector('panel-container ytm-expandable-video-description-body-renderer') as HTMLElement;
     
     if (!descriptionContainer) {
-        descriptionLog('[Mobile Panel] Description container not found');
+        descriptionLog('[Mobile Panel] Video description container not found');
         return;
     }
     
@@ -71,25 +74,93 @@ async function updateMobilePanelDescription(videoId: string): Promise<void> {
     const description = descriptionCache.getDescription(videoId);
     
     if (description) {
-        descriptionLog('[Mobile Panel] Using cached description');
+        descriptionLog('[Mobile Panel] Using cached video description');
         updateDescriptionElement(descriptionContainer, description, videoId);
     } else {
-        descriptionLog('[Mobile Panel] No cached description, fetching...');
+        descriptionLog('[Mobile Panel] No cached video description, fetching...');
         const fetchedDescription = await fetchOriginalDescription();
         if (fetchedDescription) {
             descriptionCache.setDescription(videoId, fetchedDescription);
             updateDescriptionElement(descriptionContainer, fetchedDescription, videoId);
         } else {
-            descriptionLog('[Mobile Panel] Failed to fetch description');
+            descriptionLog('[Mobile Panel] Failed to fetch video description');
         }
     }
 }
 
 
 /**
- * Refreshes both title and description in the mobile panel
+ * Updates the full channel description inside the mobile channel panel
  */
-async function refreshMobilePanelContent(): Promise<void> {
+async function updateMobilePanelChannelDescription(): Promise<void> {
+    const descriptionElement = document.querySelector('panel-container ytm-about-channel-renderer .user-text span.yt-core-attributed-string') as HTMLElement;
+    
+    if (!descriptionElement) {
+        descriptionLog('[Mobile Panel] Channel description element not found');
+        return;
+    }
+    
+    const currentDescription = descriptionElement.textContent?.trim() || '';
+    
+    // Get channel identifier
+    let channelId: string | null = null;
+    let originalDescriptionData: { id: string; description: string } | null = null;
+    const channelHandle = getChannelHandle(window.location.href);
+    
+    // Try Data API if enabled
+    if (isYouTubeDataAPIEnabled(currentSettings)) {
+        const apiKey = currentSettings?.youtubeDataApi?.apiKey;
+        if (!apiKey) {
+            descriptionLog('[Mobile Panel] YouTube Data API key is missing');
+            return;
+        }
+        
+        if (channelHandle) {
+            originalDescriptionData = await getOriginalChannelDescriptionDataAPI({ handle: channelHandle });
+            if (!originalDescriptionData) {
+                channelId = await getChannelIdFromInnerTube(channelHandle);
+                if (channelId) {
+                    originalDescriptionData = await getOriginalChannelDescriptionDataAPI({ id: channelId });
+                }
+            }
+        }
+    }
+    
+    let originalDescription: string | null = null;
+    
+    // Use Data API result if available, otherwise use InnerTube
+    if (originalDescriptionData?.description) {
+        originalDescription = originalDescriptionData.description;
+    } else {
+        if (!channelId && channelHandle) {
+            channelId = await getChannelIdFromInnerTube(channelHandle);
+        }
+        if (!channelId) {
+            descriptionLog('[Mobile Panel] Channel ID could not be retrieved');
+            return;
+        }
+        originalDescription = await getOriginalChannelDescriptionInnerTube(channelId);
+        if (!originalDescription) {
+            descriptionLog('[Mobile Panel] Failed to fetch channel description from InnerTube');
+            return;
+        }
+    }
+    
+    // Skip if already original (prefix matching)
+    if (normalizeText(originalDescription).startsWith(normalizeText(currentDescription))) {
+        descriptionLog('[Mobile Panel] Channel description already original');
+        return;
+    }
+    
+    descriptionLog('[Mobile Panel] Updating channel description');
+    descriptionElement.textContent = originalDescription;
+}
+
+
+/**
+ * Refreshes content in the mobile video panel (title + description)
+ */
+async function refreshMobileVideoPanelContent(): Promise<void> {
     const videoId = extractVideoIdFromUrl(window.location.href);
     
     if (!videoId) {
@@ -97,7 +168,7 @@ async function refreshMobilePanelContent(): Promise<void> {
         return;
     }
     
-    coreLog(`[Mobile Panel] Refreshing content for ${videoId}`);
+    coreLog(`[Mobile Panel] Refreshing video panel content for ${videoId}`);
     
     // Update both title and description
     if (currentSettings?.titleTranslation) {
@@ -105,7 +176,19 @@ async function refreshMobilePanelContent(): Promise<void> {
     }
     
     if (currentSettings?.descriptionTranslation) {
-        await updateMobilePanelDescription(videoId);
+        await updateMobilePanelVideoDescription(videoId);
+    }
+}
+
+
+/**
+ * Refreshes content in the mobile channel panel (full description)
+ */
+async function refreshMobileChannelPanelContent(): Promise<void> {
+    coreLog('[Mobile Panel] Refreshing channel panel content');
+    
+    if (currentSettings?.descriptionTranslation) {
+        await updateMobilePanelChannelDescription();
     }
 }
 
@@ -121,36 +204,53 @@ export function setupMobilePanelObserver(): void {
         coreLog('[Mobile Panel] Setting up observer on panel-container');
         
         mobilePanelObserver = new MutationObserver((mutations) => {
-            // Check if .primary-info was added (panel opened)
+            // Check what type of content was added
             for (const mutation of mutations) {
                 if (mutation.type === 'childList') {
-                    // Check if .primary-info was added
+                    // Check for video panel (primary-info)
                     const primaryInfoAdded = Array.from(mutation.addedNodes).some(node => {
                         if (node.nodeType === Node.ELEMENT_NODE) {
                             const element = node as Element;
-                            // Check if added node is .primary-info or contains it
                             return element.matches('.primary-info') || element.querySelector('.primary-info');
                         }
                         return false;
                     });
                     
                     if (primaryInfoAdded) {
-                        coreLog('[Mobile Panel] Panel opened (primary-info detected), refreshing content');
-                        refreshMobilePanelContent();
-                        return; // Stop after first detection
+                        coreLog('[Mobile Panel] Video panel opened (primary-info detected)');
+                        refreshMobileVideoPanelContent();
+                        return;
                     }
                     
-                    // Optional: detect panel close
-                    const primaryInfoRemoved = Array.from(mutation.removedNodes).some(node => {
+                    // Check for channel panel (ytm-about-channel-renderer)
+                    const aboutChannelAdded = Array.from(mutation.addedNodes).some(node => {
                         if (node.nodeType === Node.ELEMENT_NODE) {
                             const element = node as Element;
-                            return element.matches('.primary-info') || element.querySelector('.primary-info');
+                            return element.matches('ytm-about-channel-renderer') || element.querySelector('ytm-about-channel-renderer');
                         }
                         return false;
                     });
                     
-                    if (primaryInfoRemoved) {
-                        coreLog('[Mobile Panel] Panel closed (primary-info removed)');
+                    if (aboutChannelAdded) {
+                        coreLog('[Mobile Panel] Channel panel opened (ytm-about-channel-renderer detected)');
+                        refreshMobileChannelPanelContent();
+                        return;
+                    }
+                    
+                    // Optional: detect panel close
+                    const panelClosed = Array.from(mutation.removedNodes).some(node => {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            const element = node as Element;
+                            return element.matches('.primary-info') || 
+                                   element.querySelector('.primary-info') ||
+                                   element.matches('ytm-about-channel-renderer') ||
+                                   element.querySelector('ytm-about-channel-renderer');
+                        }
+                        return false;
+                    });
+                    
+                    if (panelClosed) {
+                        coreLog('[Mobile Panel] Panel closed');
                     }
                 }
             }
@@ -159,14 +259,20 @@ export function setupMobilePanelObserver(): void {
         // Observe only childList (detect when content is added/removed)
         mobilePanelObserver.observe(panel, {
             childList: true,
-            subtree: true // Important: detect .primary-info even if nested
+            subtree: true
         });
         
-        // Check if panel is already open (initial state)
+        // Check initial state
         const existingPrimaryInfo = panel.querySelector('.primary-info');
         if (existingPrimaryInfo) {
-            coreLog('[Mobile Panel] Panel already open on setup, refreshing content');
-            refreshMobilePanelContent();
+            coreLog('[Mobile Panel] Video panel already open on setup');
+            refreshMobileVideoPanelContent();
+        }
+        
+        const existingAboutChannel = panel.querySelector('ytm-about-channel-renderer');
+        if (existingAboutChannel) {
+            coreLog('[Mobile Panel] Channel panel already open on setup');
+            refreshMobileChannelPanelContent();
         }
         
     }).catch(() => {
