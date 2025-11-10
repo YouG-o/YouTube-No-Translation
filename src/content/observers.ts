@@ -294,6 +294,8 @@ let playlistDebounceTimer: number | null = null;
 async function pageVideosObserver() {
     cleanupPageVideosObserver();
 
+    const isMobile = isMobileSite();
+    
     let pageName: string = '';
     if (window.location.pathname === '/') {
         pageName = 'Home';
@@ -306,43 +308,73 @@ async function pageVideosObserver() {
     } else {
         pageName = 'Unknown';
     }
-    coreLog(`Setting up ${pageName} page videos observer`);
+    coreLog(`Setting up ${pageName} page videos observer (${isMobile ? 'mobile' : 'desktop'})`);
 
-    // Wait for the rich grid renderer to be present
-    const grids = Array.from(document.querySelectorAll('#contents.ytd-rich-grid-renderer')) as HTMLElement[];
-
-    if (grids.length === 0) {
-        // Wait for the first grid to appear
-        await new Promise<void>(resolve => {
-            const observer = new MutationObserver(() => {
-                const found = document.querySelector('#contents.ytd-rich-grid-renderer');
-                if (found) {
-                    observer.disconnect();
-                    resolve();
-                }
+    if (isMobile) {
+        // Mobile: wait for rich-grid-renderer-contents
+        const gridContents = document.querySelector('.rich-grid-renderer-contents');
+        
+        if (!gridContents) {
+            // Wait for the first grid to appear
+            await new Promise<void>(resolve => {
+                const observer = new MutationObserver(() => {
+                    const found = document.querySelector('.rich-grid-renderer-contents');
+                    if (found) {
+                        observer.disconnect();
+                        resolve();
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
             });
-            observer.observe(document.body, { childList: true, subtree: true });
-        });
-    }
+        }
 
-    const allGrids = Array.from(document.querySelectorAll('#contents.ytd-rich-grid-renderer')) as HTMLElement[];
-    allGrids.forEach(grid => {
-        const observer = new MutationObserver(() => handleGridMutationDebounced(pageName));
-        observer.observe(grid, {
-            childList: true,
-            attributes: true,
-            characterData: true
-        });
-        pageGridObservers.push(observer);
-    });
+        const grid = document.querySelector('.rich-grid-renderer-contents') as HTMLElement;
+        if (grid) {
+            const observer = new MutationObserver(() => handleGridMutationDebounced(pageName));
+            observer.observe(grid, {
+                childList: true,
+                attributes: true,
+                characterData: true
+            });
+            pageGridObservers.push(observer);
+        }
+    } else {
+        // Desktop: wait for rich grid renderer
+        const grids = Array.from(document.querySelectorAll('#contents.ytd-rich-grid-renderer')) as HTMLElement[];
 
-    // Add parent grid observer (useful when clicking on filters)
-    const gridParent = document.querySelector('#primary > ytd-rich-grid-renderer') as HTMLElement | null;
-    if (gridParent) {
-        pageGridParentObserver = new MutationObserver(() => handleGridMutationDebounced(pageName));
-        pageGridParentObserver.observe(gridParent, {
-            attributes: true
+        if (grids.length === 0) {
+            // Wait for the first grid to appear
+            await new Promise<void>(resolve => {
+                const observer = new MutationObserver(() => {
+                    const found = document.querySelector('#contents.ytd-rich-grid-renderer');
+                    if (found) {
+                        observer.disconnect();
+                        resolve();
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            });
+        }
+
+        const allGrids = Array.from(document.querySelectorAll('#contents.ytd-rich-grid-renderer')) as HTMLElement[];
+        allGrids.forEach(grid => {
+            const observer = new MutationObserver(() => handleGridMutationDebounced(pageName));
+            observer.observe(grid, {
+                childList: true,
+                attributes: true,
+                characterData: true
+            });
+            pageGridObservers.push(observer);
         });
+
+        // Add parent grid observer (useful when clicking on filters)
+        const gridParent = document.querySelector('#primary > ytd-rich-grid-renderer') as HTMLElement | null;
+        if (gridParent) {
+            pageGridParentObserver = new MutationObserver(() => handleGridMutationDebounced(pageName));
+            pageGridParentObserver.observe(gridParent, {
+                attributes: true
+            });
+        }
     }
 }
 
