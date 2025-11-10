@@ -382,10 +382,9 @@ export async function refreshBrowsingVideos(): Promise<void> {
     // Set new debounce timer
     browsingTitlesDebounceTimer = window.setTimeout(async () => {
         
-        const isMobile = isMobileSite();
         let browsingTitles: HTMLElement[] = [];
         
-        if (isMobile) {
+        if (isMobileSite()) {
             // Mobile selectors
             const mobileTitles = Array.from(
                 document.querySelectorAll(
@@ -492,7 +491,7 @@ export async function refreshBrowsingVideos(): Promise<void> {
         );
 
         // Batch process descriptions for all translated titles
-        if (translatedTitleElements.length > 0 && !isMobile) {
+        if (translatedTitleElements.length > 0 && !isMobileSite()) {
             await batchProcessSearchDescriptions(translatedTitleElements, translatedVideoIds);
         }
 

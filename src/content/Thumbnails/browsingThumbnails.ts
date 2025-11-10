@@ -109,10 +109,9 @@ function setupThumbnailObserver(thumbnailImg: HTMLImageElement, videoId: string)
  */
 export function restoreOriginalThumbnail(videoId: string, titleElement: HTMLElement): void {
     try {
-        const isMobile = isMobileSite();
         
         // Find the closest parent that contains both the title and thumbnail
-        const parentSelectors = isMobile
+        const parentSelectors = isMobileSite()
             ? 'ytm-video-with-context-renderer, ytm-video-card-renderer, ytm-compact-video-renderer'
             : 'ytd-rich-grid-media, ytd-video-renderer, ytd-compact-video-renderer, ytd-rich-item-renderer, ytd-grid-video-renderer, .yt-lockup-view-model';
         
@@ -152,7 +151,7 @@ export function restoreOriginalThumbnail(videoId: string, titleElement: HTMLElem
             thumbnailImg.setAttribute('ynt-thumbnail', 'processed');
             
             browsingThumbnailsLog(
-                `Updated thumbnail from translated to original for video %c${videoId}%c (${isMobile ? 'mobile' : 'desktop'})`,
+                `Updated thumbnail from translated to original for video %c${videoId}%c (${isMobileSite() ? 'mobile' : 'desktop'})`,
                 'color: #4ade80',
                 'color: #fca5a5'
             );

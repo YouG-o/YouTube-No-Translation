@@ -38,8 +38,6 @@ import { cleanupThumbnailObservers } from './Thumbnails/browsingThumbnails';
 import { setupMobilePanelObserver, cleanupMobilePanelObserver } from './Mobile/mobilePanel';
 
 
-const isMobile = isMobileSite();
-
 // MAIN OBSERVERS -----------------------------------------------------------
 let videoPlayerListener: ((e: Event) => void) | null = null;
 let hasInitialPlayerLoadTriggered = false;
@@ -67,22 +65,25 @@ export function setupVideoPlayerListener() {
 
     coreLog('Setting up video player listener');
 
-    // Listen for user interactions with settings menu
-    document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.closest('.ytp-settings-menu')) {
-            userInitiatedChange = true;
-            
-            if (userChangeTimeout) {
-                window.clearTimeout(userChangeTimeout);
+    
+    if (!isMobileSite()) {
+        // Listen for user interactions with settings menu
+        document.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('.ytp-settings-menu')) {
+                userInitiatedChange = true;
+                
+                if (userChangeTimeout) {
+                    window.clearTimeout(userChangeTimeout);
+                }
+                
+                userChangeTimeout = window.setTimeout(() => {
+                    userInitiatedChange = false;
+                    userChangeTimeout = null;
+                }, 2000);
             }
-            
-            userChangeTimeout = window.setTimeout(() => {
-                userInitiatedChange = false;
-                userChangeTimeout = null;
-            }, 2000);
-        }
-    }, true);
+        }, true);      
+    }
 
     videoPlayerListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
@@ -310,9 +311,9 @@ async function pageVideosObserver() {
     } else {
         pageName = 'Unknown';
     }
-    coreLog(`Setting up ${pageName} page videos observer (${isMobile ? 'mobile' : 'desktop'})`);
+    coreLog(`Setting up ${pageName} page videos observer (${isMobileSite() ? 'mobile' : 'desktop'})`);
 
-    if (isMobile) {
+    if (isMobileSite()) {
         // Mobile: wait for rich-grid-renderer-contents
         const gridContents = document.querySelector('.rich-grid-renderer-contents');
         
@@ -406,16 +407,16 @@ function handleGridMutationDebounced(pageName: string) {
 function recommendedVideosObserver() {
     cleanupRecommendedVideosObserver();
 
-    const containerSelector = isMobile 
+    const containerSelector = isMobileSite() 
         ? 'ytm-item-section-renderer[section-identifier="related-items"]' 
         : '#secondary-inner ytd-watch-next-secondary-results-renderer #items';
 
     waitForElement(containerSelector).then((contents) => {
-        browsingTitlesLog(`Setting up recommended videos observer (${isMobile ? 'mobile' : 'desktop'})`);
+        browsingTitlesLog(`Setting up recommended videos observer (${isMobileSite() ? 'mobile' : 'desktop'})`);
         
         refreshBrowsingVideos();
         
-        if (isMobile) {
+        if (isMobileSite()) {
             // Mobile: observe ytm-item-section-renderer directly
             recommendedObserver = new MutationObserver(() => {
                 if (recommendedDebounceTimer !== null) {
@@ -476,7 +477,7 @@ function recommendedVideosObserver() {
 function searchResultsObserver() {
     cleanupSearchResultsVideosObserver();
 
-    const containerSelector = isMobile 
+    const containerSelector = isMobileSite() 
         ? 'ytm-section-list-renderer' 
         : 'ytd-section-list-renderer #contents';
 
@@ -493,7 +494,7 @@ function searchResultsObserver() {
             pageName = 'Unknown';
         }
       
-        browsingTitlesLog(`Setting up ${pageName} results videos observer (${isMobile ? 'mobile' : 'desktop'})`);
+        browsingTitlesLog(`Setting up ${pageName} results videos observer (${isMobileSite() ? 'mobile' : 'desktop'})`);
 
         waitForFilledVideoTitles().then(() => {
             refreshBrowsingVideos();
@@ -501,7 +502,7 @@ function searchResultsObserver() {
         });
         
         searchObserver = new MutationObserver((mutations) => {
-            if (isMobile) {
+            if (isMobileSite()) {
                 // Mobile: simpler check - any childList mutation triggers refresh
                 let hasChanges = false;
                 for (const mutation of mutations) {
@@ -774,7 +775,7 @@ export function setupUrlObserver() {
         handleUrlChange();
     });
     
-    if (isMobile) {
+    if (isMobileSite()) {
         // --- Mobile: Use state-navigateend event
         window.addEventListener('state-navigateend', () => {
             coreLog('Mobile SPA navigation completed (state-navigateend)');
@@ -867,7 +868,9 @@ function handleUrlChangeInternal() {
 
     //coreLog('Observers cleaned up');
     
-    currentSettings?.titleTranslation && setupNotificationTitlesDropdownObserver();
+    if (!isMobileSite() && currentSettings?.titleTranslation) {
+        setupNotificationTitlesDropdownObserver();
+    }
     
     if (currentSettings?.titleTranslation) {
         setTimeout(() => {
@@ -895,7 +898,7 @@ function handleUrlChangeInternal() {
         // --- Handle all new channel page types (videos, featured, shorts, etc.)
         coreLog(`[URL] Detected channel page`);
 
-        if (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation) {
+        if ((currentSettings?.titleTranslation || currentSettings?.descriptionTranslation) && !isMobileSite()) {
             waitForElement('#c4-player').then(() => {
                 refreshChannelPlayer();
             });
@@ -913,7 +916,7 @@ function handleUrlChangeInternal() {
                     refreshMainChannelName();
                 });
         }
-        if (currentSettings?.descriptionTranslation) {
+        if (currentSettings?.descriptionTranslation && !isMobileSite()) {
             waitForElement('ytd-video-renderer').then(() => {
                 processChannelVideoDescriptions();
             });
@@ -961,7 +964,9 @@ function handleUrlChangeInternal() {
             break;
         case '/playlist':  // --- Playlist page
             coreLog(`[URL] Detected playlist page`);
-            currentSettings?.titleTranslation && playlistVideosObserver();
+            if (!isMobileSite()) {
+                currentSettings?.titleTranslation && playlistVideosObserver();
+            }
             break;
         case '/channel':  // --- Channel page (old format)
             coreLog(`[URL] Detected channel page`);
@@ -969,7 +974,7 @@ function handleUrlChangeInternal() {
             break;
         case '/watch': // --- Video page
             coreLog(`[URL] Detected video page`);
-            if (!isMobile) {
+            if (!isMobileSite()) {
                 // Check if we're on a video with a playlist
                 if (currentSettings?.titleTranslation && window.location.search.includes('list=')) {
                     coreLog(`[URL] Detected video page with playlist`);
@@ -995,7 +1000,7 @@ function handleUrlChangeInternal() {
             }
             if (currentSettings?.titleTranslation) {
                 recommendedVideosObserver();
-                if (!isMobile) {
+                if (!isMobileSite()) {
                     setupEndScreenObserver();
                     setupPostVideoObserver();
                     refreshInfoCardsTitles();
@@ -1005,7 +1010,7 @@ function handleUrlChangeInternal() {
             
 
             // Setup mobile panel observer on all pages          
-            if (isMobile && (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation)) {
+            if (isMobileSite() && (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation)) {
                 setupMobilePanelObserver();
             }
             break;
@@ -1033,7 +1038,7 @@ export function setupVisibilityChangeListener(): void {
                 refreshMiniplayerTitle();
                 if (window.location.pathname === '/watch') {
                     refreshMainTitle();
-                    if (!isMobile) {
+                    if (!isMobileSite()) {
                         refreshEndScreenTitles();
                         refreshInfoCardsTitles();
                     }

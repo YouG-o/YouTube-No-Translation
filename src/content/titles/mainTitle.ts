@@ -271,10 +271,9 @@ function updateMiniplayerTitleElement(element: HTMLElement, title: string, video
 // --- Main Title Function
 export async function refreshMainTitle(): Promise<void> {
     // Determine if we're on mobile site
-    const isMobile = isMobileSite();
     
     // Use appropriate selector based on site type
-    const mainTitleSelector = isMobile 
+    const mainTitleSelector = isMobileSite() 
         ? 'h2.slim-video-information-title span.yt-core-attributed-string'
         : 'h1.ytd-watch-metadata > yt-formatted-string';
     

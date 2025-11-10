@@ -10,17 +10,16 @@ import { coreErrorLog } from "../../utils/logger";
  * Supports both desktop (ytd-channel-renderer) and mobile (ytm-compact-channel-renderer).
  */
 export async function patchChannelRendererBlocks(): Promise<void> {
-    const isMobile = isMobileSite();
     
     // Select appropriate renderer based on platform
-    const rendererSelector = isMobile ? 'ytm-compact-channel-renderer' : 'ytd-channel-renderer';
+    const rendererSelector = isMobileSite() ? 'ytm-compact-channel-renderer' : 'ytd-channel-renderer';
     const channelRenderers = document.querySelectorAll(rendererSelector);
     
     for (const renderer of channelRenderers) {
         // Extract the handle - different selectors for mobile/desktop
         let handle: string | null = null;
         
-        if (isMobile) {
+        if (isMobileSite()) {
             // Mobile: handle is in .YtmCompactMediaItemByline (e.g., "@Nowtech")
             const bylineElements = renderer.querySelectorAll('.YtmCompactMediaItemByline span.yt-core-attributed-string');
             for (const byline of bylineElements) {
@@ -56,7 +55,7 @@ export async function patchChannelRendererBlocks(): Promise<void> {
         }
 
         // Replace the channel name if needed - different selectors for mobile/desktop
-        const nameElement = isMobile 
+        const nameElement = isMobileSite() 
             ? renderer.querySelector('.YtmCompactMediaItemHeadline span.yt-core-attributed-string')
             : renderer.querySelector('ytd-channel-name #text');
         
@@ -66,7 +65,7 @@ export async function patchChannelRendererBlocks(): Promise<void> {
         }
 
         // Skip description on mobile (doesn't exist in mobile renderer)
-        if (isMobile) continue;
+        if (isMobileSite()) continue;
 
         // Fetch the original channel description (desktop only)
         let originalDescription: string | null = null;

@@ -35,11 +35,10 @@ export async function fetchOriginalDescription(): Promise<string | null> {
  * Only includes text nodes not inside a suggestion link.
  */
 function getCurrentDescriptionText(element: HTMLElement): string {
-    const isMobile = isMobileSite();
     
     let container: Element | null = null;
     
-    if (isMobile) {
+    if (isMobileSite()) {
         // Mobile: find the collapsed-string div
         container = element.querySelector('#collapsed-string');
     } else {
@@ -207,10 +206,8 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
         descriptionLog(`Aborting description update: video changed from ${id} to ${currentVideoId}`);
         return;
     }
-    
-    const isMobile = isMobileSite();
-    
-    if (isMobile) {
+        
+    if (isMobileSite()) {
         // Mobile: single container in #collapsed-string
         const collapsedString = element.querySelector('#collapsed-string');
         
@@ -372,8 +369,7 @@ let descriptionContentObserver: MutationObserver | null = null;
 
 // Helper function to process description for current video ID
 export async function processDescriptionForVideoId(id: string): Promise<string | null> {
-    const isMobile = isMobileSite();
-    const descriptionSelector = isMobile 
+    const descriptionSelector = isMobileSite() 
         ? 'ytm-expandable-video-description-body-renderer' 
         : '#description-inline-expander';
     
@@ -448,9 +444,8 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
 
 
 function descriptionExpandObserver(id: string): void {
-    const isMobile = isMobileSite();
     
-    if (isMobile) {
+    if (isMobileSite()) {
         // Mobile: observe collapsible-string for expand/collapse
         const descriptionSelector = 'ytm-expandable-video-description-body-renderer';
         
@@ -523,8 +518,7 @@ export function setupDescriptionContentObserver(id: string) {
     // Cleanup existing observer avoiding infinite loops
     cleanupDescriptionContentObserver();
     
-    const isMobile = isMobileSite();
-    const descriptionSelector = isMobile 
+    const descriptionSelector = isMobileSite() 
         ? 'ytm-expandable-video-description-body-renderer' 
         : '#description-inline-expander';
     
