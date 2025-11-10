@@ -11,7 +11,8 @@ import { descriptionLog, descriptionErrorLog } from '../../utils/logger';
 import { waitForElement } from '../../utils/dom';
 import { normalizeText } from '../../utils/text';
 import { calculateSimilarity } from '../../utils/text';
-import { extractVideoIdFromWatchFlexy } from '../../utils/video';
+import { extractVideoIdFromUrl } from '../../utils/video';
+import { isMobileSite } from '../../utils/navigation';
 import { descriptionCache } from './index';
 
 
@@ -34,9 +35,20 @@ export async function fetchOriginalDescription(): Promise<string | null> {
  * Only includes text nodes not inside a suggestion link.
  */
 function getCurrentDescriptionText(element: HTMLElement): string {
-    const snippet = element.querySelector('#attributed-snippet-text');
-    const core = element.querySelector('.yt-core-attributed-string--white-space-pre-wrap');
-    const container = snippet || core;
+    const isMobile = isMobileSite();
+    
+    let container: Element | null = null;
+    
+    if (isMobile) {
+        // Mobile: find the collapsed-string div
+        container = element.querySelector('#collapsed-string');
+    } else {
+        // Desktop: existing selectors
+        const snippet = element.querySelector('#attributed-snippet-text');
+        const core = element.querySelector('.yt-core-attributed-string--white-space-pre-wrap');
+        container = snippet || core;
+    }
+    
     if (!container) return "";
 
     function extractText(node: Node): string {
@@ -69,12 +81,17 @@ function isDescriptionOriginal(cached: string, current: string): boolean {
 
 
 export async function refreshDescription(id: string): Promise<void> {
-    //descriptionLog('Waiting for description element');
+    const isMobile = isMobileSite();
+    const descriptionSelector = isMobile 
+        ? 'ytm-expandable-video-description-body-renderer' 
+        : '#description-inline-expander';
+    
+    //descriptionLog(`Waiting for description element (${isMobile ? 'mobile' : 'desktop'})`);
     try {
-        await waitForElement('#description-inline-expander');
+        await waitForElement(descriptionSelector);
         
         // Check if video ID has changed after waiting
-        const currentVideoId = extractVideoIdFromWatchFlexy();
+        const currentVideoId = extractVideoIdFromUrl(window.location.href);
         if (currentVideoId !== id) {
             descriptionLog(`Aborting refreshDescription: video changed from ${id} to ${currentVideoId}`);
             return;
@@ -88,18 +105,18 @@ export async function refreshDescription(id: string): Promise<void> {
             description = await fetchOriginalDescription();
             
             // Check again after async fetch
-            const stillCurrentVideoId = extractVideoIdFromWatchFlexy();
+            const stillCurrentVideoId = extractVideoIdFromUrl(window.location.href);
             if (stillCurrentVideoId !== id) {
                 descriptionLog(`Aborting refreshDescription after fetch: video changed from ${id} to ${stillCurrentVideoId}`);
                 return;
             }
             //descriptionLog('Description element found, injecting script');
         } else {
-            //escriptionLog('Using cached description');
+            //descriptionLog('Using cached description');
         }
 
         if (description) {
-            const descriptionElement = document.querySelector('#description-inline-expander');
+            const descriptionElement = document.querySelector(descriptionSelector);
             if (descriptionElement) {
                 // Always update the element, whether it's in cache or not
                 updateDescriptionElement(descriptionElement as HTMLElement, description, id);
@@ -185,59 +202,107 @@ function createUrlLink(url: string): HTMLAnchorElement {
 
 export function updateDescriptionElement(element: HTMLElement, description: string, id: string): void {
     // Check if video ID has changed before applying description
-    const currentVideoId = extractVideoIdFromWatchFlexy();
+    const currentVideoId = extractVideoIdFromUrl(window.location.href);
     if (currentVideoId !== id) {
         descriptionLog(`Aborting description update: video changed from ${id} to ${currentVideoId}`);
         return;
     }
     
-    // Find the text containers
-    const attributedString = element.querySelector('yt-attributed-string');
-    const snippetAttributedString = element.querySelector('#attributed-snippet-text');
+    const isMobile = isMobileSite();
     
-    if (!attributedString && !snippetAttributedString) {
-        descriptionErrorLog(`No description text container found`);
-        return;
-    }
-
-    // Create the parent span with YouTube's exact structure
-    const parentSpan = document.createElement('span');
-    parentSpan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap';
-    parentSpan.dir = 'auto';
-    parentSpan.setAttribute('role', 'text');
-    
-    // Create the inner wrapper span (YouTube's structure)
-    const innerSpan = document.createElement('span');
-    innerSpan.className = 'yt-core-attributed-string--link-inherit-color';
-    innerSpan.dir = 'auto';
-    innerSpan.style.color = 'rgb(255, 255, 255)';
-    
-    // URL regex pattern
-    const urlPattern = /(https?:\/\/[^\s]+)/g;
-    // Timestamp pattern - matches common YouTube timestamp formats like 1:23 or 1:23:45
-    
-    const lines = description.split('\n');
-    lines.forEach((line, index) => {
-        const parts = line.split(urlPattern);
-        parts.forEach((part) => {
-            if (part.match(urlPattern)) {
-                innerSpan.appendChild(createUrlLink(part));
-            } else if (part) {
-                const fragment = createTimestampFragment(part);
-                innerSpan.appendChild(fragment);
+    if (isMobile) {
+        // Mobile: single container in #collapsed-string
+        const collapsedString = element.querySelector('#collapsed-string');
+        
+        if (!collapsedString) {
+            descriptionErrorLog('No mobile description container found (#collapsed-string)');
+            return;
+        }
+        
+        // Create the parent span with YouTube's structure
+        const parentSpan = document.createElement('span');
+        parentSpan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap';
+        parentSpan.dir = 'auto';
+        
+        // Create the inner wrapper span
+        const innerSpan = document.createElement('span');
+        innerSpan.className = 'yt-core-attributed-string--link-inherit-color';
+        innerSpan.dir = 'auto';
+        innerSpan.style.color = 'rgb(255, 255, 255)';
+        
+        // URL regex pattern
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        
+        const lines = description.split('\n');
+        lines.forEach((line, index) => {
+            const parts = line.split(urlPattern);
+            parts.forEach((part) => {
+                if (part.match(urlPattern)) {
+                    innerSpan.appendChild(createUrlLink(part));
+                } else if (part) {
+                    const fragment = createTimestampFragment(part);
+                    innerSpan.appendChild(fragment);
+                }
+            });
+            if (index < lines.length - 1) {
+                innerSpan.appendChild(document.createElement('br'));
             }
         });
-        if (index < lines.length - 1) {
-            innerSpan.appendChild(document.createElement('br'));
+        
+        // Assemble the structure
+        parentSpan.appendChild(innerSpan);
+        
+        // Insert into mobile container
+        insertDescriptionSpan(collapsedString, parentSpan);
+        
+    } else {
+        // Desktop: existing logic with two containers
+        const attributedString = element.querySelector('yt-attributed-string');
+        const snippetAttributedString = element.querySelector('#attributed-snippet-text');
+        
+        if (!attributedString && !snippetAttributedString) {
+            descriptionErrorLog('No desktop description text container found');
+            return;
         }
-    });
-    
-    // Assemble the structure: parentSpan > innerSpan > content
-    parentSpan.appendChild(innerSpan);
 
-    // Use the utility function to insert the span into both containers
-    insertDescriptionSpan(attributedString, parentSpan);
-    insertDescriptionSpan(snippetAttributedString, parentSpan);
+        // Create the parent span with YouTube's exact structure
+        const parentSpan = document.createElement('span');
+        parentSpan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap';
+        parentSpan.dir = 'auto';
+        parentSpan.setAttribute('role', 'text');
+        
+        // Create the inner wrapper span (YouTube's structure)
+        const innerSpan = document.createElement('span');
+        innerSpan.className = 'yt-core-attributed-string--link-inherit-color';
+        innerSpan.dir = 'auto';
+        innerSpan.style.color = 'rgb(255, 255, 255)';
+        
+        // URL regex pattern
+        const urlPattern = /(https?:\/\/[^\s]+)/g;
+        
+        const lines = description.split('\n');
+        lines.forEach((line, index) => {
+            const parts = line.split(urlPattern);
+            parts.forEach((part) => {
+                if (part.match(urlPattern)) {
+                    innerSpan.appendChild(createUrlLink(part));
+                } else if (part) {
+                    const fragment = createTimestampFragment(part);
+                    innerSpan.appendChild(fragment);
+                }
+            });
+            if (index < lines.length - 1) {
+                innerSpan.appendChild(document.createElement('br'));
+            }
+        });
+        
+        // Assemble the structure: parentSpan > innerSpan > content
+        parentSpan.appendChild(innerSpan);
+
+        // Use the utility function to insert the span into both containers
+        insertDescriptionSpan(attributedString, parentSpan);
+        insertDescriptionSpan(snippetAttributedString, parentSpan);
+    }
 
     setupDescriptionContentObserver(id);
 }
@@ -247,7 +312,7 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
 export function compareDescription(element: HTMLElement, id: string): Promise<{ isOriginal: boolean; description: string | null }> {
     return new Promise(async (resolve) => {
         // Check if video ID is still current before starting
-        const currentVideoId = extractVideoIdFromWatchFlexy();
+        const currentVideoId = extractVideoIdFromUrl(window.location.href);
         if (currentVideoId !== id) {
             descriptionLog(`Aborting compareDescription: video changed from ${id} to ${currentVideoId}`);
             resolve({ isOriginal: false, description: null });
@@ -262,7 +327,7 @@ export function compareDescription(element: HTMLElement, id: string): Promise<{ 
             description = await fetchOriginalDescription();
             
             // CRITICAL: Check again after async fetch to prevent cache pollution
-            const stillCurrentVideoId = extractVideoIdFromWatchFlexy();
+            const stillCurrentVideoId = extractVideoIdFromUrl(window.location.href);
             if (stillCurrentVideoId !== id) {
                 descriptionLog(`Aborting compareDescription after fetch: video changed from ${id} to ${stillCurrentVideoId}`);
                 resolve({ isOriginal: false, description: null });
@@ -307,11 +372,17 @@ let descriptionContentObserver: MutationObserver | null = null;
 
 // Helper function to process description for current video ID
 export async function processDescriptionForVideoId(id: string): Promise<string | null> {
-    const descriptionElement = document.querySelector('#description-inline-expander');
+    const isMobile = isMobileSite();
+    const descriptionSelector = isMobile 
+        ? 'ytm-expandable-video-description-body-renderer' 
+        : '#description-inline-expander';
+    
+    const descriptionElement = document.querySelector(descriptionSelector);
+    
     if (descriptionElement) {
         return waitForElement('#movie_player').then(() => {
             // Check if video ID is still current after waiting
-            const currentVideoId = extractVideoIdFromWatchFlexy();
+            const currentVideoId = extractVideoIdFromUrl(window.location.href);
             if (currentVideoId !== id) {
                 descriptionLog(`Aborting processDescriptionForVideoId: video changed from ${id} to ${currentVideoId}`);
                 return null;
@@ -319,7 +390,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
             
             return compareDescription(descriptionElement as HTMLElement, id).then(({ isOriginal, description }) => {
                 // Check again after compareDescription
-                const stillCurrentVideoId = extractVideoIdFromWatchFlexy();
+                const stillCurrentVideoId = extractVideoIdFromUrl(window.location.href);
                 if (stillCurrentVideoId !== id) {
                     descriptionLog(`Aborting after compareDescription: video changed from ${id} to ${stillCurrentVideoId}`);
                     return null;
@@ -329,7 +400,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
                     // Only refresh if not original
                     return refreshDescription(id).then(() => {
                         // Final check before setting up observers
-                        const finalVideoId = extractVideoIdFromWatchFlexy();
+                        const finalVideoId = extractVideoIdFromUrl(window.location.href);
                         if (finalVideoId !== id) {
                             descriptionLog(`Aborting observer setup: video changed from ${id} to ${finalVideoId}`);
                             return null;
@@ -349,9 +420,9 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
         });
     } else {
         // If not found, wait for it
-        return waitForElement('#description-inline-expander').then(() => {
+        return waitForElement(descriptionSelector).then(() => {
             // Check if video ID is still current after waiting
-            const currentVideoId = extractVideoIdFromWatchFlexy();
+            const currentVideoId = extractVideoIdFromUrl(window.location.href);
             if (currentVideoId !== id) {
                 descriptionLog(`Aborting processDescriptionForVideoId (element wait): video changed from ${id} to ${currentVideoId}`);
                 return null;
@@ -359,7 +430,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
             
             return refreshDescription(id).then(() => {
                 // Final check before setting up observers
-                const finalVideoId = extractVideoIdFromWatchFlexy();
+                const finalVideoId = extractVideoIdFromUrl(window.location.href);
                 if (finalVideoId !== id) {
                     descriptionLog(`Aborting observer setup (after wait): video changed from ${id} to ${finalVideoId}`);
                     return null;
@@ -377,38 +448,87 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
 
 
 function descriptionExpandObserver(id: string): void {
-    // Observer for description expansion/collapse
-    waitForElement('#description-inline-expander').then((descriptionElement) => {
-        //descriptionLog('Setting up expand/collapse observer');
-        descriptionExpansionObserver = new MutationObserver(async (mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'is-expanded') {
-                    descriptionLog('Description expanded/collapsed');
-                    const cachedDescription = descriptionCache.getDescription(id);
-                    if (cachedDescription) {
-                        //descriptionLog('Using cached description');
-                        updateDescriptionElement(descriptionElement as HTMLElement, cachedDescription, id);
-                    } else {
-                        const description = await fetchOriginalDescription();
-                        if (description) {
-                            updateDescriptionElement(descriptionElement as HTMLElement, description, id);
+    const isMobile = isMobileSite();
+    
+    if (isMobile) {
+        // Mobile: observe collapsible-string for expand/collapse
+        const descriptionSelector = 'ytm-expandable-video-description-body-renderer';
+        
+        waitForElement(descriptionSelector).then((descriptionElement) => {
+            const collapsibleString = descriptionElement.querySelector('collapsible-string');
+            
+            if (!collapsibleString) {
+                descriptionLog('Mobile collapsible-string not found');
+                return;
+            }
+            
+            //descriptionLog('Setting up mobile expand/collapse observer');
+            descriptionExpansionObserver = new MutationObserver(async (mutations) => {
+                for (const mutation of mutations) {
+                    // On mobile, YouTube toggles classes on collapsible-string when expanding
+                    if (mutation.type === 'attributes' && 
+                        (mutation.attributeName === 'class' || mutation.attributeName === 'aria-expanded')) {
+                        descriptionLog('Mobile description expanded/collapsed');
+                        const cachedDescription = descriptionCache.getDescription(id);
+                        if (cachedDescription) {
+                            //descriptionLog('Using cached description');
+                            updateDescriptionElement(descriptionElement as HTMLElement, cachedDescription, id);
+                        } else {
+                            const description = await fetchOriginalDescription();
+                            if (description) {
+                                updateDescriptionElement(descriptionElement as HTMLElement, description, id);
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        descriptionExpansionObserver.observe(descriptionElement, {
-            attributes: true,
-            attributeFilter: ['is-expanded']
+            descriptionExpansionObserver.observe(collapsibleString, {
+                attributes: true,
+                attributeFilter: ['class', 'aria-expanded']
+            });
         });
-    });
+        
+    } else {
+        // Desktop: existing logic
+        waitForElement('#description-inline-expander').then((descriptionElement) => {
+            //descriptionLog('Setting up desktop expand/collapse observer');
+            descriptionExpansionObserver = new MutationObserver(async (mutations) => {
+                for (const mutation of mutations) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'is-expanded') {
+                        descriptionLog('Desktop description expanded/collapsed');
+                        const cachedDescription = descriptionCache.getDescription(id);
+                        if (cachedDescription) {
+                            //descriptionLog('Using cached description');
+                            updateDescriptionElement(descriptionElement as HTMLElement, cachedDescription, id);
+                        } else {
+                            const description = await fetchOriginalDescription();
+                            if (description) {
+                                updateDescriptionElement(descriptionElement as HTMLElement, description, id);
+                            }
+                        }
+                    }
+                }
+            });
+
+            descriptionExpansionObserver.observe(descriptionElement, {
+                attributes: true,
+                attributeFilter: ['is-expanded']
+            });
+        });
+    }
 }
 
 export function setupDescriptionContentObserver(id: string) {
     // Cleanup existing observer avoiding infinite loops
     cleanupDescriptionContentObserver();
-    const descriptionElement = document.querySelector('#description-inline-expander');
+    
+    const isMobile = isMobileSite();
+    const descriptionSelector = isMobile 
+        ? 'ytm-expandable-video-description-body-renderer' 
+        : '#description-inline-expander';
+    
+    const descriptionElement = document.querySelector(descriptionSelector);
     if (!descriptionElement) {
         descriptionLog('Description element not found, skipping content observer setup');
         return;

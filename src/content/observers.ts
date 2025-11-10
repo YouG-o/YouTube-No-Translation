@@ -35,6 +35,10 @@ import { processChannelVideoDescriptions } from './channel/ChannelVideoDescripti
 import { refreshInfoCardsTitles, cleanupInfoCards } from './titles/infoCards';
 import { setupInfoCardTeasersObserver, cleanupInfoCardTeasersObserver } from  './titles/infoCardsTeasers';
 import { cleanupThumbnailObservers } from './Thumbnails/browsingThumbnails';
+import { setupMobilePanelObserver, cleanupMobilePanelObserver } from './Mobile/mobilePanel';
+
+
+const isMobile = isMobileSite();
 
 // MAIN OBSERVERS -----------------------------------------------------------
 let videoPlayerListener: ((e: Event) => void) | null = null;
@@ -293,8 +297,6 @@ let playlistDebounceTimer: number | null = null;
 
 async function pageVideosObserver() {
     cleanupPageVideosObserver();
-
-    const isMobile = isMobileSite();
     
     let pageName: string = '';
     if (window.location.pathname === '/') {
@@ -404,7 +406,6 @@ function handleGridMutationDebounced(pageName: string) {
 function recommendedVideosObserver() {
     cleanupRecommendedVideosObserver();
 
-    const isMobile = isMobileSite();
     const containerSelector = isMobile 
         ? 'ytm-item-section-renderer[section-identifier="related-items"]' 
         : '#secondary-inner ytd-watch-next-secondary-results-renderer #items';
@@ -475,7 +476,6 @@ function recommendedVideosObserver() {
 function searchResultsObserver() {
     cleanupSearchResultsVideosObserver();
 
-    const isMobile = isMobileSite();
     const containerSelector = isMobile 
         ? 'ytm-section-list-renderer' 
         : 'ytd-section-list-renderer #contents';
@@ -752,8 +752,6 @@ const URL_CHANGE_DEBOUNCE_MS = 250;
 export function setupUrlObserver() {
     coreLog('Setting up URL observer');
 
-    const isMobile = isMobileSite();
-
     // --- Standard History API monitoring
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
@@ -844,6 +842,7 @@ function observersCleanup() {
     cleanupInfoCardTeasersObserver();
     
     cleanupThumbnailObservers();
+    cleanupMobilePanelObserver();
 }
 
 function handleUrlChange() {
@@ -970,30 +969,44 @@ function handleUrlChangeInternal() {
             break;
         case '/watch': // --- Video page
             coreLog(`[URL] Detected video page`);
-            // Check if we're on a video with a playlist
-            if (currentSettings?.titleTranslation && window.location.search.includes('list=')) {
-                coreLog(`[URL] Detected video page with playlist`);
-                playlistVideosObserver();
+            if (!isMobile) {
+                // Check if we're on a video with a playlist
+                if (currentSettings?.titleTranslation && window.location.search.includes('list=')) {
+                    coreLog(`[URL] Detected video page with playlist`);
+                    playlistVideosObserver();
+                }
+                if (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation) {
+                    setupMainVideoObserver();
+                };
+                currentSettings?.descriptionTranslation && setupTimestampClickObserver();
+                // Handle fullscreen titles (embed titles are specific to /watch pages)
+                if (currentSettings?.titleTranslation) {
+                    refreshEmbedTitle();
+                    //Delayed call as backup (immediat call doesn't always work)
+                    setTimeout(() => refreshEmbedTitle(), 1000);
+                    setTimeout(() => refreshEmbedTitle(), 3000);
+                }
+            } else {
+                if (currentSettings?.titleTranslation) {
+                    waitForElement('ytm-slim-video-information-renderer').then(() => {
+                        refreshMainTitle();
+                    });
+                }
             }
-            if (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation) {
-                setupMainVideoObserver();
-            };
-
             if (currentSettings?.titleTranslation) {
                 recommendedVideosObserver();
-                setupEndScreenObserver();
-                setupPostVideoObserver();
-                refreshInfoCardsTitles();
-                setupInfoCardTeasersObserver();
+                if (!isMobile) {
+                    setupEndScreenObserver();
+                    setupPostVideoObserver();
+                    refreshInfoCardsTitles();
+                    setupInfoCardTeasersObserver();
+                }
             }
-            currentSettings?.descriptionTranslation && setupTimestampClickObserver();
             
-            // Handle fullscreen titles (embed titles are specific to /watch pages)
-            if (currentSettings?.titleTranslation) {
-                refreshEmbedTitle();
-                //Delayed call as backup (immediat call doesn't always work)
-                setTimeout(() => refreshEmbedTitle(), 1000);
-                setTimeout(() => refreshEmbedTitle(), 3000);
+
+            // Setup mobile panel observer on all pages          
+            if (isMobile && (currentSettings?.titleTranslation || currentSettings?.descriptionTranslation)) {
+                setupMobilePanelObserver();
             }
             break;
         case '/embed': // --- Embed video page
@@ -1020,8 +1033,10 @@ export function setupVisibilityChangeListener(): void {
                 refreshMiniplayerTitle();
                 if (window.location.pathname === '/watch') {
                     refreshMainTitle();
-                    refreshEndScreenTitles();
-                    refreshInfoCardsTitles();
+                    if (!isMobile) {
+                        refreshEndScreenTitles();
+                        refreshInfoCardsTitles();
+                    }
                 }
             }
         }
