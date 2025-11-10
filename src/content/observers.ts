@@ -404,42 +404,70 @@ function handleGridMutationDebounced(pageName: string) {
 function recommendedVideosObserver() {
     cleanupRecommendedVideosObserver();
 
-    // Observer for recommended videos (side bar)
-    waitForElement('#secondary-inner ytd-watch-next-secondary-results-renderer #items').then((contents) => {
-        browsingTitlesLog('Setting up recommended videos observer');
+    const isMobile = isMobileSite();
+    const containerSelector = isMobile 
+        ? 'ytm-item-section-renderer[section-identifier="related-items"]' 
+        : '#secondary-inner ytd-watch-next-secondary-results-renderer #items';
+
+    waitForElement(containerSelector).then((contents) => {
+        browsingTitlesLog(`Setting up recommended videos observer (${isMobile ? 'mobile' : 'desktop'})`);
         
-        waitForFilledVideoTitles().then(() => {
-            refreshBrowsingVideos();
-        });
+        refreshBrowsingVideos();
         
-        // Check if we need to observe deeper (when logged in)
-        const itemSection = contents.querySelector('ytd-item-section-renderer');
-        const targetElement = itemSection ? itemSection : contents;
-        
-        browsingTitlesLog(`Observing: ${targetElement === contents ? '#items directly' : 'ytd-item-section-renderer inside #items'}`);
-        
-        recommendedObserver = new MutationObserver(() => {
-            if (recommendedDebounceTimer !== null) {
-                clearTimeout(recommendedDebounceTimer);
-            }
-            recommendedDebounceTimer = window.setTimeout(() => {
-                browsingTitlesLog('Recommended videos mutation debounced (side bar)');
-                refreshBrowsingVideos().then(() => {
-                    setTimeout(() => {
-                        refreshBrowsingVideos();
-                    }, 1000);
-                    setTimeout(() => {
-                        refreshBrowsingVideos();
-                    }, 2000);
-                });
-                recommendedDebounceTimer = null;
-            }, OBSERVERS_DEBOUNCE_MS);
-        });
-        
-        recommendedObserver.observe(targetElement, {
-            childList: true,
-            subtree: true
-        });
+        if (isMobile) {
+            // Mobile: observe ytm-item-section-renderer directly
+            recommendedObserver = new MutationObserver(() => {
+                if (recommendedDebounceTimer !== null) {
+                    clearTimeout(recommendedDebounceTimer);
+                }
+                recommendedDebounceTimer = window.setTimeout(() => {
+                    browsingTitlesLog('Recommended videos mutation debounced (mobile)');
+                    refreshBrowsingVideos().then(() => {
+                        setTimeout(() => {
+                            refreshBrowsingVideos();
+                        }, 1000);
+                        setTimeout(() => {
+                            refreshBrowsingVideos();
+                        }, 2000);
+                    });
+                    recommendedDebounceTimer = null;
+                }, OBSERVERS_DEBOUNCE_MS);
+            });
+            
+            recommendedObserver.observe(contents, {
+                childList: true,
+                subtree: true
+            });
+        } else {
+            // Desktop: check if we need to observe deeper (when logged in)
+            const itemSection = contents.querySelector('ytd-item-section-renderer');
+            const targetElement = itemSection ? itemSection : contents;
+            
+            browsingTitlesLog(`Observing: ${targetElement === contents ? '#items directly' : 'ytd-item-section-renderer inside #items'}`);
+            
+            recommendedObserver = new MutationObserver(() => {
+                if (recommendedDebounceTimer !== null) {
+                    clearTimeout(recommendedDebounceTimer);
+                }
+                recommendedDebounceTimer = window.setTimeout(() => {
+                    browsingTitlesLog('Recommended videos mutation debounced (desktop)');
+                    refreshBrowsingVideos().then(() => {
+                        setTimeout(() => {
+                            refreshBrowsingVideos();
+                        }, 1000);
+                        setTimeout(() => {
+                            refreshBrowsingVideos();
+                        }, 2000);
+                    });
+                    recommendedDebounceTimer = null;
+                }, OBSERVERS_DEBOUNCE_MS);
+            });
+            
+            recommendedObserver.observe(targetElement, {
+                childList: true,
+                subtree: true
+            });
+        }
     });
 };
 
