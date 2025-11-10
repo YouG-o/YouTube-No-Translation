@@ -492,7 +492,7 @@ export async function refreshBrowsingVideos(): Promise<void> {
         );
 
         // Batch process descriptions for all translated titles
-        if (translatedTitleElements.length > 0) {
+        if (translatedTitleElements.length > 0 && !isMobile) {
             await batchProcessSearchDescriptions(translatedTitleElements, translatedVideoIds);
         }
 

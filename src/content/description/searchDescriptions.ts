@@ -11,6 +11,8 @@ import { descriptionLog, descriptionErrorLog } from '../../utils/logger';
 import { currentSettings } from '../index';
 import { isSearchResultsPage } from '../../utils/navigation';
 import { isYouTubeDataAPIEnabled } from '../../utils/utils';
+import { isMobileSite } from '../../utils/navigation';
+
 import { descriptionCache } from './index';
 
 
@@ -227,6 +229,7 @@ export function updateSearchDescriptionElement(element: HTMLElement, description
 export function shouldProcessSearchDescriptionElement(isTranslated: boolean): boolean {
     if (!currentSettings) return false;
     return isSearchResultsPage() &&
+        !isMobileSite() &&
         isTranslated &&
         currentSettings.descriptionTranslation
 }
