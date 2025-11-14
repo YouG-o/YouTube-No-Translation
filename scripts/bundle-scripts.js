@@ -1,31 +1,17 @@
 const esbuild = require('esbuild');
 const fs = require('fs');
 const path = require('path');
+const { contentScriptEntries } = require('./content-scripts-config');
 
 const srcDir = path.join(__dirname, '../src/content');
 const outDir = path.join(__dirname, '../dist/content/scripts');
-
-const scripts = [
-  'scripts/getChannelIdScript.js',
-  'titles/mainTitleScript.js',
-  'titles/getIdFromMiniPlayer.js',
-  'titles/TitlesInnerTube.js',
-  'audio/audioScript.js',
-  'description/MainDescriptionScript.js',
-  'description/timestampScript.js',
-  'description/searchDescriptionInnerTube.js',
-  'subtitles/subtitlesScript.js',
-  'channel/channelNameScript.js',
-  'channel/ChannelNameInnerTubeScript.js',
-  'channel/ChannelDescriptionInnerTube.js'
-];
 
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
 }
 
 Promise.all(
-  scripts.map(async (entry) => {
+  contentScriptEntries.map(async (entry) => {
     let relPath, outFile;
     if (typeof entry === 'string') {
       relPath = entry;
