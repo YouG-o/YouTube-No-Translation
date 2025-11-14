@@ -16,7 +16,6 @@ const contentScriptEntries = [
   'description/MainDescriptionScript.js',
   'description/timestampScript.js',
   'description/searchDescriptionInnerTube.js',
-  'description/DescriptionGuardScript.js',
   'subtitles/subtitlesScript.js',
   'channel/channelNameScript.js',
   'channel/ChannelNameInnerTubeScript.js',
