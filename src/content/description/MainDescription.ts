@@ -190,6 +190,9 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
         descriptionLog(`Aborting description update: video changed from ${id} to ${currentVideoId}`);
         return;
     }
+
+    // Inject the guard script to protect the description DOM from YouTube mutations
+    injectDescriptionGuardScript('enable');
     
     // Find the text containers
     const attributedString = element.querySelector('yt-attributed-string');
@@ -503,4 +506,34 @@ export function cleanupDescriptionObservers(): void {
     descriptionExpansionObserver = null;
 
     cleanupDescriptionContentObserver();
+
+    // Disable the description guard in the page context and restore original removeChild
+    injectDescriptionGuardScript('disable');
+}
+
+/**
+ * Injects the DescriptionGuardScript into the page context.
+ * This script runs in the main world and can override Node.prototype.removeChild
+ * in a way that affects YouTube's own JavaScript.
+ *
+ * @param mode "enable" to install the guard, "disable" to restore original behavior.
+ */
+function injectDescriptionGuardScript(mode: 'enable' | 'disable' = 'enable'): void {
+    try {
+        // We do not want to prevent multiple injections for different modes,
+        // but avoid injecting the same mode multiple times unnecessarily.
+        const selector = `script[data-ynt-description-guard="true"][data-ynt-description-guard-mode="${mode}"]`;
+        const existingScript = document.querySelector<HTMLScriptElement>(selector);
+        if (existingScript) {
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = browser.runtime.getURL('dist/content/scripts/DescriptionGuardScript.js');
+        script.setAttribute('data-ynt-description-guard', 'true');
+        script.setAttribute('data-ynt-description-guard-mode', mode);
+        document.documentElement.appendChild(script);
+    } catch (error) {
+        descriptionErrorLog(`Failed to inject DescriptionGuardScript (${mode}): ${error}`);
+    }
 }
