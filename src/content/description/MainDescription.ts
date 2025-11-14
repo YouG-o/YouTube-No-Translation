@@ -602,7 +602,7 @@ export function setupDescriptionContentObserver(id: string) {
                         characterData: true
                     });
                 }
-            }, 1); // 1ms debounce
+            }, 50); // 50ms debounce
         });
         
         // Start observing - ensure descriptionElement isn't null
