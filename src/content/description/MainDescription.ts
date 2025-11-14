@@ -425,6 +425,9 @@ export function setupDescriptionContentObserver(id: string) {
     // If we have a cached description, set up the observer
     setupObserver();
     
+    // Debounce timer
+    let debounceTimer: number | null = null;
+    
     // Local function to avoid duplicating the observer setup code
     function setupObserver() {
         //descriptionLog('Setting up description content observer');
@@ -436,8 +439,15 @@ export function setupDescriptionContentObserver(id: string) {
                 return;
             }
             
-            // Add a small delay to allow YouTube to finish its modifications
-            setTimeout(() => {
+            // Clear previous debounce timer
+            if (debounceTimer !== null) {
+                clearTimeout(debounceTimer);
+            }
+            
+            // Debounce: wait for mutations to settle before processing
+            debounceTimer = window.setTimeout(() => {
+                debounceTimer = null;
+                
                 // Make sure descriptionElement still exists in this closure
                 if (!descriptionElement) return;
                 
@@ -450,11 +460,6 @@ export function setupDescriptionContentObserver(id: string) {
                 // Consider texts similar if they match at least 75%
                 const isOriginal = similarity >= 0.75;
                 if (isOriginal) return;
-                
-                
-                //descriptionLog(`currentText: ${normalizeText(currentText, true)}`);
-                //descriptionLog(`cachedDescription: ${normalizeText(cachedDescription, true)}`);
-                //descriptionLog(`Similarity: ${(similarity * 100).toFixed(1)}%`);
                 
                 descriptionLog('Description content changed by YouTube, restoring original');
                 
@@ -472,7 +477,7 @@ export function setupDescriptionContentObserver(id: string) {
                         characterData: true
                     });
                 }
-            }, 50); // 50ms delay
+            }, 50); // 50ms debounce
         });
         
         // Start observing - ensure descriptionElement isn't null
