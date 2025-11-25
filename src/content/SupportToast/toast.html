@@ -7,31 +7,24 @@
     </button>
     <div style="display: flex; align-items: center; gap: 10px;">
         <img src="" alt="Extension icon" style="width: 28px; height: 28px; border-radius: 6px;">
-        <span style="font-size: 1em; font-weight: 600;">
-            Thanks for using YouTube No Translation!
-        </span>
+        <span style="font-size: 1em; font-weight: 600;" data-i18n="toast_title"></span>
     </div>
-    <div style="font-size: 0.9em;">
-        I maintain and improve this project on my own time.
-        <br>
-        If you’d like to support future updates, you can do so on Ko-fi — your help truly makes a difference. 💌
-    </div>
+    <div style="font-size: 0.9em;" data-i18n="toast_message"></div>
     <div style="display: flex; width: 100%; justify-content: center;">
         <button id="ynt-ko-fi-btn"
-                style="background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;">
-            <img id="ynt-ko-fi-img" src="" alt="Support me on Ko-fi" title="Support me on Ko-fi" style="height: 48px;">
+                style="background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;"
+                data-i18n-title="toast_kofi_title">
+            <img id="ynt-ko-fi-img" src="" data-i18n-alt="toast_kofi_alt" style="height: 48px;">
         </button>
     </div>
     <div style="display: flex; gap: 8px; width: 100%; justify-content: flex-start;">
         <button id="ynt-remind-btn"
                 style="flex: 1; background: #4b5563; color: #fff; border: none; border-radius: 8px; padding: 7px 0; font-size: 1em; font-family: inherit; cursor: pointer; margin: 0; font-weight: 500; transition: background 0.15s, color 0.15s;"
-                title="You’ll get another reminder next month">
-            Remind me next month
-        </button>
+                data-i18n="toast_remindButton"
+                data-i18n-title="toast_remindButton_title"></button>
         <button class="ynt-dismiss-btn"
                 style="flex: 1; background: #991b1b; color: #fff; border: none; border-radius: 8px; padding: 7px 0; font-size: 1em; font-family: inherit; cursor: pointer; margin: 0; font-weight: 500; transition: background 0.15s, color 0.15s;"
-                title="You won't see this message again">
-            No thanks
-        </button>
+                data-i18n="toast_dismissButton"
+                data-i18n-title="toast_dismissButton_title"></button>
     </div>
 </div>

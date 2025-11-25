@@ -1,9 +1,10 @@
 import { ExtensionSettings } from '../../types/types';
 import { isFirefox, isEdge, isChromium } from '../../utils/browser';
+import { getMessage, localizeDocument } from '../../utils/i18n';
 
 const TOAST_ID = 'ynt-support-toast';
 const REMIND_DELAY = 30;
-const INITIAL_DELAY = 7;
+const INITIAL_DELAY = 0;
 let toastStorageListener: ((changes: any, area: string) => void) | null = null;
 
 // Store URLs
@@ -35,13 +36,13 @@ function getReviewUrl(): string | null {
     return null;
 }
 
-function getStoreName(): string | null {
+function getStoreNameKey(): string | null {
     if (isFirefox()) {
-        return 'Mozilla Add-ons';
+        return 'toast_storeName_firefox';
     } else if (isEdge()) {
-        return 'Microsoft Store';
+        return 'toast_storeName_edge';
     } else if (isChromium()) {
-        return 'Chrome Web Store';
+        return 'toast_storeName_chrome';
     }
     return null;
 }
@@ -50,7 +51,7 @@ function injectToast() {
     if (document.getElementById(TOAST_ID)) return;
 
     const reviewUrl = getReviewUrl();
-    const storeName = getStoreName();
+    const storeNameKey = getStoreNameKey();
 
     fetch(browser.runtime.getURL('dist/content/toast.html'))
         .then(res => {
@@ -64,6 +65,9 @@ function injectToast() {
             const toast = doc.body.firstElementChild;
             if (toast) {
                 document.body.appendChild(toast);
+
+                // Localize all data-i18n attributes
+                localizeDocument();
 
                 // Add storage listener only when toast is visible
                 if (toastStorageListener) {
@@ -91,23 +95,23 @@ function injectToast() {
             }
 
             // Inject review link section if supported browser
-            if (reviewUrl && storeName) {
+            if (reviewUrl && storeNameKey) {
                 const koFiContainer = document.querySelector('#ynt-support-toast > div:nth-child(4)'); // Ko-fi button container
                 if (koFiContainer) {
                     const reviewSection = document.createElement('div');
                     reviewSection.style.cssText = 'font-size: 0.85em; text-align: center; color: #d1d5db; width: 100%;';
                     
-                    // Build text content using DOM API instead of innerHTML
-                    const textBefore = document.createTextNode("Can't afford a tip? You can still support me by leaving a 5-star review on ");
+                    // Build text content using i18n
+                    const textBefore = document.createTextNode(getMessage('toast_review_prefix'));
                     
                     const reviewLink = document.createElement('a');
                     reviewLink.href = reviewUrl;
                     reviewLink.target = '_blank';
                     reviewLink.rel = 'noopener noreferrer';
                     reviewLink.style.cssText = 'color: #60a5fa; text-decoration: none; font-weight: 500;';
-                    reviewLink.textContent = storeName;
+                    reviewLink.textContent = getMessage(storeNameKey);
                     
-                    const textAfter = document.createTextNode('!');
+                    const textAfter = document.createTextNode(getMessage('toast_review_suffix'));
                     
                     reviewSection.appendChild(textBefore);
                     reviewSection.appendChild(reviewLink);

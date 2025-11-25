@@ -292,5 +292,58 @@
   "language_vi": {
     "message": "Vietnamese",
     "description": "Language name: Vietnamese"
+  },
+  
+  "toast_title": {
+    "message": "Thanks for using YouTube No Translation!",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "I maintain and improve this project on my own time. If you'd like to support future updates, you can do so on Ko-fi — your help truly makes a difference. 💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "Support me on Ko-fi",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "Support me on Ko-fi",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "Remind me next month",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "You'll get another reminder next month",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "No thanks",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "You won't see this message again",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "Can't afford a tip? You can still support me by leaving a 5-star review on ",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": "!",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome Web Store",
+    "description": "Chrome store name"
   }
 }
