@@ -162,10 +162,12 @@ if (isWelcome) {
     if (pageTitle) {
         // Keep the image and change only the text part
         const imgElement = pageTitle.querySelector('img');
+        const extensionName = browser.runtime.getManifest().name;
+        
         if (imgElement) {
             pageTitle.innerHTML = '';
             pageTitle.appendChild(imgElement);
-            pageTitle.appendChild(document.createTextNode(`Welcome to ${browser.runtime.getManifest().name}`));
+            pageTitle.appendChild(document.createTextNode(getMessage('settings_welcome_titleComplete', extensionName)));
         }
     }
     

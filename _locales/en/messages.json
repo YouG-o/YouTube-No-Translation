@@ -173,6 +173,16 @@
     "message": "Welcome to",
     "description": "Welcome page title prefix"
   },
+  "settings_welcome_titleComplete": {
+    "message": "Welcome to $EXTENSION_NAME$",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
   "settings_welcome_message": {
     "message": "Thanks for installing YouTube No Translation! Here you can configure how the extension behaves.",
     "description": "Welcome page message"
