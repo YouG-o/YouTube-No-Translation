@@ -1,0 +1,359 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Залишає контент YouTube оригінальною мовою: заголовки, описи, аудіо... Більше ніяких небажаних перекладів.",
+    "description": "Description of the extension"
+  },
+  
+  "popup_createdBy": {
+    "message": "Розроблено YouGo",
+    "description": "Footer credit text"
+  },
+  
+  "popup_originalTitles": {
+    "message": "Оригінальні заголовки",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "Показує оригінальні заголовки: Основні заголовки відео та перегляду, сповіщення, канали (на головній сторінці відео).",
+    "description": "Tooltip for original titles feature"
+  },
+  
+  "popup_audioTracks": {
+    "message": "Звукові доріжки",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "Перемикає на бажану звукову доріжку. На жаль, поки що ця функція недоступна в мобільній версії YouTube (m.youtube.com).",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "Лише на ПК",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "Ця функція доступна лише на браузерах комп'ютера",
+    "description": "Title attribute for desktop-only badge"
+  },
+  
+  "popup_originalDescriptions": {
+    "message": "Оригінальні описи",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "Замінює перекладений опис оригінальним.",
+    "description": "Tooltip for original descriptions feature"
+  },
+  
+  "popup_originalThumbnails": {
+    "message": "Оригінальні мініатюри",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "Замінює перекладені мініатюри відео оригінальними при перегляді.",
+    "description": "Tooltip for original thumbnails feature"
+  },
+  
+  "popup_subtitles": {
+    "message": "Субтитри",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "Відображає субтитри бажаною мовою (якщо доступно). Якщо їх немає, субтитри будуть вимкнені. Автоматично згенеровані субтитри ігноруються.",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "Увімкнути автоматично згенеровані субтитри",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "Якщо цю функцію ввімкнено, а основні субтитри недоступні вашою бажаною мовою, використовуватимуться автоматично згенеровані (ASR) субтитри із перекладом, якщо потрібен.",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+  
+  "popup_extraSettings": {
+    "message": "Додаткові налаштування",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "API даних YouTube версії 3 (ПОТРІБЕН КЛЮЧ API)",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "Використовує API даних YouTube версії 3, щоб отримати оригінальний заголовок та опис каналу, а також резервний варіант, якщо інші методи не спрацюють. Дуже надійно, але вимагає власного ключа API. Ваш ключ зберігається локально, тільки ви маєте до нього доступ.",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "Введіть свій ключ API...",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "Отримайте свій безкоштовний ключ API тут",
+    "description": "Link text for getting API key"
+  },
+  
+  "popup_clearCache": {
+    "message": "Очистити кеш",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "Очистити кешовані заголовки та описи",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "Очищення...",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "Очищено! ($TABS$ вкладок)",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "Кеш очищено!",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "Помилка",
+    "description": "Button text on error"
+  },
+  
+  "popup_reportIssue": {
+    "message": "Повідомити про проблему",
+    "description": "Link text for reporting issues"
+  },
+  
+  "popup_kofi_alt": {
+    "message": "Підтримайте мене на Ko-fi",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "Підтримайте мене на Ko-fi",
+    "description": "Title attribute for Ko-fi link"
+  },
+  
+  "settings_audioTracks": {
+    "message": "Звукові доріжки",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "Завжди перемикає на бажану звукову доріжку. На жаль, поки що ця функція недоступна в мобільній версії YouTube (m.youtube.com).",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "Якщо опис перекладений, він буде замінений оригінальним описом.",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "Відображає субтитри бажаною мовою, якщо доступно. Якщо їх немає, субтитри будуть вимкнені. Автоматично згенеровані субтитри за замовчуванням ігноруються.",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "API даних YouTube версії 3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "Керування кешем",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "Очищає кешовані заголовки та описи. Використовуйте це, якщо у вас відображається неправильний контент або ви хочете почати заново.",
+    "description": "Tooltip for cache management"
+  },
+  
+  "settings_welcome_title": {
+    "message": "Ласкаво просимо до",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_titleComplete": {
+    "message": "Ласкаво просимо до $EXTENSION_NAME$",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
+  "settings_welcome_message": {
+    "message": "Дякуємо за встановлення YouTube No Translation! Тут ви можете налаштувати поведінку розширення.",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "Важливо:",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "Щоб розширення працювало на вкладках YouTube, які вже були відкриті до встановлення, необхідно перезавантажити ці вкладки.",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "Перезавантажити всі активні вкладки YouTube",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "Перезавантажено $COUNT$ активну(і) вкладку(и)!",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "Помилка при перезавантаженні вкладок",
+    "description": "Button text on reload error"
+  },
+  
+  "settings_footer_support": {
+    "message": "Це розширення — одноосібний проєкт, створений із захопленням. Ваша підтримка допомагає мені продовжувати його вдосконалювати — дякую! 💛",
+    "description": "Footer support message in settings page"
+  },
+  
+  "language_original": {
+    "message": "Оригінал",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "Завжди вимкнені",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "Англійська",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "Французька",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "Іспанська",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "Арабська",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "Китайська",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "Нідерландська",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "Німецька",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "Іврит",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "Хінді",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "Індонезійська",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "Італійська",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "Японська",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "Корейська",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "Польська",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "Португальська",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "Російська",
+    "description": "Language name: Russian"
+  },
+  "language_tr": {
+    "message": "Турецька",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "Українська",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "В'єтнамська",
+    "description": "Language name: Vietnamese"
+  },
+  
+  "toast_title": {
+    "message": "Дякуємо за використання YouTube No Translation!",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "Я підтримую та вдосконалюю цей проєкт у свій вільний час. Якщо ви хочете підтримати майбутні оновлення, ви можете зробити це на Ko-fi — ваша допомога справді має значення. 💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "Підтримайте мене на Ko-fi",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "Підтримайте мене на Ko-fi",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "Нагадати наступного місяця",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "Ви отримаєте ще одне нагадування наступного місяця",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "Ні, дякую",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "Ви більше не побачите це повідомлення",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "Не можете дати донат? Ви все одно можете підтримати мене, залишивши 5-зірковий відгук на ",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": "!",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome Web Store",
+    "description": "Chrome store name"
+  }
+}
