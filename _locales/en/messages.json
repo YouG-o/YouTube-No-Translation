@@ -1,0 +1,296 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Keep YouTube content in its original language: titles, descriptions, audio... No more unwanted translations.",
+    "description": "Description of the extension"
+  },
+  
+  "popup_createdBy": {
+    "message": "Created by YouGo",
+    "description": "Footer credit text"
+  },
+  
+  "popup_originalTitles": {
+    "message": "Original Titles",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "Display original titles: Main video and browsing titles, notifications, channels (on main video page).",
+    "description": "Tooltip for original titles feature"
+  },
+  
+  "popup_audioTracks": {
+    "message": "Audio tracks",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "Switch to preferred audio track. Unfortunately, this feature is not available on the mobile version of YouTube for now (m.youtube.com).",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "Desktop only",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "This feature is only available on desktop browsers",
+    "description": "Title attribute for desktop-only badge"
+  },
+  
+  "popup_originalDescriptions": {
+    "message": "Original Descriptions",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "Replace the translated description with the original one.",
+    "description": "Tooltip for original descriptions feature"
+  },
+  
+  "popup_originalThumbnails": {
+    "message": "Original Thumbnails",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "Replace translated thumbnails with original ones when browsing videos.",
+    "description": "Tooltip for original thumbnails feature"
+  },
+  
+  "popup_subtitles": {
+    "message": "Subtitles",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "Display subtitles in your preferred language (if available). If not, subtitles will be disabled. Auto generated subtitles are ignored.",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "Enable Auto Generated subtitles",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "When enabled, if no manual subtitles are available in your preferred language, auto-generated (ASR) subtitles will be used instead, with translation if needed.",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+  
+  "popup_extraSettings": {
+    "message": "Extra Settings",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3 (API KEY NEEDED)",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "Use YouTube Data API v3 to get original channel name & description and a fallback if other methods fails. Very reliable but requires your own API key. Your key is stored locally, only you can access it.",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "Enter your API key...",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "Get your free API key here",
+    "description": "Link text for getting API key"
+  },
+  
+  "popup_clearCache": {
+    "message": "Clear Cache",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "Clear cached titles and descriptions",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "Clearing...",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "Cleared! ($TABS$ tabs)",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "Cache Cleared!",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "Error",
+    "description": "Button text on error"
+  },
+  
+  "popup_reportIssue": {
+    "message": "Report an issue",
+    "description": "Link text for reporting issues"
+  },
+  
+  "popup_kofi_alt": {
+    "message": "Support me on Ko-fi",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "Support me on Ko-fi",
+    "description": "Title attribute for Ko-fi link"
+  },
+  
+  "settings_audioTracks": {
+    "message": "Audio Tracks",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "Always switch to preferred audio track. Unfortunately, this feature is not available on the mobile version of YouTube for now (m.youtube.com).",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "If description is translated, it will be replaced with the original description.",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "Display subtitles in your preferred language if available. If not, subtitles will be disabled. Auto generated subtitles are ignored by default.",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "Cache Management",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "Clear cached titles and descriptions. Use this if you're experiencing incorrect content or want to start fresh.",
+    "description": "Tooltip for cache management"
+  },
+  
+  "settings_welcome_title": {
+    "message": "Welcome to",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_message": {
+    "message": "Thanks for installing YouTube No Translation! Here you can configure how the extension behaves.",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "Important:",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "For the extension to work on YouTube tabs that were already open before installation, you must reload those tabs.",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "Reload all active YouTube tabs",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "Reloaded $COUNT$ active tab(s)!",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "Error reloading tabs",
+    "description": "Button text on reload error"
+  },
+  
+  "settings_footer_support": {
+    "message": "This extension is a one-person project made with passion. Your support helps me keep improving it — thank you! 💛",
+    "description": "Footer support message in settings page"
+  },
+  
+  "language_original": {
+    "message": "Original",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "Always Disabled",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "English",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "French",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "Spanish",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "Arabic",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "Chinese",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "Dutch",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "German",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "Hebrew",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "Hindi",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "Indonesian",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "Italian",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "Japanese",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "Korean",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "Polish",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "Portuguese",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "Russian",
+    "description": "Language name: Russian"
+  },
+  "language_tr": {
+    "message": "Turkish",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "Ukrainian",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "Vietnamese",
+    "description": "Language name: Vietnamese"
+  }
+}

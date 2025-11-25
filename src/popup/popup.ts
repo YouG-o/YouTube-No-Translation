@@ -13,6 +13,7 @@ import { sanitizeSettings } from "../utils/settings";
 import { coreLog, coreErrorLog } from "../utils/logger";
 import { isSafari } from "../utils/browser";
 import { displayExtensionVersion, displayExtensionName } from "../utils/display";
+import { getMessage, localizeDocument } from "../utils/i18n";
 
 
 const titleToggle = document.getElementById('titleTranslation') as HTMLInputElement;
@@ -62,6 +63,9 @@ function updateAsrToggleVisibility() {
 
 // Initialize toggle states from storage
 document.addEventListener('DOMContentLoaded', async () => {
+    // Localize all static text
+    localizeDocument();
+    
     displayExtensionVersion();
     displayExtensionName();
     try {
@@ -428,7 +432,7 @@ clearCacheBtn.addEventListener('click', async () => {
     
     try {
         clearCacheBtn.disabled = true;
-        clearCacheBtn.textContent = 'Clearing...';
+        clearCacheBtn.textContent = getMessage('popup_clearCache_clearing');
         
         // Clear both title and description caches
         await browser.storage.local.remove('ynt-cache');
@@ -454,10 +458,10 @@ clearCacheBtn.addEventListener('click', async () => {
                 }
             }
             
-            clearCacheBtn.textContent = `Cleared! (${clearedTabs} tabs)`;
+            clearCacheBtn.textContent = getMessage('popup_clearCache_clearedTabs', clearedTabs.toString());
             coreLog(`Cache cleared successfully. Notified ${clearedTabs} YouTube tabs.`);
         } catch (error) {
-            clearCacheBtn.textContent = 'Cache Cleared!';
+            clearCacheBtn.textContent = getMessage('popup_clearCache_cacheCleared');
             coreLog('Cache cleared from storage, but could not notify content scripts:', error);
         }
         
@@ -469,7 +473,7 @@ clearCacheBtn.addEventListener('click', async () => {
         
     } catch (error) {
         coreErrorLog('Failed to clear cache:', error);
-        clearCacheBtn.textContent = 'Error';
+        clearCacheBtn.textContent = getMessage('popup_clearCache_error');
         clearCacheBtn.disabled = false;
         
         // Reset button after 2 seconds
@@ -503,10 +507,10 @@ if (isWelcome) {
                             count++;
                         }
                     }
-                    reloadBtn.textContent = `Reloaded ${count} active tab${count !== 1 ? 's' : ''}!`;
+                    reloadBtn.textContent = getMessage('settings_welcome_reloadButton_done', count.toString());
                     reloadBtn.disabled = true;
                 } catch (error) {
-                    reloadBtn.textContent = "Error reloading tabs";
+                    reloadBtn.textContent = getMessage('settings_welcome_reloadButton_error');
                     reloadBtn.disabled = true;
                     coreErrorLog("Failed to reload YouTube tabs:", error);
                 }

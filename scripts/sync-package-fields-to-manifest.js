@@ -63,7 +63,7 @@ function buildSafariWebAccessibleResources() {
 }
 
 /**
- * Inject version, description, and author from package.json as first keys,
+ * Inject version, description, author, and default_locale from package.json as first keys,
  * and also inject web_accessible_resources according to the manifest type.
  */
 function buildNewManifest(manifestJson) {
@@ -73,6 +73,7 @@ function buildNewManifest(manifestJson) {
     version: pkg.version,
     description: pkg.description,
     author: pkg.author,
+    default_locale: 'en',
     ...manifestJson
   };
 
@@ -88,5 +89,5 @@ function buildNewManifest(manifestJson) {
 const newManifest = buildNewManifest(manifest);
 
 fs.writeFileSync(manifestPath, JSON.stringify(newManifest, null, 2) + '\n');
-console.log('[inject-version] Set manifest.json version, description, and author from package.json');
+console.log('[inject-version] Set manifest.json version, description, author, and default_locale from package.json');
 console.log('[inject-resources] Injected web_accessible_resources into manifest.json');
