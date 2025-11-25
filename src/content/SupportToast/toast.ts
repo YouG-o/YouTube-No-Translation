@@ -4,7 +4,7 @@ import { getMessage, localizeDocument } from '../../utils/i18n';
 
 const TOAST_ID = 'ynt-support-toast';
 const REMIND_DELAY = 30;
-const INITIAL_DELAY = 0;
+const INITIAL_DELAY = 7;
 let toastStorageListener: ((changes: any, area: string) => void) | null = null;
 
 // Store URLs
