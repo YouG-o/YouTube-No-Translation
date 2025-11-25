@@ -123,7 +123,7 @@ If you want to use the [DeArrow](https://github.com/ajayyy/DeArrow) extension al
   
 </div>
 
-  Contributions are welcome! Whether you want to fix bugs, add features, or improve documentation, your help is appreciated.
+  Contributions are welcome! Whether you want to fix bugs, add features, or add a language translation, your help is appreciated.
   Please read [CONTRIBUTING.md](CONTRIBUTING.md) to get started, or browse [existing issues](https://github.com/YouG-o/YouTube_No_Translation/issues) to see what needs help.
 
   <br>
