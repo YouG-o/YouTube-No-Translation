@@ -252,12 +252,15 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
         insertDescriptionSpan(collapsedString, parentSpan);
         
     } else {
-        // Desktop: existing logic with two containers
-        const attributedString = element.querySelector('yt-attributed-string');
+        // Desktop: check if description is currently expanded
+        const inlineExpander = element.closest('ytd-text-inline-expander');
+        const isExpanded = inlineExpander?.hasAttribute('is-expanded');
+        
+        // Always update snippet (visible when collapsed)
         const snippetAttributedString = element.querySelector('#attributed-snippet-text');
         
-        if (!attributedString && !snippetAttributedString) {
-            descriptionErrorLog('No desktop description text container found');
+        if (!snippetAttributedString) {
+            descriptionErrorLog('No desktop description snippet container found (#attributed-snippet-text)');
             return;
         }
 
@@ -294,9 +297,26 @@ export function updateDescriptionElement(element: HTMLElement, description: stri
         // Assemble the structure: parentSpan > innerSpan > content
         parentSpan.appendChild(innerSpan);
 
-        // Use the utility function to insert the span into both containers
-        insertDescriptionSpan(attributedString, parentSpan);
+        // Always update snippet (collapsed view)
         insertDescriptionSpan(snippetAttributedString, parentSpan);
+        
+        // Only update expanded container if description is currently expanded
+        if (isExpanded) {
+            const expandedAttributedString = element.querySelector('#expanded yt-attributed-string');
+            if (expandedAttributedString) {
+                descriptionLog('Description is expanded, updating expanded container');
+                insertDescriptionSpan(expandedAttributedString, parentSpan);
+            }
+        } else {
+            // If NOT expanded, ensure expanded container is EMPTY (YouTube's default state)
+            const expandedAttributedString = element.querySelector('#expanded yt-attributed-string');
+            if (expandedAttributedString && expandedAttributedString.childNodes.length > 0) {
+                descriptionLog('Description is collapsed, clearing expanded container');
+                while (expandedAttributedString.firstChild) {
+                    expandedAttributedString.removeChild(expandedAttributedString.firstChild);
+                }
+            }
+        }
     }
 
     setupDescriptionContentObserver(id);
