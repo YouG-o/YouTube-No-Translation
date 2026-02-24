@@ -1,0 +1,359 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "YouTubeのコンテンツをオリジナル言語で表示します：タイトル、説明文、音声… 不要な翻訳はもう不要。",
+    "description": "Description of the extension"
+  },
+
+  "popup_createdBy": {
+    "message": "作者：YouGo — 日本語訳：monta-gh",
+    "description": "Footer credit text - You can also add your name here 'Created by YouGo - Translated by [YourName]'"
+  },
+
+  "popup_originalTitles": {
+    "message": "オリジナルタイトル",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "オリジナルタイトルを表示します：メイン動画・ブラウジング中のタイトル、通知、チャンネル名（メイン動画ページ）。",
+    "description": "Tooltip for original titles feature"
+  },
+
+  "popup_audioTracks": {
+    "message": "音声トラック",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "希望する音声トラックに切り替えます。残念ながら、この機能は現在YouTubeのモバイル版（m.youtube.com）では利用できません。",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "デスクトップのみ",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "この機能はデスクトップブラウザでのみ利用できます",
+    "description": "Title attribute for desktop-only badge"
+  },
+
+  "popup_originalDescriptions": {
+    "message": "オリジナル説明文",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "翻訳された説明文をオリジナルのものに置き換えます。",
+    "description": "Tooltip for original descriptions feature"
+  },
+
+  "popup_originalThumbnails": {
+    "message": "オリジナルサムネイル",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "動画を閲覧中に、翻訳されたサムネイルをオリジナルのものに置き換えます。",
+    "description": "Tooltip for original thumbnails feature"
+  },
+
+  "popup_subtitles": {
+    "message": "字幕",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "希望する言語の字幕を表示します（利用可能な場合）。利用できない場合は字幕が無効になります。自動生成字幕は無視されます。",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "自動生成字幕を有効にする",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "有効にすると、希望する言語の手動字幕がない場合、代わりに自動生成（ASR）字幕が使用されます（必要に応じて翻訳あり）。",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+
+  "popup_extraSettings": {
+    "message": "詳細設定",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3（APIキーが必要）",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "YouTube Data API v3を使用してオリジナルのチャンネル名と説明文を取得し、他の方法が失敗した場合のフォールバックとして機能します。非常に信頼性が高いですが、独自のAPIキーが必要です。キーはローカルに保存され、あなただけがアクセスできます。",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "APIキーを入力...",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "無料のAPIキーをここで取得",
+    "description": "Link text for getting API key"
+  },
+
+  "popup_clearCache": {
+    "message": "キャッシュをクリア",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "タイトルと説明文のキャッシュをクリア",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "クリア中...",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "完了！（$TABS$ タブ）",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "キャッシュをクリアしました！",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "エラー",
+    "description": "Button text on error"
+  },
+
+  "popup_reportIssue": {
+    "message": "問題を報告する",
+    "description": "Link text for reporting issues"
+  },
+
+  "popup_kofi_alt": {
+    "message": "Ko-fiでサポートする",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "Ko-fiでサポートする",
+    "description": "Title attribute for Ko-fi link"
+  },
+
+  "settings_audioTracks": {
+    "message": "音声トラック",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "常に希望する音声トラックに切り替えます。残念ながら、この機能は現在YouTubeのモバイル版（m.youtube.com）では利用できません。",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "説明文が翻訳されている場合、オリジナルの説明文に置き換えられます。",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "希望する言語の字幕が利用可能な場合に表示します。利用できない場合は字幕が無効になります。自動生成字幕はデフォルトで無視されます。",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "キャッシュ管理",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "タイトルと説明文のキャッシュをクリアします。コンテンツが正しく表示されない場合や、最初からやり直したい場合に使用してください。",
+    "description": "Tooltip for cache management"
+  },
+
+  "settings_welcome_title": {
+    "message": "ようこそ",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_titleComplete": {
+    "message": "$EXTENSION_NAME$ へようこそ",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
+  "settings_welcome_message": {
+    "message": "YouTube No Translationをインストールしていただきありがとうございます！ここで拡張機能の動作を設定できます。",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "重要：",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "インストール前にすでに開いていたYouTubeタブで拡張機能を動作させるには、それらのタブをリロードする必要があります。",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "アクティブなYouTubeタブをすべてリロード",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "アクティブな$COUNT$タブをリロードしました！",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "タブのリロード中にエラーが発生しました",
+    "description": "Button text on reload error"
+  },
+
+  "settings_footer_support": {
+    "message": "この拡張機能は、情熱を持って作られた個人プロジェクトです。あなたのサポートが改善の力になります — ありがとう！ 💛",
+    "description": "Footer support message in settings page"
+  },
+
+  "language_original": {
+    "message": "オリジナル",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "常に無効",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "英語",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "フランス語",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "スペイン語",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "アラビア語",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "中国語",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "オランダ語",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "ドイツ語",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "ヘブライ語",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "ヒンディー語",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "インドネシア語",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "イタリア語",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "日本語",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "韓国語",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "ポーランド語",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "ポルトガル語",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "ロシア語",
+    "description": "Language name: Russian"
+  },
+  "language_tr": {
+    "message": "トルコ語",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "ウクライナ語",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "ベトナム語",
+    "description": "Language name: Vietnamese"
+  },
+
+  "toast_title": {
+    "message": "YouTube No Translationをご利用いただきありがとうございます！",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "このプロジェクトは自分の時間を使ってメンテナンス・改善しています。将来のアップデートをサポートしたい方は、Ko-fiでご支援いただけます — あなたの助けが本当に力になります。 💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "Ko-fiでサポートする",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "Ko-fiでサポートする",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "来月また知らせて",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "来月また通知が届きます",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "結構です",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "このメッセージは二度と表示されません",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "チップが難しい場合は、",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": "で5つ星レビューを残してサポートしていただけます！",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome ウェブストア",
+    "description": "Chrome store name"
+  }
+}
