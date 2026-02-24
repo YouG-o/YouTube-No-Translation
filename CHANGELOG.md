@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.21.0] - 2026-02-24
+
 ### Added
-- Japanese (ja) translation
+- Japanese (ja) translation (Thanks to [monta-gh](https://github.com/monta-gh))
 
 ## [2.20.1] - 2026-02-05
 
@@ -18,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.20.0] - 2025-12-03
 
 ### Added
-- Spanish language locales for the extension.
+- Spanish language locales for the extension. (Thanks to [Seva41](https://github.com/Seva41))
 - Support for YouTube embeds inside external iframes (e.g., watch2gether or any site hosting an inline player).
 
 ## [2.19.0] - 2025-11-27
@@ -578,7 +580,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.20.1...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.20.2...HEAD
+[2.20.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.20.1...v2.20.2
 [2.20.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.20.0...v2.20.1
 [2.20.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.19.0...v2.20.0
 [2.19.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.18.2...v2.19.0

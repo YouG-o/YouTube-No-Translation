@@ -55,3 +55,6 @@ safari/YouTube No Translation/YouTube No Translation/Resources/dist
 # Reviewer source package for Mozilla
 reviewer-source*.zip
 /reviewer-source*
+
+# GitHub Copilot instructions
+.github/copilot-instructions.md
