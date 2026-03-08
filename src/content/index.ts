@@ -55,9 +55,19 @@ function isEmbedVideo(): boolean {
     return window.location.pathname.startsWith('/embed/');
 }
 
+function isYouTubeMusic(): boolean {
+    return window.location.hostname === 'music.youtube.com' || 
+           window.location.hostname.startsWith('music.youtube.com');
+}
 
 // Initialize features based on settings
 async function initializeFeatures() {
+
+    if (isYouTubeMusic()) {
+        coreLog('YouTube Music detected; extension disabled for this domain.');
+        return;
+    }
+    
     await fetchSettings();
     
     setupUrlObserver();

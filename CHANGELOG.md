@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added "Dev Log" toggle in extra settings (popup and settings page): enables/disables console logs for debugging. Disabled by default.
 
+### Fixed
+- Extension causing lag on YouTube Music (music.youtube.com); extension is now disabled for that domain
+
 ## [2.21.1] - 2026-03-05
 
 ### Performances
