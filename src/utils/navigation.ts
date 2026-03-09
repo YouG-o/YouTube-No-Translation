@@ -23,4 +23,8 @@ function isMobileSite(): boolean {
     return window.location.hostname === 'm.youtube.com';
 }
 
-export { isSearchResultsPage, isVideoPage, isMobileSite };
+function isYouTubeMusic(): boolean {
+    return window.location.hostname === 'music.youtube.com';
+}
+
+export { isSearchResultsPage, isVideoPage, isMobileSite, isYouTubeMusic };

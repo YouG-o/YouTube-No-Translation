@@ -21,7 +21,7 @@ import { refreshDescription } from './description/MainDescription';
 import { handleAudioTranslation } from './audio/audioIndex';
 import { handleSubtitlesTranslation } from './subtitles/subtitlesIndex';
 import { maybeShowSupportToast } from './SupportToast/toast';
-import { isMobileSite } from '../utils/navigation';
+import { isMobileSite, isYouTubeMusic } from '../utils/navigation';
 
 
 coreLog('Content script starting to load...');
@@ -53,11 +53,6 @@ async function fetchSettings() {
 // Helper functions to detect if we're on an embed video (like youtube-nocookie.com)
 function isEmbedVideo(): boolean {
     return window.location.pathname.startsWith('/embed/');
-}
-
-function isYouTubeMusic(): boolean {
-    return window.location.hostname === 'music.youtube.com' || 
-           window.location.hostname.startsWith('music.youtube.com');
 }
 
 // Initialize features based on settings

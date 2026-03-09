@@ -4,3 +4,4 @@
   - **[therichkid](https://github.com/therichkid)**: Fixed tooltip in popup.
   - **[btncua](https://github.com/btncua)**: Ukrainian translation.
   - **[monta-gh](https://github.com/monta-gh)**: Japanese translation.
+  - **[pilar4](https://github.com/pilar4)**: Disabled extension on YouTube Music domain to prevent slowdowns.
