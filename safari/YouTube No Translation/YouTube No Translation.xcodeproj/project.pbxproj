@@ -67,7 +67,7 @@
 
 /* Begin PBXFileReference section */
 		6A00389F2EEBF3DE0027058C /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = ../../_locales; sourceTree = "<group>"; };
-		6AB4C9D02EA38F0800D882D6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = /Users/yougo/Documents/Code/YouTube_No_Translation/assets/icons/icon.png; sourceTree = "<absolute>"; };
+		6AB4C9D02EA38F0800D882D6 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../../../assets/icons/icon.png; sourceTree = "<group>"; };
 		6AEA401A2EAA29B300EC10F3 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../../../CHANGELOG.md; sourceTree = "<group>"; };
 		C62FBAC52DE94D2B009AD7D3 /* YouTube No Translation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YouTube No Translation.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C62FBAC82DE94D2B009AD7D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
