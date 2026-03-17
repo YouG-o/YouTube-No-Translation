@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Polish (pl) translation (json and firefox/chrome descryption)
+
 ### Fixed
 - Audio and subtitles translation scripts are no longer injected when the feature is disabled, preventing automatic track switching back to the original.
 
