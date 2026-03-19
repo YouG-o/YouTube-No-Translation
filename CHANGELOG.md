@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.21.4] - 2026-03-19
+
 ### Params
 - Extension initialization is now completely blocked in irrelevant iframes (like live chat, background auth pages)
 
@@ -608,7 +610,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.3...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...HEAD
+[2.21.4]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.3...v2.21.4
 [2.21.3]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.2...v2.21.3
 [2.21.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.1...v2.21.2
 [2.21.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.20.2...v2.21.1
