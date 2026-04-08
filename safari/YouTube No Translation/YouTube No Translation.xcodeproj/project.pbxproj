@@ -601,7 +601,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "YouTube No Translation Extension/YouTube_No_Translation_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "YouTube No Translation Extension/Info.plist";
@@ -613,7 +613,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 2.20.0;
+				MARKETING_VERSION = 2.21.5;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -631,7 +631,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "YouTube No Translation Extension/YouTube_No_Translation_Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J36MVR82CP;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -655,7 +655,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 2.20.0;
+				MARKETING_VERSION = 2.21.5;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -677,7 +677,7 @@
 				CODE_SIGN_ENTITLEMENTS = "YouTube No Translation/YouTube No Translation.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -704,7 +704,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 2.20.0;
+				MARKETING_VERSION = 2.21.5;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -729,7 +729,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J36MVR82CP;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -756,7 +756,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 2.20.0;
+				MARKETING_VERSION = 2.21.5;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,

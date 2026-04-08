@@ -55,10 +55,16 @@ If you want to use the [DeArrow](https://github.com/ajayyy/DeArrow) extension al
   [![Available on Mozilla](./assets/images/mozilla-firefox_banner.png)](https://addons.mozilla.org/firefox/addon/youtube-no-translation/)
   [![Available on Chrome Web Store](./assets/images/chrome-web-store_banner.png)](https://chromewebstore.google.com/detail/youtube-no-translation/lmkeolibdeeglfglnncmfleojmakecjb)  
   [![Available on Microsoft Store](./assets/images/microsoft-edge_banner.png)](https://microsoftedge.microsoft.com/addons/detail/dflkepcdbnjbbfdokanhhdeolodkcofb)
-  [![Available on App Store](./assets/images/safari_banner.png)](https://apps.apple.com/app/no-translation-for-youtube/id6754244353)
+  <!-- Safari App Store badge removed -->
 
 </div>
 
+---
+
+**Safari users (MacOS):**  
+The extension is not available on the App Store. You can [build the extension yourself](#build-it-yourself) (macOS required), or download the installable Safari build from the [latest release](https://github.com/YouG-o/YouTube_No_Translation/releases/latest).
+
+---
 
 ###
 
