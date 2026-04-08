@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- When subtitle preference is set to original language but no ASR track is found. (used to determine original language by our current method), extension now uses the single available subtitle track if only one exists.
+
 ## [2.21.4] - 2026-03-19
 
 ### Params
