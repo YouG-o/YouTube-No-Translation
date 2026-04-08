@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.0] - 2026-04-08
+
+### Changed
+- Simplified browsing video title selectors: now uses global structural selector `h3[title] > a > span.yt-core-attributed-string` instead of specific parent class variants (kebab-case, camelCase, etc.). This reduces maintenance burden and improves resilience to future YouTube DOM structure changes without sacrificing precision.
+
 ## [2.21.5] - 2026-04-08
 
 ### Fixed
@@ -615,7 +620,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.5...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.0...HEAD
+[2.22.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.5...v2.22.0
 [2.21.5]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...v2.21.5
 [2.21.4]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.3...v2.21.4
 [2.21.3]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.2...v2.21.3

@@ -387,11 +387,7 @@ export async function refreshBrowsingVideos(): Promise<void> {
         if (isMobileSite()) {
             // Mobile selectors
             const mobileTitles = Array.from(
-                document.querySelectorAll(
-                    'ytm-video-with-context-renderer h3.media-item-headline > span.yt-core-attributed-string, ' +
-                    'ytm-video-card-renderer h4.video-card-title > span.yt-core-attributed-string, ' +
-                    'h4.YtmCompactMediaItemHeadline > span.yt-core-attributed-string'
-                )
+                document.querySelectorAll('h3[title] > a > span.yt-core-attributed-string')
             ) as HTMLElement[];
             
             browsingTitles = mobileTitles;
@@ -403,13 +399,14 @@ export async function refreshBrowsingVideos(): Promise<void> {
             // Feedback videos on home page ("What did you think of this video?" section)
             const feedbackTitles = Array.from(document.querySelectorAll('ytd-compact-video-renderer span#video-title')) as HTMLElement[];
 
-            // Featured videos (watch page recommendations)
-            const featuredTitles = Array.from(
-                document.querySelectorAll('a.yt-lockup-metadata-view-model__title > span.yt-core-attributed-string, a.yt-lockup-metadata-view-model-wiz__title > span.yt-core-attributed-string')
+            // Most browsing videos (home, search, channel, subscriptions, featured ...)
+            const browsingVideoTitles = Array.from(
+                document.querySelectorAll('h3[title] > a > span.yt-core-attributed-string'
+                )
             ) as HTMLElement[];
 
             // Merge all lists
-            browsingTitles = [...classicTitles, ...feedbackTitles, ...featuredTitles];
+            browsingTitles = [...classicTitles, ...feedbackTitles, ...browsingVideoTitles];
             //browsingTitlesLog(`Found ${browsingTitles.length} desktop browsing titles to process`);
         }
 
