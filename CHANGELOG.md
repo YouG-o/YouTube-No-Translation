@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.21.5] - 2026-04-08
+
 ### Fixed
-- When subtitle preference is set to original language but no ASR track is found. (used to determine original language by our current method), extension now uses the single available subtitle track if only one exists.
+- When subtitle preference is set to original language but no ASR track is found. (used to determine original language by our current method), extension now uses the single available subtitle track if only one exists (because it must be the original trakc). Before, subtitles were disabled in this scenario.
 
 ## [2.21.4] - 2026-03-19
 
@@ -613,7 +615,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.5...HEAD
+[2.21.5]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...v2.21.5
 [2.21.4]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.3...v2.21.4
 [2.21.3]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.2...v2.21.3
 [2.21.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.1...v2.21.2
