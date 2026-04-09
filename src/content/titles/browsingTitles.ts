@@ -138,7 +138,7 @@ function shouldProcessBrowsingElement(titleElement: HTMLElement): ProcessingResu
         titleElement.closest('ytd-rich-grid-media') !== null && hasPlaylistParam;
 
     // New format: check if parent link has 'list=' but not 'index='
-    const parentLink = titleElement.closest('a.yt-lockup-metadata-view-model__title, a.yt-lockup-metadata-view-model-wiz__title') as HTMLAnchorElement | null;
+    const parentLink = titleElement.closest('a.yt-lockup-metadata-view-model__title, a.yt-lockup-metadata-view-model-wiz__title, a.ytLockupMetadataViewModelTitle, a.ytLockupMetadataViewModelWizTitle') as HTMLAnchorElement | null;
     const isPlaylistAlternativeContainer = !!parentLink && parentLink.getAttribute('href')?.includes('list=') && 
                                !parentLink.getAttribute('href')?.includes('index=');
 
@@ -150,10 +150,16 @@ function shouldProcessBrowsingElement(titleElement: HTMLElement): ProcessingResu
     const anchor = titleElement.closest('a#video-title') as HTMLAnchorElement | null;
     const anchorIsGridPlaylistLink = !!anchor && anchor.classList.contains('ytd-grid-playlist-renderer');
 
+    // Check if metadata contains "Playlist" text (works with new global selector)
+    const h3Parent = titleElement.closest('h3');
+    const metadataContainer = h3Parent?.parentElement?.querySelector('yt-content-metadata-view-model, .ytContentMetadataViewModelMetadataRow');
+    const isPlaylistByMetadata = !!metadataContainer && metadataContainer.textContent?.includes('Playlist');
+
     const isPlaylistContainer =
         isRichGridPlaylist ||
         isPlaylistAlternativeContainer ||
-        (hasPlaylistParam && (isInKnownPlaylistRenderer || anchorIsGridPlaylistLink));
+        (hasPlaylistParam && (isInKnownPlaylistRenderer || anchorIsGridPlaylistLink)) ||
+        (hasPlaylistParam && isPlaylistByMetadata);
 
     if (isPlaylistContainer) {
         // Clean up any attributes the extension might have previously set incorrectly on this element
