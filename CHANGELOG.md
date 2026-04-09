@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.1] - 2026-04-09
+
+### Fix
+Prevent playlist titles from being replaced with first video title when using the global h3[title] selector.
+
 ## [2.22.0] - 2026-04-08
 
 ### Changed
@@ -620,7 +625,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.0...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.1...HEAD
+[2.22.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.0...v2.22.1
 [2.22.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.5...v2.22.0
 [2.21.5]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...v2.21.5
 [2.21.4]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.3...v2.21.4
