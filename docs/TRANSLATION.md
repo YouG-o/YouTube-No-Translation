@@ -99,7 +99,7 @@ Also available on Chrome Web Store: https://chromewebstore.google.com/detail/you
 
 Want to report an issue or suggest a feature? You can do it here: https://github.com/YouG-o/YouTube_No_Translation/issues
 
-This add-on is not affiliated with YouTube™ or Google™."
+This add-on is not affiliated with YouTube™ or Google™.
 ```
 
 ### Chrome Web Store Description
