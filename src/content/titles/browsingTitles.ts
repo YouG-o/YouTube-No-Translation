@@ -407,8 +407,7 @@ export async function refreshBrowsingVideos(): Promise<void> {
 
             // Most browsing videos (home, search, channel, subscriptions, featured ...)
             const browsingVideoTitles = Array.from(
-                document.querySelectorAll('h3[title] > a > span.yt-core-attributed-string'
-                )
+                document.querySelectorAll('h3[title] > a > span[class][role="text"]')
             ) as HTMLElement[];
 
             // Merge all lists

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.2] - 2026-04-11
+
+Now uses the global selector h3[title] > a > span[class][role="text"] to capture all video titles, including new class variants, for improved robustness against YouTube DOM changes.
+
 ## [2.22.1] - 2026-04-09
 
 ### Fix
@@ -625,7 +629,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.1...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.2...HEAD
+[2.22.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.1...v2.22.2
 [2.22.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.0...v2.22.1
 [2.22.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.5...v2.22.0
 [2.21.5]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.21.4...v2.21.5
