@@ -90,25 +90,15 @@ export async function getOriginalChannelDescriptionDataAPI(identifier: { id?: st
  * @returns The short description string, or null if not found.
  */
 function getShortChannelCurrentDescription(): string | null {
-    // Try multiple selectors to handle YouTube DOM variations
-    const selectors = [
-        // New / current structure (example provided)
-        'yt-description-preview-view-model yt-truncated-text .yt-core-attributed-string',
-        'yt-description-preview-view-model .yt-truncated-text__truncated-text-content:not(.yt-truncated-text__truncated-text-content--hidden-text-content) .yt-core-attributed-string',
-        // Older/trusted selectors
-        'yt-description-preview-view-model .truncated-text-wiz__truncated-text-content:not(.truncated-text-wiz__truncated-text-content--hidden-text-content) .yt-core-attributed-string',
-        'ytd-channel-about-metadata-renderer yt-formatted-string#description',
-        'yt-formatted-string#description',
-        '.yt-core-attributed-string'
-    ];
-
-    for (const sel of selectors) {
-        const el = document.querySelector(sel) as HTMLElement | null;
-        if (el && typeof el.textContent === 'string') {
-            const text = el.textContent.trim();
-            if (text.length > 0) {
-                return text;
-            }
+    // Use a strict hierarchical selector to avoid conflicts with other extensions
+    // Target: yt-description-preview-view-model > truncated-text-content > span.ytAttributedStringHost
+    const selector = 'yt-description-preview-view-model truncated-text-content:not(.ytTruncatedTextHiddenTextContent) > span.ytAttributedStringHost[role="text"]';
+    
+    const el = document.querySelector(selector) as HTMLElement | null;
+    if (el && typeof el.textContent === 'string') {
+        const text =" el.textContent.trim();"
+        if (text.length > 0) {
+            return text;
         }
     }
 
@@ -120,23 +110,10 @@ function getShortChannelCurrentDescription(): string | null {
  * so it can be updated in-place. Returns null if not found.
  */
 function getShortChannelCurrentDescriptionElement(): HTMLElement | null {
-    const selectors = [
-        'yt-description-preview-view-model yt-truncated-text .yt-core-attributed-string',
-        'yt-description-preview-view-model .yt-truncated-text__truncated-text-content:not(.yt-truncated-text__truncated-text-content--hidden-text-content) .yt-core-attributed-string',
-        'yt-description-preview-view-model .truncated-text-wiz__truncated-text-content:not(.truncated-text-wiz__truncated-text-content--hidden-text-content) .yt-core-attributed-string',
-        'ytd-channel-about-metadata-renderer yt-formatted-string#description',
-        'yt-formatted-string#description',
-        '.yt-core-attributed-string'
-    ];
-
-    for (const sel of selectors) {
-        const el = document.querySelector(sel) as HTMLElement | null;
-        if (el) {
-            return el;
-        }
-    }
-
-    return null;
+    const selector = 'yt-description-preview-view-model truncated-text-content:not(.ytTruncatedTextHiddenTextContent) > span.ytAttributedStringHost[role="text"]';
+    
+    const el = document.querySelector(selector) as HTMLElement | null;
+    return el;
 }
 
 
