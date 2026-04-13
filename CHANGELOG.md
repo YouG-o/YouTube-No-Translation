@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Portuguese translation. (Thanks to [Felipe](https://github.com/felipdsa21))
+
 ## [2.22.2] - 2026-04-11
 
 Now uses the global selector h3[title] > a > span[class][role="text"] to capture all video titles, including new class variants, for improved robustness against YouTube DOM changes.

@@ -7,3 +7,4 @@
   - **[pilar4](https://github.com/pilar4)**: 
       - Disabled extension on YouTube Music domain to prevent slowdowns.
       - Polish translation
+  - **[Felipe](https://github.com/felipdsa21)**: Portuguese translation.

@@ -1,0 +1,366 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Mantenha o conteúdo do YouTube no idioma original: títulos, descrições, áudio... Sem mais traduções indesejadas.",
+    "description": "Description of the extension"
+  },
+  
+  "popup_createdBy": {
+    "message": "Criado por YouGo",
+    "description": "Footer credit text - You can also add your name here 'Created by YouGo - Translated by [YourName]'"
+  },
+  
+  "popup_originalTitles": {
+    "message": "Títulos originais",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "Mostrar títulos originais: vídeo principal e ao navegar, notificações, canais (na página principal do vídeo).",
+    "description": "Tooltip for original titles feature"
+  },
+  
+  "popup_audioTracks": {
+    "message": "Faixas de áudio",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "Mudar para a faixa de áudio preferida. Infelizmente, este recurso não está disponível na versão móvel do YouTube por enquanto (m.youtube.com).",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "Só no computador",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "Este recurso só está disponível em navegadores no computador",
+    "description": "Title attribute for desktop-only badge"
+  },
+  
+  "popup_originalDescriptions": {
+    "message": "Descrições originais",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "Substituir a descrição traduzida pela original.",
+    "description": "Tooltip for original descriptions feature"
+  },
+  
+  "popup_originalThumbnails": {
+    "message": "Miniaturas originais",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "Substituir miniaturas traduzidas pelas originais ao navegar pelos vídeos.",
+    "description": "Tooltip for original thumbnails feature"
+  },
+  
+  "popup_subtitles": {
+    "message": "Legendas",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "Mostrar legendas no seu idioma preferido (se disponível). Caso contrário, as legendas ficam desativadas. Legendas geradas automaticamente são ignoradas.",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "Ativar legendas geradas automaticamente",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "Quando ativado, se não houver legendas manuais no seu idioma preferido, serão usadas legendas geradas automaticamente (ASR), com tradução se necessário.",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+  
+  "popup_extraSettings": {
+    "message": "Configurações extras",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3 (CHAVE DE API NECESSÁRIA)",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "Usa a YouTube Data API v3 para obter o nome e a descrição originais do canal, servindo como solução alternativa caso outros métodos falhem. Muito confiável, mas exige sua própria chave de API. Sua chave fica armazenada localmente; só você pode acessá-la.",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "Digite sua chave de API...",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "Obtenha sua chave de API gratuita aqui",
+    "description": "Link text for getting API key"
+  },
+  "popup_extraSettings_devLog": {
+    "message": "Log de desenvolvimento"
+  },
+  "popup_extraSettings_devLog_tooltip": {
+    "message": "Ativar registros no console para depuração.",
+    "description": "Tooltip for dev log setting"
+  },
+  
+  "popup_clearCache": {
+    "message": "Limpar cache",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "Limpar títulos e descrições em cache",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "Limpando...",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "Limpo! ($TABS$ abas)",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "Cache limpo!",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "Erro",
+    "description": "Button text on error"
+  },
+  
+  "popup_reportIssue": {
+    "message": "Reportar um problema",
+    "description": "Link text for reporting issues"
+  },
+  
+  "popup_kofi_alt": {
+    "message": "Apoie-me no Ko-fi",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "Apoie-me no Ko-fi",
+    "description": "Title attribute for Ko-fi link"
+  },
+  
+  "settings_audioTracks": {
+    "message": "Faixas de áudio",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "Sempre mudar para a faixa de áudio preferida. Infelizmente, este recurso não está disponível na versão móvel do YouTube por enquanto (m.youtube.com).",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "Se a descrição estiver traduzida, será substituída pela descrição original.",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "Mostrar legendas no seu idioma preferido, se disponível. Caso contrário, as legendas ficam desativadas. Por padrão, legendas geradas automaticamente são ignoradas.",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "Gerenciamento do cache",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "Limpar títulos e descrições em cache. Use se o conteúdo estiver incorreto ou quiser recomeçar do zero.",
+    "description": "Tooltip for cache management"
+  },
+  
+  "settings_welcome_title": {
+    "message": "Bem-vindo ao",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_titleComplete": {
+    "message": "Bem-vindo ao $EXTENSION_NAME$",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
+  "settings_welcome_message": {
+    "message": "Obrigado por instalar o YouTube No Translation! Aqui você pode configurar o comportamento da extensão.",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "Importante:",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "Para a extensão funcionar em abas do YouTube que já estavam abertas antes da instalação, é preciso recarregar essas abas.",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "Recarregar todas as abas ativas do YouTube",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "$COUNT$ aba(s) ativa(s) recarregada(s)!",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "Erro ao recarregar as abas",
+    "description": "Button text on reload error"
+  },
+  
+  "settings_footer_support": {
+    "message": "Esta extensão é um projeto individual feito com paixão. Seu apoio me ajuda a continuar melhorando — obrigado! 💛",
+    "description": "Footer support message in settings page"
+  },
+  
+  "language_original": {
+    "message": "Original",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "Sempre desativadas",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "Inglês",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "Francês",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "Espanhol",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "Árabe",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "Chinês",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "Neerlandês",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "Alemão",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "Hebraico",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "Hindi",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "Indonésio",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "Italiano",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "Japonês",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "Coreano",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "Polonês",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "Português",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "Russo",
+    "description": "Language name: Russian"
+  },
+  "language_tr": {
+    "message": "Turco",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "Ucraniano",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "Vietnamita",
+    "description": "Language name: Vietnamese"
+  },
+  
+  "toast_title": {
+    "message": "Obrigado por usar o YouTube No Translation!",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "Eu mantenho e melhoro este projeto no meu tempo livre. Se quiser apoiar atualizações futuras, pode fazê-lo no Ko-fi — sua ajuda faz toda a diferença. 💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "Apoie-me no Ko-fi",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "Apoie-me no Ko-fi",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "Lembrar no próximo mês",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "Você receberá outro lembrete no próximo mês",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "Não, obrigado",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "Você não verá esta mensagem novamente",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "Não pode contribuir com uma gorjeta? Ainda pode me apoiar deixando uma avaliação de 5 estrelas na ",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": "!",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome Web Store",
+    "description": "Chrome store name"
+  }
+}
