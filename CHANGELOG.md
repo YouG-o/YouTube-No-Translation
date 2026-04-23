@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+Simplified subtitles injection script by removing API orchestration and polling logic.
+
+
 ## [2.23.0] - 2026-04-17
 
 ### Added
