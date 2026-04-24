@@ -94,8 +94,16 @@
             const subtitlesLanguage = localStorage.getItem('ynt-subtitlesLanguage') || 'original';
             const asrEnabled = localStorage.getItem('ynt-subtitlesAsrEnabled') === 'true';
 
+            // Get current active track
+            const currentTrack = player.getOption('captions', 'track');
+
             // Check if subtitles are disabled
             if (subtitlesLanguage === 'disabled') {
+                // Skip if already disabled (empty track)
+                if (!currentTrack || !currentTrack.languageCode) {
+                    log('Subtitles are already disabled');
+                    return true;
+                }
                 log('Subtitles are disabled, disabling subtitles');
                 player.setOption('captions', 'track', {});
                 return true;
@@ -117,6 +125,11 @@
                     // Fallback: if there's only one subtitle track, assume it's the original
                     if (captionTracks.length === 1) {
                         const singleTrack = captionTracks[0];
+                        // Skip if already on this track
+                        if (currentTrack && currentTrack.languageCode === singleTrack.languageCode && !currentTrack.kind) {
+                            log(`Subtitles already set to original (manual): "${singleTrack.name.simpleText}" [${singleTrack.languageCode}]`);
+                            return true;
+                        }
                         log(`Only subtitle track found is manual, assuming it's original: "${singleTrack.name.simpleText}" [${singleTrack.languageCode}]`);
                         player.setOption('captions', 'track', singleTrack);
                         return true;
@@ -133,6 +146,11 @@
                 );
 
                 if (originalTrack) {
+                    // Skip if already on this track
+                    if (currentTrack && languageCodesMatch(currentTrack.languageCode, originalTrack.languageCode) && !currentTrack.kind) {
+                        log(`Subtitles already set to original language (manual): "${originalTrack.name.simpleText}" [${originalTrack.languageCode}]`);
+                        return true;
+                    }
                     log(`Setting subtitles to original language (manual): "${originalTrack.name.simpleText}" [${originalTrack.languageCode}]`);
                     player.setOption('captions', 'track', originalTrack);
                     return true;
@@ -144,6 +162,11 @@
                     return true;
                 }
 
+                // Skip if already on ASR track
+                if (currentTrack && languageCodesMatch(currentTrack.languageCode, asrTrack.languageCode) && currentTrack.kind === 'asr') {
+                    log(`Subtitles already set to ASR: "${asrTrack.name.simpleText}"`);
+                    return true;
+                }
                 log(`No manual track, using ASR: "${asrTrack.name.simpleText}"`);
                 player.setOption('captions', 'track', asrTrack);
                 return true;
@@ -155,6 +178,11 @@
             );
 
             if (languageTrack) {
+                // Skip if already on this track
+                if (currentTrack && languageCodesMatch(currentTrack.languageCode, subtitlesLanguage) && !currentTrack.kind) {
+                    log(`Subtitles already set to selected language: "${languageTrack.name.simpleText}" [${languageTrack.languageCode}]`);
+                    return true;
+                }
                 log(`Setting subtitles to selected language: "${languageTrack.name.simpleText}" [${languageTrack.languageCode}]`);
                 player.setOption('captions', 'track', languageTrack);
                 return true;
@@ -174,6 +202,11 @@
             }
 
             if (languageCodesMatch(asrTrack.languageCode, subtitlesLanguage)) {
+                // Skip if already on this ASR track
+                if (currentTrack && languageCodesMatch(currentTrack.languageCode, subtitlesLanguage) && currentTrack.kind === 'asr') {
+                    log(`Subtitles already set to ASR track in target language: "${asrTrack.name.simpleText}"`);
+                    return true;
+                }
                 log(`Using ASR track in target language: "${asrTrack.name.simpleText}"`);
                 player.setOption('captions', 'track', asrTrack);
                 return true;

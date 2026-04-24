@@ -14,17 +14,22 @@ import { refreshEmbedTitle } from "../content/titles/mainTitle";
 import { handleSubtitlesTranslation } from "../content/subtitles/subtitlesIndex";
 
 
-/**
- * Apply configured translation settings for video loads
- * Handles audio, subtitles, and embed title translations
- */
-export function applyVideoPlayerSettings(): void {
+function applyAudioTrack(): void {
     currentSettings?.audioTranslation.enabled && handleAudioTranslation();
-    currentSettings?.subtitlesTranslation.enabled && handleSubtitlesTranslation();
-    
-    if (currentSettings?.titleTranslation) {
-        setTimeout(() => {
-            refreshEmbedTitle();                       
-        }, 1000);
-    }
 }
+
+function applySubtitleTrack(): void {
+    currentSettings?.subtitlesTranslation.enabled && handleSubtitlesTranslation();
+}
+
+function applyEmbedTitle(): void {
+    currentSettings?.titleTranslation && refreshEmbedTitle();
+}
+
+function applyVideoPlayerSettings(): void {
+    applySubtitleTrack();
+    applyEmbedTitle();
+}
+
+
+export { applyAudioTrack, applyVideoPlayerSettings };

@@ -8,8 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-Simplified subtitles injection script by removing API orchestration and polling logic.
+- Audio track and subtitle/embed title settings now use dedicated listeners instead of a single combined listener, allowing each to trigger at the optimal moment. (as soon as possible for audio to avoid user hearing a cut when changing audio track, later for the rest to let the player load fully)
+- Simplified subtitles injection script by removing API orchestration and polling logic.
 
+### Fixed
+Subtitle and audio track settings being overridden by YouTube's own initialization sequence on initial page load.
 
 ## [2.23.0] - 2026-04-17
 

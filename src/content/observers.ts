@@ -13,7 +13,7 @@
 import { coreLog, browsingTitlesLog, titlesErrorLog } from '../utils/logger';
 import { currentSettings } from './index';
 import { extractVideoIdFromUrl, extractVideoIdFromWatchFlexy } from '../utils/video';
-import { applyVideoPlayerSettings } from '../utils/videoSettings';
+import { applyAudioTrack, applyVideoPlayerSettings } from '../utils/videoSettings';
 import { waitForElement, waitForFilledVideoTitles } from '../utils/dom';
 import { isMobileSite, isIrrelevantIframe } from '../utils/navigation'
 
@@ -39,93 +39,108 @@ import { setupMobilePanelObserver, cleanupMobilePanelObserver } from './Mobile/m
 
 
 // MAIN OBSERVERS -----------------------------------------------------------
-let videoPlayerListener: ((e: Event) => void) | null = null;
 let hasInitialPlayerLoadTriggered = false;
+let hasInitialSettingsApplied = false;
 
 // Flag to track if a change was initiated by the user
 let userInitiatedChange = false;
 // Timeout ID for resetting the user initiated flag
 let userChangeTimeout: number | null = null;
 
+const allVideoEvents = ['loadstart', 'loadedmetadata', 'canplay', 'playing', 'play', 'timeupdate', 'seeked'];
 
-// Many events, needed to apply settings as soon as possible on initial load
-const allVideoEvents = [
-    'loadstart',
-    'loadedmetadata', 
-    'canplay',
-    'playing',
-    'play',
-    'timeupdate',
-    'seeked'
-];
-let videoEvents = allVideoEvents;
+let shouldApplyVideoPlayerSettings = false;
+let audioTrackListener: ((e: Event) => void) | null = null;
+let settingsListener: ((e: Event) => void) | null = null;
+let ytPlayerUpdatedHandler: (() => void) | null = null;
 
 export function setupVideoPlayerListener() {
     cleanUpVideoPlayerListener();
-
     coreLog('Setting up video player listener');
 
-    
-    if (!isMobileSite()) {
-        // Listen for user interactions with settings menu
-        document.addEventListener('click', (e) => {
-            const target = e.target as HTMLElement;
-            if (target.closest('.ytp-settings-menu')) {
-                userInitiatedChange = true;
-                
-                if (userChangeTimeout) {
-                    window.clearTimeout(userChangeTimeout);
-                }
-                
-                userChangeTimeout = window.setTimeout(() => {
-                    userInitiatedChange = false;
-                    userChangeTimeout = null;
-                }, 2000);
-            }
-        }, true);      
-    }
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('.ytp-settings-menu')) {
+            userInitiatedChange = true;
+            if (userChangeTimeout) window.clearTimeout(userChangeTimeout);
+            userChangeTimeout = window.setTimeout(() => {
+                userInitiatedChange = false;
+                userChangeTimeout = null;
+            }, 2000);
+        }
+    }, true);
 
-    videoPlayerListener = function(e: Event) {
+    // --- Listener 1: audio track, switches to loadstart-only after first loadstart ---
+    audioTrackListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
-        if ((e.target as any).srcValue === e.target.src) return;
+        const video = e.target as HTMLVideoElement;
 
-        // Skip if user initiated change
+        if ((video as any).srcValue === video.src) return;
         if (userInitiatedChange) {
-            coreLog('User initiated change detected - skipping default settings');
+            coreLog('User initiated quality change - skipping');
             return;
         }
 
-        coreLog('Video source changed.');
-        coreLog('🎥 Event:', e.type);
+        coreLog('Video source changed. Event:', e.type);
 
-        if (!hasInitialPlayerLoadTriggered) {
+        applyAudioTrack();
+        shouldApplyVideoPlayerSettings = true;
+
+        if (!hasInitialPlayerLoadTriggered && e.type === 'loadstart') {
             hasInitialPlayerLoadTriggered = true;
-            cleanUpVideoPlayerListener();
-            videoEvents = ['loadstart', 'loadedmetadata'];
-            coreLog('Optimized video events for SPA navigation');
-            setupVideoPlayerListener();
-        }
+            coreLog('Optimized: switching to loadstart-only for SPA navigation');
 
-        applyVideoPlayerSettings();
-        cleanupMiniplayerTitleContentObserver();
-    };
-    
-    videoEvents.forEach(eventType => {
-        if (videoPlayerListener) {
-            document.addEventListener(eventType, videoPlayerListener, true);
+            allVideoEvents.forEach(evt => {
+                if (audioTrackListener) document.removeEventListener(evt, audioTrackListener, true);
+            });
+            document.addEventListener('loadstart', audioTrackListener!, true);
         }
+    };
+
+    // --- Listener 2 (initial load): apply settings after YouTube finalizes its player ---
+    ytPlayerUpdatedHandler = () => {
+        if (!shouldApplyVideoPlayerSettings) return;
+        document.removeEventListener('yt-player-updated', ytPlayerUpdatedHandler!);
+        ytPlayerUpdatedHandler = null;
+        hasInitialSettingsApplied = true;
+        coreLog('Applying post-playing settings (subtitles, embed title)');
+        applyVideoPlayerSettings();
+        shouldApplyVideoPlayerSettings = false;
+    };
+    document.addEventListener('yt-player-updated', ytPlayerUpdatedHandler);
+
+    // --- Listener 3 (SPA): apply settings on canplaythrough ---
+    settingsListener = function(e: Event) {
+        if (!(e.target instanceof HTMLVideoElement)) return;
+        if (!shouldApplyVideoPlayerSettings) return;
+        if (!hasInitialSettingsApplied) return; // initial load is handled by yt-player-updated
+
+        coreLog('Applying post-playing settings (subtitles, embed title)');
+        applyVideoPlayerSettings();
+        shouldApplyVideoPlayerSettings = false;
+    };
+
+    allVideoEvents.forEach(evt => {
+        document.addEventListener(evt, audioTrackListener!, true);
     });
+
+    document.addEventListener('canplaythrough', settingsListener, true);
 }
 
 function cleanUpVideoPlayerListener() {
-    if (videoPlayerListener) {
-        allVideoEvents.forEach(eventType => {
-            document.removeEventListener(eventType, videoPlayerListener!, true);
-        });
-        videoPlayerListener = null;
+    if (audioTrackListener) {
+        allVideoEvents.forEach(evt => document.removeEventListener(evt, audioTrackListener!, true));
+        document.removeEventListener('loadstart', audioTrackListener, true);
+        audioTrackListener = null;
     }
-    
-    // Clean up user change tracking
+    if (settingsListener) {
+        document.removeEventListener('canplaythrough', settingsListener, true);
+        settingsListener = null;
+    }
+    if (ytPlayerUpdatedHandler) {
+        document.removeEventListener('yt-player-updated', ytPlayerUpdatedHandler);
+        ytPlayerUpdatedHandler = null;
+    }
     if (userChangeTimeout) {
         window.clearTimeout(userChangeTimeout);
         userChangeTimeout = null;

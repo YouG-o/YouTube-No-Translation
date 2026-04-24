@@ -34,6 +34,7 @@
         "dist/browser-polyfill.js",
         "dist/content/content.js"
       ],
+      "run_at": "document_start",
       "all_frames": true
     }
   ],
