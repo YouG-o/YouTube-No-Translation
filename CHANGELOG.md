@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Changed: Refactored video player logic to apply audio tracks immediately upon source detection, restoring legacy reliability.
-- Changed: Optimized event listeners during SPA navigation to reduce browser overhead.
-- Fixed: Issue where audio track settings were skipped if the player triggered events in an unexpected order.
+### Fixed
+- Issue where audio track settings were skipped if the player triggered events in an unexpected order.
+- Subtitle detection now correctly distinguishes between original manual tracks and translated ASR tracks, preventing incorrect re-application of settings when a translated ASR track is already active.
+
+### Changed
+- Refactored video player logic to apply audio tracks immediately upon source detection, restoring legacy reliability.
+- Optimized event listeners during SPA navigation to reduce browser overhead.
 
 
 ## [2.24.0] - 2026-05-20
@@ -23,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Safari 26 CSP now blocks execution of extension scripts injected via script.src; added Safari-specific inline script execution using textContent.
 - Subtitle and audio track settings being overridden by YouTube's own initialization sequence on initial page load.
 
+
 ## [2.23.0] - 2026-04-17
 
 ### Added
@@ -31,9 +36,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fix
 Avoid conflict with other extension by using strict selector for channel short description
 
+
 ## [2.22.2] - 2026-04-11
 
 Now uses the global selector h3[title] > a > span[class][role="text"] to capture all video titles, including new class variants, for improved robustness against YouTube DOM changes.
+
 
 ## [2.22.1] - 2026-04-09
 

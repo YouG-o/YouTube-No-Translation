@@ -126,7 +126,7 @@
                     if (captionTracks.length === 1) {
                         const singleTrack = captionTracks[0];
                         // Skip if already on this track
-                        if (currentTrack && currentTrack.languageCode === singleTrack.languageCode && !currentTrack.kind) {
+                        if (currentTrack && languageCodesMatch(currentTrack.languageCode, singleTrack.languageCode) && !currentTrack.kind && !currentTrack.translationLanguage) {
                             log(`Subtitles already set to original (manual): "${singleTrack.name.simpleText}" [${singleTrack.languageCode}]`);
                             return true;
                         }
@@ -147,7 +147,7 @@
 
                 if (originalTrack) {
                     // Skip if already on this track
-                    if (currentTrack && languageCodesMatch(currentTrack.languageCode, originalTrack.languageCode) && !currentTrack.kind) {
+                    if (currentTrack && languageCodesMatch(currentTrack.languageCode, originalTrack.languageCode) && !currentTrack.kind && !currentTrack.translationLanguage) {
                         log(`Subtitles already set to original language (manual): "${originalTrack.name.simpleText}" [${originalTrack.languageCode}]`);
                         return true;
                     }
@@ -179,7 +179,7 @@
 
             if (languageTrack) {
                 // Skip if already on this track
-                if (currentTrack && languageCodesMatch(currentTrack.languageCode, subtitlesLanguage) && !currentTrack.kind) {
+                if (currentTrack && languageCodesMatch(currentTrack.languageCode, subtitlesLanguage) && !currentTrack.kind && !currentTrack.translationLanguage) {
                     log(`Subtitles already set to selected language: "${languageTrack.name.simpleText}" [${languageTrack.languageCode}]`);
                     return true;
                 }
@@ -213,6 +213,13 @@
             }
 
             log(`Attempting ASR translation from "${asrTrack.languageCode}" to "${subtitlesLanguage}"`);
+
+            // Check if the translated ASR track is already active
+            // This handles cases like "English (auto-generated) >> French" being active
+            if (currentTrack && currentTrack.kind === 'asr' && currentTrack.translationLanguage && languageCodesMatch(currentTrack.translationLanguage.languageCode, subtitlesLanguage)) {
+                log(`Subtitles already set to translated ASR track: "${asrTrack.name.simpleText}" translated to "${subtitlesLanguage}"`);
+                return true;
+            }
 
             const translatedTrack = {
                 ...asrTrack,
