@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed: Refactored video player logic to apply audio tracks immediately upon source detection, restoring legacy reliability.
+- Changed: Optimized event listeners during SPA navigation to reduce browser overhead.
+- Fixed: Issue where audio track settings were skipped if the player triggered events in an unexpected order.
+
+
 ## [2.24.0] - 2026-05-20
 
 ### Changed

@@ -71,12 +71,14 @@ export function setupVideoPlayerListener() {
         }
     }, true);
 
-    // --- Listener 1: audio track, switches to loadstart-only after first loadstart ---
+    // --- Listener 1: Audio track application and event optimization ---
     audioTrackListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
         const video = e.target as HTMLVideoElement;
 
+        // Prevent redundant processing for the same video source
         if ((video as any).srcValue === video.src) return;
+        
         if (userInitiatedChange) {
             coreLog('User initiated quality change - skipping');
             return;
@@ -84,17 +86,23 @@ export function setupVideoPlayerListener() {
 
         coreLog('Video source changed. Event:', e.type);
 
+        // Apply audio track immediately on source change (replicates legacy behavior for reliability)
         applyAudioTrack();
+        
+        // Signal that secondary settings (subtitles, etc.) should be applied once the player is ready
         shouldApplyVideoPlayerSettings = true;
 
-        if (!hasInitialPlayerLoadTriggered && e.type === 'loadstart') {
+        // Optimization: After the first video event is caught, switch to listening only to
+        // loadstart and loadedmetadata to reduce overhead during SPA navigation.
+        if (!hasInitialPlayerLoadTriggered) {
             hasInitialPlayerLoadTriggered = true;
-            coreLog('Optimized: switching to loadstart-only for SPA navigation');
+            coreLog('Optimized: switching to essential events for SPA navigation');
 
             allVideoEvents.forEach(evt => {
                 if (audioTrackListener) document.removeEventListener(evt, audioTrackListener, true);
             });
             document.addEventListener('loadstart', audioTrackListener!, true);
+            document.addEventListener('loadedmetadata', audioTrackListener!, true);
         }
     };
 
@@ -132,6 +140,7 @@ function cleanUpVideoPlayerListener() {
     if (audioTrackListener) {
         allVideoEvents.forEach(evt => document.removeEventListener(evt, audioTrackListener!, true));
         document.removeEventListener('loadstart', audioTrackListener, true);
+        document.removeEventListener('loadedmetadata', audioTrackListener, true);
         audioTrackListener = null;
     }
     if (settingsListener) {
@@ -146,6 +155,8 @@ function cleanUpVideoPlayerListener() {
         window.clearTimeout(userChangeTimeout);
         userChangeTimeout = null;
     }
+    hasInitialPlayerLoadTriggered = false;
+    hasInitialSettingsApplied = false;
     userInitiatedChange = false;
 }
 
