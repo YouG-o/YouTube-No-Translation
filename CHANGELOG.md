@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.24.1] - 2026-05-26
+
 ### Fixed
 - Issue where audio track settings were skipped if the player triggered events in an unexpected order.
 - Subtitle detection now correctly distinguishes between original manual tracks and translated ASR tracks, preventing incorrect re-application of settings when a translated ASR track is already active.
@@ -660,7 +662,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.0...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.1...HEAD
+[2.24.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.0...v2.24.1
 [2.24.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.23.0...v2.24.0
 [2.23.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.2...v2.23.0
 [2.22.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.1...v2.22.2
