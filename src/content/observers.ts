@@ -377,7 +377,7 @@ async function pageVideosObserver() {
                         resolve();
                     }
                 });
-                observer.observe(document.body, { childList: true, subtree: true });
+                observer.observe(document.documentElement, { childList: true, subtree: true });
             });
         }
 
@@ -405,7 +405,7 @@ async function pageVideosObserver() {
                         resolve();
                     }
                 });
-                observer.observe(document.body, { childList: true, subtree: true });
+                observer.observe(document.documentElement, { childList: true, subtree: true });
             });
         }
 
@@ -678,7 +678,7 @@ function playlistVideosObserver() {
             }
         });
         
-        playlistObserver.observe(document.body, {
+        playlistObserver.observe(document.documentElement, {
             childList: true,
             subtree: true
         });
@@ -774,9 +774,9 @@ function setupNotificationTitlesDropdownObserver() {
         });
     });
 
-    // Observe only the popup container instead of entire body
+    // Observe the popup container if it exists, otherwise observe documentElement as fallback
     const popupContainer = document.querySelector('ytd-popup-container');
-    const targetElement = popupContainer || document.body;
+    const targetElement = popupContainer || document.documentElement;
     
     notificationTitlesDropdownObserver.observe(targetElement, {
         childList: true,

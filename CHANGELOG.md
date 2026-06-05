@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Prevent TypeError when setting some observers if document.body is not available during early script execution.
+
 ## [2.24.1] - 2026-05-26
 
 ### Fixed
