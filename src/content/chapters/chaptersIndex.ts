@@ -246,13 +246,10 @@ export function getCurrentVideoTime(): number {
  * @returns true if chapters appear to be translated, false otherwise
  */
 function areChaptersTranslated(descriptionChapters: Chapter[]): boolean {
-    // Get displayed chapters from side panel (most reliable source)
+    // Get displayed chapters from side panel
     const openChaptersPanel = document.querySelector('ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-macro-markers-description-chapters"]');
     
-    if (!openChaptersPanel) {
-        // Panel doesn't exist or isn't visible - try chapter button as fallback
-        //chaptersLog('Chapters panel not found, checking chapter button instead');
-        
+    const checkButtonFallback = (): boolean => {
         const chapterButton = document.querySelector('.ytp-chapter-title-content');
         if (!chapterButton) {
             chaptersLog('No chapter button found, assuming chapters are not translated');
@@ -263,16 +260,13 @@ function areChaptersTranslated(descriptionChapters: Chapter[]): boolean {
         if (!displayedTitle) {
             return false;
         }
-        
-        // Get current video time to find matching chapter
+
         const currentTime = getCurrentVideoTime();
         const matchingChapter = findChapterByTime(currentTime, descriptionChapters);
-        
         if (!matchingChapter) {
-            chaptersLog('No matching chapter found for current time');
             return false;
         }
-        
+
         // Compare normalized titles
         const normalizedDisplayed = normalizeText(displayedTitle);
         const normalizedOriginal = normalizeText(matchingChapter.title);
@@ -286,16 +280,18 @@ function areChaptersTranslated(descriptionChapters: Chapter[]): boolean {
         }
         
         return isTranslated;
+    };
+
+    if (!openChaptersPanel) {
+        return checkButtonFallback();
     }
-    
-    //chaptersLog('Chapters panel found, checking panel chapters');
-    
+
     // Get chapter elements from panel
-    const chapterElements = openChaptersPanel.querySelectorAll('ytd-macro-markers-list-item-renderer h4.macro-markers');
+    const chapterElements = openChaptersPanel.querySelectorAll('ytd-macro-markers-list-item-renderer .macro-markers');
     
     if (chapterElements.length === 0) {
-        chaptersLog('No chapter elements found in panel');
-        return false;
+        // If panel exists but is empty/loading, try button fallback
+        return checkButtonFallback();
     }
     
     //chaptersLog(`Comparing ${chapterElements.length} displayed chapters with ${descriptionChapters.length} description chapters`);

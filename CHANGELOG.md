@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Avoid repeated audio track processing and duplicate logs for the same video source during SPA navigation.
 - Resolved race condition where auto-generated subtitles failed to load when external tools (like SponsorBlock) performed an automatic skip during video initialization.
 - Improved detection of user-initiated seeking via progress bar clicks and keyboard shortcuts to prevent overriding manual subtitle selections.
+- Improved chapter detection and replacement in the side panel by updating selectors to support `h3` tags for chapter titles.
+- Enhanced chapter translation detection by adding a fallback to the player's chapter button when the side panel is not fully loaded.
+- Increased robustness of chapter initialization by attempting detection multiple times to account for asynchronous DOM rendering.
+
 
 ## [2.24.1] - 2026-05-26
 

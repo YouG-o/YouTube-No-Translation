@@ -134,14 +134,14 @@ function replaceChapterTitlesInPanels(): void {
     }
     
     // Find chapter title elements ONLY within the open panel
-    const chapterElements = openChaptersPanel.querySelectorAll('ytd-macro-markers-list-item-renderer h4.macro-markers');
+    const chapterElements = openChaptersPanel.querySelectorAll('ytd-macro-markers-list-item-renderer .macro-markers');
     
     chapterElements.forEach((element: Element) => {
-        const h4Element = element as HTMLElement;
-        const currentTitle = h4Element.textContent?.trim();
+        const titleElement = element as HTMLElement;
+        const currentTitle = titleElement.textContent?.trim();
         
         if (currentTitle) {
-            const timeElement = h4Element.closest('ytd-macro-markers-list-item-renderer')?.querySelector('#time');
+            const timeElement = titleElement.closest('ytd-macro-markers-list-item-renderer')?.querySelector('#time');
             const timeText = timeElement?.textContent?.trim();
             
             if (timeText) {
@@ -149,7 +149,7 @@ function replaceChapterTitlesInPanels(): void {
                 const matchingChapter = findChapterByTime(timeInSeconds, cachedChapters);
 
                 if (matchingChapter && normalizeText(currentTitle) !== normalizeText(matchingChapter.title)) {
-                    h4Element.textContent = matchingChapter.title;
+                    titleElement.textContent = matchingChapter.title;
                     chaptersLog(`Replaced panel chapter: "${currentTitle}" -> "${matchingChapter.title}" at ${timeText}`);
                 }
             } else {
