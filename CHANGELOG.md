@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.24.2] - 2026-06-17
+
 ### Fixed
 - Prevent TypeError when setting some observers if document.body is not available during early script execution.
 - Avoid repeated audio track processing and duplicate logs for the same video source during SPA navigation.
@@ -672,7 +674,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.1...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.2...HEAD
+[2.24.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.1...v2.24.2
 [2.24.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.0...v2.24.1
 [2.24.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.23.0...v2.24.0
 [2.23.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.22.2...v2.23.0
