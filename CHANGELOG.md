@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Ensure original chapter titles are restored even when the currently displayed chapter happens to match the original title during initialization.
+
 ## [2.24.2] - 2026-06-17
 
 ### Fixed

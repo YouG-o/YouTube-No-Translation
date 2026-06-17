@@ -104,7 +104,7 @@ function isDescriptionOriginal(cached: string, current: string): boolean {
 }
 
 
-export async function refreshDescription(id: string): Promise<void> {
+export async function refreshDescription(id: string): Promise<string | null> {
     const isMobile = isMobileSite();
     const descriptionSelector = isMobile 
         ? 'ytm-expandable-video-description-body-renderer' 
@@ -118,7 +118,7 @@ export async function refreshDescription(id: string): Promise<void> {
         const currentVideoId = extractVideoIdFromUrl(window.location.href);
         if (currentVideoId !== id) {
             descriptionLog(`Aborting refreshDescription: video changed from ${id} to ${currentVideoId}`);
-            return;
+            return null;
         }
         
         // First check if we already have the description in cache
@@ -132,7 +132,7 @@ export async function refreshDescription(id: string): Promise<void> {
             const stillCurrentVideoId = extractVideoIdFromUrl(window.location.href);
             if (stillCurrentVideoId !== id) {
                 descriptionLog(`Aborting refreshDescription after fetch: video changed from ${id} to ${stillCurrentVideoId}`);
-                return;
+                return null;
             }
             //descriptionLog('Description element found, injecting script');
         } else {
@@ -145,11 +145,14 @@ export async function refreshDescription(id: string): Promise<void> {
                 // Always update the element, whether it's in cache or not
                 updateDescriptionElement(descriptionElement as HTMLElement, description, id);
                 descriptionLog('Description updated to original');
+                return description;
             }
         }
     } catch (error) {
         descriptionLog(`${error}`);
     }
+
+    return null;
 }
 
 
@@ -437,7 +440,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
                 
                 if (!isOriginal) {
                     // Only refresh if not original
-                    return refreshDescription(id).then(() => {
+                    return refreshDescription(id).then((refreshedDescription) => {
                         // Final check before setting up observers
                         const finalVideoId = extractVideoIdFromUrl(window.location.href);
                         if (finalVideoId !== id) {
@@ -448,8 +451,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
                         descriptionExpandObserver(id);
                         setupDescriptionContentObserver(id);
                         
-                        // Return the description from cache (was just set because not original)
-                        return descriptionCache.getDescription(id) ?? null;
+                        return refreshedDescription ?? description;
                     });
                 } else {
                     cleanupDescriptionObservers();
@@ -467,7 +469,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
                 return null;
             }
             
-            return refreshDescription(id).then(() => {
+            return refreshDescription(id).then((description) => {
                 // Final check before setting up observers
                 const finalVideoId = extractVideoIdFromUrl(window.location.href);
                 if (finalVideoId !== id) {
@@ -478,8 +480,7 @@ export async function processDescriptionForVideoId(id: string): Promise<string |
                 descriptionExpandObserver(id);
                 setupDescriptionContentObserver(id);
                 
-                // Return the description from cache (was just set)
-                return descriptionCache.getDescription(id) ?? null;
+                return description ?? descriptionCache.getDescription(id) ?? null;
             });
         });
     }
