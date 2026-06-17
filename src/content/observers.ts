@@ -62,15 +62,31 @@ export function setupVideoPlayerListener() {
 
     processedVideoSources = new WeakMap();
 
-    document.addEventListener('click', (e) => {
+    // Helper to set the user initiated flag with timeout
+    const setUserInitiatedFlag = () => {
+        userInitiatedChange = true;
+        if (userChangeTimeout) window.clearTimeout(userChangeTimeout);
+        userChangeTimeout = window.setTimeout(() => {
+            userInitiatedChange = false;
+            userChangeTimeout = null;
+        }, 2000);
+    };
+
+    // Detect mouse interactions with seeking elements
+    document.addEventListener('mousedown', (e) => {
         const target = e.target as HTMLElement;
-        if (target.closest('.ytp-settings-menu')) {
-            userInitiatedChange = true;
-            if (userChangeTimeout) window.clearTimeout(userChangeTimeout);
-            userChangeTimeout = window.setTimeout(() => {
-                userInitiatedChange = false;
-                userChangeTimeout = null;
-            }, 2000);
+        if (target.closest('.ytp-settings-menu') || 
+            target.closest('.ytp-progress-bar') || 
+            target.closest('.ytp-chapters-container')) {
+            setUserInitiatedFlag();
+        }
+    }, true);
+
+    // Detect keyboard shortcuts for seeking (J, L, Arrows, Numbers 0-9, etc.)
+    document.addEventListener('keydown', (e) => {
+        const seekKeys = ['j', 'l', 'arrowleft', 'arrowright', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        if (seekKeys.includes(e.key.toLowerCase())) {
+            setUserInitiatedFlag();
         }
     }, true);
 
@@ -135,13 +151,22 @@ export function setupVideoPlayerListener() {
     };
     document.addEventListener('yt-player-updated', ytPlayerUpdatedHandler);
 
-    // --- Listener 3 (SPA): apply settings on canplaythrough ---
+    // --- Listener 3 (SPA & Resilience): apply settings on canplaythrough or seeked ---
     settingsListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
-        if (!shouldApplyVideoPlayerSettings) return;
-        if (!hasInitialSettingsApplied) return; // initial load is handled by yt-player-updated
 
-        coreLog('Applying post-playing settings (subtitles, embed title)');
+        // Skip if a user interaction is currently active (prevents overriding manual changes)
+        if (userInitiatedChange) return;
+
+        // Apply if it's the designated application moment (shouldApply...)
+        // OR if it's a seeked event (likely an auto-skip from SponsorBlock or similar tools)
+        const isResilienceEvent = e.type === 'seeked';
+        if (!shouldApplyVideoPlayerSettings && !isResilienceEvent) return;
+        
+        // Wait until the first load is handled by yt-player-updated, unless it's a resilience event
+        if (!hasInitialSettingsApplied && !isResilienceEvent) return;
+
+        coreLog(`Applying post-playing settings (subtitles, embed title). Event: ${e.type}`);
         applyVideoPlayerSettings();
         shouldApplyVideoPlayerSettings = false;
     };
@@ -151,6 +176,7 @@ export function setupVideoPlayerListener() {
     });
 
     document.addEventListener('canplaythrough', settingsListener, true);
+    document.addEventListener('seeked', settingsListener, true);
 }
 
 function cleanUpVideoPlayerListener() {
@@ -162,6 +188,7 @@ function cleanUpVideoPlayerListener() {
     }
     if (settingsListener) {
         document.removeEventListener('canplaythrough', settingsListener, true);
+        document.removeEventListener('seeked', settingsListener, true);
         settingsListener = null;
     }
     if (ytPlayerUpdatedHandler) {

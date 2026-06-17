@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Prevent TypeError when setting some observers if document.body is not available during early script execution.
 - Avoid repeated audio track processing and duplicate logs for the same video source during SPA navigation.
+- Resolved race condition where auto-generated subtitles failed to load when external tools (like SponsorBlock) performed an automatic skip during video initialization.
+- Improved detection of user-initiated seeking via progress bar clicks and keyboard shortcuts to prevent overriding manual subtitle selections.
 
 ## [2.24.1] - 2026-05-26
 
