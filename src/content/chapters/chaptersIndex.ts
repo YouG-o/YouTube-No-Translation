@@ -365,15 +365,16 @@ export function checkAndInitializeChapters(videoId: string, description: string)
         
         //chaptersLog(`Found ${descriptionChapters.length} chapters in description`);
         
-        // Check if displayed chapters are translated
+        // Initialize whenever original chapters are available. The displayed
+        // chapter used for detection can match by coincidence (for example,
+        // "start" at 0:00) while the rest of the chapters are translated.
         const chaptersTranslated = areChaptersTranslated(descriptionChapters);
-        
-        if (chaptersTranslated) {
-            chaptersLog('Chapters are translated, initializing replacement system');
-            initializeChaptersReplacement(description);
-        } else {
-            chaptersLog('Chapters are already original, skipping replacement system');
-        }
+        chaptersLog(
+            chaptersTranslated
+                ? 'Chapters are translated, initializing replacement system'
+                : 'Original chapters found, initializing replacement system'
+        );
+        initializeChaptersReplacement(description);
     }, 500); // 500ms delay to ensure chapters are rendered
 }
 
