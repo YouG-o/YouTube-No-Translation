@@ -47,6 +47,7 @@ let hasInitialSettingsApplied = false;
 let userInitiatedChange = false;
 // Timeout ID for resetting the user initiated flag
 let userChangeTimeout: number | null = null;
+let processedVideoSources: WeakMap<HTMLVideoElement, string> | null = null;
 
 const allVideoEvents = ['loadstart', 'loadedmetadata', 'canplay', 'playing', 'play', 'timeupdate', 'seeked'];
 
@@ -58,6 +59,8 @@ let ytPlayerUpdatedHandler: (() => void) | null = null;
 export function setupVideoPlayerListener() {
     cleanUpVideoPlayerListener();
     coreLog('Setting up video player listener');
+
+    processedVideoSources = new WeakMap();
 
     document.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
@@ -75,14 +78,28 @@ export function setupVideoPlayerListener() {
     audioTrackListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
         const video = e.target as HTMLVideoElement;
+        const currentSource = video.currentSrc || video.src || '';
+
+        if (!currentSource) {
+            return; // Wait until the video has a valid source
+        }
 
         // Prevent redundant processing for the same video source
-        if ((video as any).srcValue === video.src) return;
-        
+        if ((video as any).srcValue === currentSource) {
+            return;
+        }
+
+        if (processedVideoSources?.get(video) === currentSource) {
+            return;
+        }
+
         if (userInitiatedChange) {
             coreLog('User initiated quality change - skipping');
             return;
         }
+
+        processedVideoSources?.set(video, currentSource);
+        (video as any).srcValue = currentSource;
 
         coreLog('Video source changed. Event:', e.type);
 
@@ -155,6 +172,8 @@ function cleanUpVideoPlayerListener() {
         window.clearTimeout(userChangeTimeout);
         userChangeTimeout = null;
     }
+
+    processedVideoSources = null;
     hasInitialPlayerLoadTriggered = false;
     hasInitialSettingsApplied = false;
     userInitiatedChange = false;

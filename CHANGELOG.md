@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Prevent TypeError when setting some observers if document.body is not available during early script execution.
+- Avoid repeated audio track processing and duplicate logs for the same video source during SPA navigation.
 
 ## [2.24.1] - 2026-05-26
 
