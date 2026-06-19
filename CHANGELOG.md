@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Ensure original chapter titles are restored even when the currently displayed chapter happens to match the original title during initialization.
+- Fix audio track not being applied after YouTube's black screen buffering issue, caused by the same blob URL being reused across video sessions.
 
 ## [2.24.2] - 2026-06-17
 

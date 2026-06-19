@@ -90,47 +90,36 @@ export function setupVideoPlayerListener() {
         }
     }, true);
 
+    document.addEventListener('yt-navigate-finish', () => {
+    document.querySelectorAll('video').forEach(v => {
+        (v as any).srcValue = '';
+        });
+        coreLog('yt-navigate-finish: reset srcValue');
+    });
+
     // --- Listener 1: Audio track application and event optimization ---
     audioTrackListener = function(e: Event) {
         if (!(e.target instanceof HTMLVideoElement)) return;
         const video = e.target as HTMLVideoElement;
         const currentSource = video.currentSrc || video.src || '';
 
-        if (!currentSource) {
-            return; // Wait until the video has a valid source
-        }
-
-        // Prevent redundant processing for the same video source
-        if ((video as any).srcValue === currentSource) {
-            return;
-        }
-
-        if (processedVideoSources?.get(video) === currentSource) {
-            return;
-        }
+        if (!currentSource) return;
+        if ((video as any).srcValue === currentSource) return;
 
         if (userInitiatedChange) {
             coreLog('User initiated quality change - skipping');
             return;
         }
 
-        processedVideoSources?.set(video, currentSource);
         (video as any).srcValue = currentSource;
+        coreLog(`Video source changed. Event: ${e.type}`);
 
-        coreLog('Video source changed. Event:', e.type);
-
-        // Apply audio track immediately on source change (replicates legacy behavior for reliability)
         applyAudioTrack();
-        
-        // Signal that secondary settings (subtitles, etc.) should be applied once the player is ready
         shouldApplyVideoPlayerSettings = true;
 
-        // Optimization: After the first video event is caught, switch to listening only to
-        // loadstart and loadedmetadata to reduce overhead during SPA navigation.
         if (!hasInitialPlayerLoadTriggered) {
             hasInitialPlayerLoadTriggered = true;
             coreLog('Optimized: switching to essential events for SPA navigation');
-
             allVideoEvents.forEach(evt => {
                 if (audioTrackListener) document.removeEventListener(evt, audioTrackListener, true);
             });
