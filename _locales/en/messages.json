@@ -298,6 +298,10 @@
     "message": "Russian",
     "description": "Language name: Russian"
   },
+  "language_th": {
+    "message": "Thai",
+    "description": "Language name: Thai"
+  },
   "language_tr": {
     "message": "Turkish",
     "description": "Language name: Turkish"

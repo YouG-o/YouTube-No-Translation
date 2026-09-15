@@ -1,0 +1,370 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "รักษาเนื้อหา YouTube ให้เป็นภาษาต้นฉบับ: ชื่อวิดีโอ คำอธิบาย เสียงพากย์... ไม่ต้องเจอการแปลที่ไม่ต้องการอีกต่อไป",
+    "description": "Description of the extension"
+  },
+
+  "popup_createdBy": {
+    "message": "สร้างโดย YouGo",
+    "description": "Footer credit text - You can also add your name here 'Created by YouGo - Translated by [YourName]'"
+  },
+
+  "popup_originalTitles": {
+    "message": "ชื่อวิดีโอต้นฉบับ",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "แสดงชื่อวิดีโอต้นฉบับ: วิดีโอหลักและชื่อขณะเรียกดู, การแจ้งเตือน, ช่อง (ในหน้าวิดีโอหลัก)",
+    "description": "Tooltip for original titles feature"
+  },
+
+  "popup_audioTracks": {
+    "message": "แทร็กเสียง",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "สลับไปยังแทร็กเสียงที่ต้องการ ขออภัย ฟีเจอร์นี้ยังไม่รองรับบน YouTube เวอร์ชันมือถือในขณะนี้ (m.youtube.com)",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "เฉพาะเดสก์ท็อป",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "ฟีเจอร์นี้ใช้ได้เฉพาะบนเบราว์เซอร์เดสก์ท็อปเท่านั้น",
+    "description": "Title attribute for desktop-only badge"
+  },
+
+  "popup_originalDescriptions": {
+    "message": "คำอธิบายต้นฉบับ",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "แทนที่คำอธิบายที่แปลแล้วด้วยคำอธิบายต้นฉบับ",
+    "description": "Tooltip for original descriptions feature"
+  },
+
+  "popup_originalThumbnails": {
+    "message": "ภาพขนาดย่อต้นฉบับ",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "แทนที่ภาพขนาดย่อที่แปลแล้วด้วยภาพต้นฉบับขณะเรียกดูวิดีโอ",
+    "description": "Tooltip for original thumbnails feature"
+  },
+
+  "popup_subtitles": {
+    "message": "คำบรรยาย",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "แสดงคำบรรยายในภาษาที่คุณต้องการ (ถ้ามี) หากไม่มี คำบรรยายจะถูกปิด คำบรรยายที่สร้างอัตโนมัติจะถูกข้าม",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "เปิดใช้คำบรรยายที่สร้างอัตโนมัติ",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "เมื่อเปิดใช้งาน หากไม่มีคำบรรยายที่จัดทำด้วยมือในภาษาที่คุณต้องการ ระบบจะใช้คำบรรยายที่สร้างอัตโนมัติ (ASR) แทน พร้อมแปลหากจำเป็น",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+
+  "popup_extraSettings": {
+    "message": "การตั้งค่าเพิ่มเติม",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3 (ต้องใช้ API KEY)",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "ใช้ YouTube Data API v3 เพื่อดึงชื่อช่องและคำอธิบายต้นฉบับ และเป็นทางเลือกสำรองหากวิธีอื่นล้มเหลว เชื่อถือได้มากแต่ต้องใช้ API key ของคุณเอง คีย์ของคุณถูกเก็บไว้ในเครื่อง มีเพียงคุณเท่านั้นที่เข้าถึงได้",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "ป้อน API key ของคุณ...",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "รับ API key ฟรีได้ที่นี่",
+    "description": "Link text for getting API key"
+  },
+  "popup_extraSettings_devLog": {
+    "message": "Dev Log"
+  },
+  "popup_extraSettings_devLog_tooltip": {
+    "message": "เปิดใช้ console logs สำหรับการดีบัก",
+    "description": "Tooltip for dev log setting"
+  },
+
+  "popup_clearCache": {
+    "message": "ล้างแคช",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "ล้างชื่อวิดีโอและคำอธิบายที่แคชไว้",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "กำลังล้าง...",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "ล้างแล้ว! ($TABS$ แท็บ)",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "ล้างแคชแล้ว!",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "เกิดข้อผิดพลาด",
+    "description": "Button text on error"
+  },
+
+  "popup_reportIssue": {
+    "message": "รายงานปัญหา",
+    "description": "Link text for reporting issues"
+  },
+
+  "popup_kofi_alt": {
+    "message": "สนับสนุนฉันบน Ko-fi",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "สนับสนุนฉันบน Ko-fi",
+    "description": "Title attribute for Ko-fi link"
+  },
+
+  "settings_audioTracks": {
+    "message": "แทร็กเสียง",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "สลับไปยังแทร็กเสียงที่ต้องการเสมอ ขออภัย ฟีเจอร์นี้ยังไม่รองรับบน YouTube เวอร์ชันมือถือในขณะนี้ (m.youtube.com)",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "หากคำอธิบายถูกแปล จะถูกแทนที่ด้วยคำอธิบายต้นฉบับ",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "แสดงคำบรรยายในภาษาที่คุณต้องการหากมี หากไม่มี คำบรรยายจะถูกปิด คำบรรยายที่สร้างอัตโนมัติจะถูกข้ามตามค่าเริ่มต้น",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "การจัดการแคช",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "ล้างชื่อวิดีโอและคำอธิบายที่แคชไว้ ใช้คำสั่งนี้หากพบเนื้อหาไม่ถูกต้องหรือต้องการเริ่มต้นใหม่",
+    "description": "Tooltip for cache management"
+  },
+
+  "settings_welcome_title": {
+    "message": "ยินดีต้อนรับสู่",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_titleComplete": {
+    "message": "ยินดีต้อนรับสู่ $EXTENSION_NAME$",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
+  "settings_welcome_message": {
+    "message": "ขอบคุณที่ติดตั้ง YouTube No Translation! ที่นี่คุณสามารถตั้งค่าการทำงานของส่วนขยายได้",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "สำคัญ:",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "เพื่อให้ส่วนขยายทำงานบนแท็บ YouTube ที่เปิดไว้ก่อนการติดตั้ง คุณต้องรีโหลดแท็บเหล่านั้น",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "รีโหลดแท็บ YouTube ที่ใช้งานอยู่ทั้งหมด",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "รีโหลดแล้ว $COUNT$ แท็บ!",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "เกิดข้อผิดพลาดขณะรีโหลดแท็บ",
+    "description": "Button text on reload error"
+  },
+
+  "settings_footer_support": {
+    "message": "ส่วนขยายนี้เป็นโปรเจกต์ของคนคนเดียวที่สร้างขึ้นด้วยความตั้งใจ การสนับสนุนของคุณช่วยให้ฉันพัฒนาต่อไปได้ — ขอบคุณครับ 💛",
+    "description": "Footer support message in settings page"
+  },
+
+  "language_original": {
+    "message": "ต้นฉบับ",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "ปิดใช้งานเสมอ",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "อังกฤษ",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "ฝรั่งเศส",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "สเปน",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "อาหรับ",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "จีน",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "ดัตช์",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "เยอรมัน",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "ฮีบรู",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "ฮินดี",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "อินโดนีเซีย",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "อิตาลี",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "ญี่ปุ่น",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "เกาหลี",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "โปแลนด์",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "โปรตุเกส",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "รัสเซีย",
+    "description": "Language name: Russian"
+  },
+  "language_th": {
+    "message": "ไทย",
+    "description": "Language name: Thai"
+  },
+  "language_tr": {
+    "message": "ตุรกี",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "ยูเครน",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "เวียดนาม",
+    "description": "Language name: Vietnamese"
+  },
+
+  "toast_title": {
+    "message": "ขอบคุณที่ใช้ YouTube No Translation!",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "ฉันดูแลและพัฒนาโปรเจกต์นี้ด้วยเวลาส่วนตัว หากคุณต้องการสนับสนุนการอัปเดตในอนาคต สามารถทำได้ผ่าน Ko-fi — ความช่วยเหลือของคุณมีความหมายมาก 💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "สนับสนุนฉันบน Ko-fi",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "สนับสนุนฉันบน Ko-fi",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "เตือนฉันอีกครั้งเดือนหน้า",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "คุณจะได้รับการเตือนอีกครั้งในเดือนหน้า",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "ไม่ ขอบคุณ",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "คุณจะไม่เห็นข้อความนี้อีก",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "ไม่สะดวกให้ทิป? คุณยังสามารถสนับสนุนฉันได้ด้วยการให้รีวิว 5 ดาวที่ ",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": "!",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome Web Store",
+    "description": "Chrome store name"
+  }
+}
