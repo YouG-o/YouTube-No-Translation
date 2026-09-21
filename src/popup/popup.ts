@@ -27,6 +27,8 @@ const asrSubtitlesToggle = document.getElementById('asrSubtitlesEnabled') as HTM
 const asrToggleContainer = document.getElementById('asrToggleContainer') as HTMLDivElement;
 const youtubeDataApiToggle = document.getElementById('youtubeDataApiEnabled') as HTMLInputElement;
 const youtubeDataApiKeyInput = document.getElementById('youtubeDataApiKey') as HTMLInputElement;
+const toggleApiKeyVisibilityBtn = document.getElementById('toggleApiKeyVisibility') as HTMLButtonElement | null;
+const apiKeyEyeIcon = document.getElementById('apiKeyEyeIcon') as SVGElement | null;
 const youtubeApiKeyContainer = document.getElementById('youtubeApiKeyContainer') as HTMLDivElement;
 const devLogToggle = document.getElementById('devLogEnabled') as HTMLInputElement;
 const clearCacheBtn = document.getElementById('clearCacheBtn') as HTMLButtonElement;
@@ -178,9 +180,42 @@ if (isWelcome) {
     }
 }
 
+function updateApiKeyVisibilityButton(showValue: boolean) {
+    if (!toggleApiKeyVisibilityBtn || !apiKeyEyeIcon) return;
+
+    toggleApiKeyVisibilityBtn.setAttribute('aria-label', showValue ? 'Hide API key' : 'Show API key');
+    toggleApiKeyVisibilityBtn.title = showValue ? 'Hide API key' : 'Show API key';
+
+    if (showValue) {
+        apiKeyEyeIcon.innerHTML = `
+            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+            <path d="M4 4l16 16"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        `;
+    } else {
+        apiKeyEyeIcon.innerHTML = `
+            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        `;
+    }
+}
+
+function setApiKeyInputVisibility(showValue: boolean) {
+    if (!youtubeDataApiKeyInput) return;
+    youtubeDataApiKeyInput.type = showValue ? 'text' : 'password';
+    updateApiKeyVisibilityButton(showValue);
+}
+
 // Handle extra settings toggle click - only if element exists
 if (extraSettingsToggle) {
     extraSettingsToggle.addEventListener('click', toggleExtraSettings);
+}
+
+if (toggleApiKeyVisibilityBtn && youtubeDataApiKeyInput) {
+    toggleApiKeyVisibilityBtn.addEventListener('click', () => {
+        const shouldShow = youtubeDataApiKeyInput.type === 'password';
+        setApiKeyInputVisibility(shouldShow);
+    });
 }
 
 

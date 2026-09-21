@@ -260,7 +260,15 @@
                                     </label>
                                 </div>
                                 <div class="mt-2 youtube-api-key-container" id="youtubeApiKeyContainer" style="display: none;">
-                                    <input type="password" id="youtubeDataApiKey" data-i18n-placeholder="popup_extraSettings_youtubeDataApi_placeholder" class="w-full bg-gray-800 text-white text-xs rounded px-2 py-1 border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                                    <div class="relative">
+                                        <input type="password" id="youtubeDataApiKey" data-i18n-placeholder="popup_extraSettings_youtubeDataApi_placeholder" class="w-full bg-gray-800 text-white text-xs rounded px-2 py-1 pr-8 border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                                        <button type="button" id="toggleApiKeyVisibility" aria-label="Show API key" title="Show API key" class="absolute inset-y-0 right-0 flex items-center justify-center w-8 text-gray-400 hover:text-gray-200 transition-colors">
+                                            <svg id="apiKeyEyeIcon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        </button>
+                                    </div>
                                     <div class="mt-1 text-xs text-gray-400">
                                         <a href="https://developers.google.com/youtube/v3/getting-started" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300" data-i18n="popup_extraSettings_youtubeDataApi_link"></a>
                                     </div>

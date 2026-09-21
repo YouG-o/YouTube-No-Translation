@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Thai (th) language translation
+- Added a standard eye toggle to reveal or hide the YouTube Data API key in both the popup and settings page while keeping the value masked by default.
 
 ## [2.25.0] - 2026-09-09
 ### Fixed
