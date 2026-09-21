@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Thai (th) language translation
 - Added a standard eye toggle to reveal or hide the YouTube Data API key in both the popup and settings page while keeping the value masked by default.
 
+### Changed
+- Centralized supported languages configuration in a single TypeScript file (`src/config/languages.ts`) and dynamically populated language dropdowns across the popup and settings page to improve maintainability and DRY compliance.
+
 ## [2.25.0] - 2026-09-09
 ### Fixed
 - Select original-language auto-generated subtitles when dubbed audio also has auto-generated subtitle tracks. (Thanks to [mooons](https://github.com/mooons))

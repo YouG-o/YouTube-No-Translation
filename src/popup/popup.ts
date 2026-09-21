@@ -14,6 +14,7 @@ import { coreLog, coreErrorLog } from "../utils/logger";
 import { isSafari } from "../utils/browser";
 import { displayExtensionVersion, displayExtensionName } from "../utils/display";
 import { getMessage, localizeDocument } from "../utils/i18n";
+import { SUPPORTED_LANGUAGES } from "../config/languages";
 
 
 const titleToggle = document.getElementById('titleTranslation') as HTMLInputElement;
@@ -64,8 +65,43 @@ function updateAsrToggleVisibility() {
     asrToggleContainer.style.display = shouldShow ? 'block' : 'none';
 }
 
+// Function to dynamically populate language select elements
+function populateLanguageSelect(
+    selectElement: HTMLSelectElement, 
+    options: { includeDisabled?: boolean; includeOriginal?: boolean } = {}
+) {
+    if (!selectElement) return;
+    
+    selectElement.innerHTML = '';
+    
+    if (options.includeOriginal) {
+        const opt = document.createElement('option');
+        opt.value = 'original';
+        opt.setAttribute('data-i18n', 'language_original');
+        selectElement.appendChild(opt);
+    }
+    
+    if (options.includeDisabled) {
+        const opt = document.createElement('option');
+        opt.value = 'disabled';
+        opt.setAttribute('data-i18n', 'language_disabled');
+        selectElement.appendChild(opt);
+    }
+    
+    SUPPORTED_LANGUAGES.forEach(lang => {
+        const opt = document.createElement('option');
+        opt.value = lang.code;
+        opt.setAttribute('data-i18n', lang.i18nKey);
+        selectElement.appendChild(opt);
+    });
+}
+
 // Initialize toggle states from storage
 document.addEventListener('DOMContentLoaded', async () => {
+    // Populate language selectors dynamically before localization
+    populateLanguageSelect(audioLanguageSelect, { includeOriginal: true });
+    populateLanguageSelect(subtitlesLanguageSelect, { includeOriginal: true, includeDisabled: true });
+
     // Localize all static text
     localizeDocument();
     
