@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.25.1] - 2026-09-24
 ### Added
 - Thai (th) language translation
 - Added a standard eye toggle to reveal or hide the YouTube Data API key in both the popup and settings page while keeping the value masked by default.
@@ -683,7 +685,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.0...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.1...HEAD
+[2.25.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.0...v2.25.1
 [2.25.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.6...v2.25.0
 [2.24.6]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.5...v2.24.6
 [2.24.5]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.24.4...v2.24.5
