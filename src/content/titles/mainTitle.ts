@@ -160,18 +160,53 @@ function updatePageTitle(mainTitle: string): void {
     cleanupPageTitleObserver();
     
     const expectedTitle = `${mainTitle} - YouTube`;
-    mainTitleLog(
-        `Updated page title from : %c${normalizeText(document.title)}%c to : %c${normalizeText(expectedTitle)}`,
-        'color: grey',    
-        'color: #fcd34d',      
-        'color: white; background: rgba(0,0,0,0.5); padding:2px 4px; border-radius:3px;'
-    );
-    document.title = expectedTitle;
+
+    // Also update mediaSession metadata title if available (used by external extensions and OS media overlays)
+    if ('mediaSession' in navigator && navigator.mediaSession.metadata) {
+        navigator.mediaSession.metadata.title = mainTitle;
+    }
+
+    // Helper to check if title ends with our expected title or main title (allowing third-party prefixes)
+    const isTitleMatching = (currentTitle: string): boolean => {
+        const normalizedCurrent = normalizeText(currentTitle);
+        const normalizedExpected = normalizeText(expectedTitle);
+        const normalizedMain = normalizeText(mainTitle);
+
+        return normalizedCurrent === normalizedExpected ||
+               normalizedCurrent.endsWith(` ${normalizedExpected}`) ||
+               normalizedCurrent.endsWith(` ${normalizedMain}`) ||
+               normalizedCurrent.endsWith(normalizedExpected);
+    };
+
+    // Helper to preserve any third-party prefix when reverting title
+    const constructExpectedTitle = (currentTitle: string): string => {
+        // Look for common separator patterns like " • ", " - ", " | ", or general trailing delimiter before YouTube's title
+        const separators = [' • ', ' - ', ' | ', ' — '];
+        for (const sep of separators) {
+            const index = currentTitle.lastIndexOf(sep);
+            if (index !== -1) {
+                const prefix = currentTitle.substring(0, index);
+                return `${prefix}${sep}${expectedTitle}`;
+            }
+        }
+        return expectedTitle;
+    };
+
+    if (!isTitleMatching(document.title)) {
+        const newTitle = constructExpectedTitle(document.title);
+        mainTitleLog(
+            `Updated page title from : %c${normalizeText(document.title)}%c to : %c${normalizeText(newTitle)}`,
+            'color: grey',    
+            'color: #fcd34d',      
+            'color: white; background: rgba(0,0,0,0.5); padding:2px 4px; border-radius:3px;'
+        );
+        document.title = newTitle;
+    }
     
     const titleElement = document.querySelector('title');
     if (titleElement) {
         pageTitleObserver = new MutationObserver(() => {
-            if (normalizeText(document.title) !== normalizeText(expectedTitle)) {
+            if (!isTitleMatching(document.title)) {
                 // Clear existing debounce timer
                 if (pageTitleDebounceTimer !== null) {
                     clearTimeout(pageTitleDebounceTimer);
@@ -179,9 +214,9 @@ function updatePageTitle(mainTitle: string): void {
                 
                 // Set new debounce timer
                 pageTitleDebounceTimer = window.setTimeout(() => {
-                    if (normalizeText(document.title) !== normalizeText(expectedTitle)) {
+                    if (!isTitleMatching(document.title)) {
                         mainTitleLog('YouTube changed page title, reverting');
-                        document.title = expectedTitle;
+                        document.title = constructExpectedTitle(document.title);
                     }
                     pageTitleDebounceTimer = null;
                 }, PAGE_TITLE_DEBOUNCE_MS);
