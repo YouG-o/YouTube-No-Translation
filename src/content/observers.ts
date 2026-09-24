@@ -850,12 +850,14 @@ export function setupUrlObserver() {
     
     history.pushState = function(...args) {
         coreLog('pushState called with:', args);
+        cleanupPageTitleObserver();
         originalPushState.apply(this, args);
         handleUrlChange();
     };
     
     history.replaceState = function(...args) {
         coreLog('replaceState called with:', args);
+        cleanupPageTitleObserver();
         originalReplaceState.apply(this, args);
         handleUrlChange();
     };
@@ -863,7 +865,13 @@ export function setupUrlObserver() {
     // --- Browser navigation (back/forward)
     window.addEventListener('popstate', () => {
         coreLog('popstate event triggered');
+        cleanupPageTitleObserver();
         handleUrlChange();
+    });
+
+    // Clean immediately as soon as YouTube announces navigation
+    window.addEventListener('yt-navigate-start', () => {
+        cleanupPageTitleObserver();
     });
     
     if (isMobileSite()) {

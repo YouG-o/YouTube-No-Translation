@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Centralized supported languages configuration in a single TypeScript file (`src/config/languages.ts`) and dynamically populated language dropdowns across the popup and settings page to improve maintainability and DRY compliance.
 
+### Fixed
+- Improved page title synchronization to support third-party extensions adding time/progress prefixes, preventing infinite loops.
+- Resolved page title observer race conditions and infinite loops during SPA navigation.
+
 ## [2.25.0] - 2026-09-09
 ### Fixed
 - Select original-language auto-generated subtitles when dubbed audio also has auto-generated subtitle tracks. (Thanks to [mooons](https://github.com/mooons))
