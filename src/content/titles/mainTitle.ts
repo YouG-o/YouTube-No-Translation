@@ -160,6 +160,7 @@ function updatePageTitle(mainTitle: string): void {
     cleanupPageTitleObserver();
     
     const expectedTitle = `${mainTitle} - YouTube`;
+    const videoIdAtSetup = new URLSearchParams(window.location.search).get('v');
 
     // Also update mediaSession metadata title if available (used by external extensions and OS media overlays)
     if ('mediaSession' in navigator && navigator.mediaSession.metadata) {
@@ -180,7 +181,6 @@ function updatePageTitle(mainTitle: string): void {
 
     // Helper to preserve any third-party prefix when reverting title
     const constructExpectedTitle = (currentTitle: string): string => {
-        // Look for common separator patterns like " • ", " - ", " | ", or general trailing delimiter before YouTube's title
         const separators = [' • ', ' - ', ' | ', ' — '];
         for (const sep of separators) {
             const index = currentTitle.lastIndexOf(sep);
@@ -206,14 +206,25 @@ function updatePageTitle(mainTitle: string): void {
     const titleElement = document.querySelector('title');
     if (titleElement) {
         pageTitleObserver = new MutationObserver(() => {
+            // Cancel immediately if user navigated away from the video
+            const currentVideoId = new URLSearchParams(window.location.search).get('v');
+            if (window.location.pathname !== '/watch' || currentVideoId !== videoIdAtSetup) {
+                cleanupPageTitleObserver();
+                return;
+            }
+
             if (!isTitleMatching(document.title)) {
-                // Clear existing debounce timer
                 if (pageTitleDebounceTimer !== null) {
                     clearTimeout(pageTitleDebounceTimer);
                 }
                 
-                // Set new debounce timer
                 pageTitleDebounceTimer = window.setTimeout(() => {
+                    const currentId = new URLSearchParams(window.location.search).get('v');
+                    if (window.location.pathname !== '/watch' || currentId !== videoIdAtSetup) {
+                        cleanupPageTitleObserver();
+                        return;
+                    }
+
                     if (!isTitleMatching(document.title)) {
                         mainTitleLog('YouTube changed page title, reverting');
                         document.title = constructExpectedTitle(document.title);
