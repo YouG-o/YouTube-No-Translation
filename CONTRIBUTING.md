@@ -45,6 +45,39 @@ I'm actively looking for contributors to help with these specific areas:
    npm run prepare:safari
    ```
 
+### Dependency security
+
+Run `npm ci` to reproduce the committed dependency tree, then `npm audit` to
+review all dependencies. Avoid `npm audit fix --force`: it can install Tailwind
+4 without migrating the CLI or styles, and Tailwind 4 requires Firefox 128+
+while this project still supports older Firefox versions.
+
+The `package.json` overrides keep both development-tool copies of `shell-quote`
+on a release that fixes [GHSA-pqg4-j6r4-53mv](https://github.com/advisories/GHSA-pqg4-j6r4-53mv),
+and keep Tailwind's installed `postcss-selector-parser` dependency on a release that fixes
+[GHSA-rj75-hqrm-r3gf](https://github.com/advisories/GHSA-rj75-hqrm-r3gf).
+Revisit these overrides when the parent packages update their dependency ranges.
+
+Tailwind 3 also embeds an older parser in its optional cssnano minifier, which
+npm overrides cannot replace. The current CSS scripts do not use `--minify`;
+enabling that option requires a separate review of the bundled parser.
+
+As of October 7, 2026, the full audit still reports two unresolved upstream
+advisories, including their dependent packages:
+
+- `web-ext` → `@devicefarmer/adbkit` → `node-forge` 1.4.0:
+  [GHSA-86w9-cpqp-85rv](https://github.com/advisories/GHSA-86w9-cpqp-85rv),
+  RSA signature verification; no patched npm release is available.
+- Tailwind 3's glob/watcher dependencies → `braces` 3.0.3:
+  [GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm),
+  stack exhaustion from deeply nested patterns; no patched npm release is available.
+
+These are development dependencies and are not included in the extension's
+browser bundles. They remain audit findings, not verified fixes. The separate
+`npm audit --omit=dev` command checks runtime dependencies only and does not
+replace the full audit. Keep build inputs trusted and review upstream releases
+before changing the toolchain or dropping older-browser support.
+
 ## 🏗️ Project Structure
 
 ```
