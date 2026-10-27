@@ -783,31 +783,31 @@ function setupNotificationTitlesDropdownObserver() {
     cleanupNotificationTitlesDropdownObserver();
     notificationDropdownHandled = false;
 
-    notificationTitlesDropdownObserver = new MutationObserver(() => {
-        waitForElement('ytd-popup-container tp-yt-iron-dropdown[vertical-align="top"]').then((dropdown) => {
-            // Find the multi-page menu renderer inside the dropdown
-            const menuRenderer = dropdown.querySelector('ytd-multi-page-menu-renderer');
-            const menuStyle = menuRenderer?.getAttribute('menu-style');
-            const isNotificationMenu = menuStyle === 'multi-page-menu-style-type-notifications';
-
-            const computedStyle = window.getComputedStyle(dropdown);
-            const isVisible = computedStyle.display !== 'none';
-            
-            if (isVisible && isNotificationMenu && !notificationDropdownHandled) {
-                // Dropdown became visible and is the notifications menu
-                notificationDropdownHandled = true;
-                coreLog('Notification titles dropdown appeared, setting up observer');
-                setupNotificationTitlesObserver();
-            } else if ((!isVisible || !isNotificationMenu) && notificationDropdownHandled) {
-                // Dropdown became hidden or is not the notifications menu
+    const checkNotificationDropdown = () => {
+        const dropdown = document.querySelector('ytd-popup-container tp-yt-iron-dropdown[vertical-align="top"]');
+        if (!dropdown) {
+            if (notificationDropdownHandled) {
                 notificationDropdownHandled = false;
-                //coreLog('Notification titles dropdown disappeared or is not notifications, ready for next opening');
                 cleanupNotificationTitlesObserver();
             }
-        }).catch(() => {
-            // Element not found within timeout, skip processing
-        });
-    });
+            return;
+        }
+
+        const menuRenderer = dropdown.querySelector('ytd-multi-page-menu-renderer');
+        const isNotificationMenu = menuRenderer?.getAttribute('menu-style') === 'multi-page-menu-style-type-notifications';
+        const isVisible = window.getComputedStyle(dropdown).display !== 'none';
+
+        if (isVisible && isNotificationMenu && !notificationDropdownHandled) {
+            notificationDropdownHandled = true;
+            coreLog('Notification titles dropdown appeared, setting up observer');
+            setupNotificationTitlesObserver();
+        } else if ((!isVisible || !isNotificationMenu) && notificationDropdownHandled) {
+            notificationDropdownHandled = false;
+            cleanupNotificationTitlesObserver();
+        }
+    };
+
+    notificationTitlesDropdownObserver = new MutationObserver(checkNotificationDropdown);
 
     // Observe the popup container if it exists, otherwise observe documentElement as fallback
     const popupContainer = document.querySelector('ytd-popup-container');
@@ -819,6 +819,7 @@ function setupNotificationTitlesDropdownObserver() {
         attributes: true,
         attributeFilter: ['style']
     });
+    checkNotificationDropdown();
 }
 
 function cleanupNotificationTitlesDropdownObserver() {
