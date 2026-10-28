@@ -22,34 +22,26 @@ export function waitForElement(selector: string, timeout = 7500): Promise<Elemen
             return;
         }
 
+        let isResolved = false;
+
         const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                if (mutation.type === 'childList') {
-                    for (const node of mutation.addedNodes) {
-                        if (node.nodeType === Node.ELEMENT_NODE) {
-                            const element = node as Element;
-                            if (element.matches(selector)) {
-                                observer.disconnect();
-                                clearTimeout(timer);
-                                resolve(element);
-                                return;
-                            }
-                            const descendant = element.querySelector(selector);
-                            if (descendant) {
-                                observer.disconnect();
-                                clearTimeout(timer);
-                                resolve(descendant);
-                                return;
-                            }
-                        }
-                    }
-                }
+            if (isResolved) return;
+
+            const element = document.querySelector(selector);
+            if (element) {
+                isResolved = true;
+                observer.disconnect();
+                clearTimeout(timer);
+                resolve(element);
             }
         });
 
         const timer = setTimeout(() => {
-            observer.disconnect();
-            reject(new Error('Timeout waiting for element: ' + selector));
+            if (!isResolved) {
+                isResolved = true;
+                observer.disconnect();
+                reject(new Error('Timeout waiting for element: ' + selector));
+            }
         }, timeout);
 
         observer.observe(observationRoot, {

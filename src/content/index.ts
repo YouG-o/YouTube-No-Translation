@@ -24,8 +24,6 @@ import { maybeShowSupportToast } from './SupportToast/toast';
 import { isMobileSite, isYouTubeMusic, isIrrelevantIframe, isEmbedVideo } from '../utils/navigation';
 
 
-coreLog('Content script starting to load...');
-
 export let currentSettings: ExtensionSettings | null = null;
 
 // Fetch settings once and store them in currentSettings
@@ -64,6 +62,9 @@ async function initializeFeatures() {
         return;
     }
     
+    coreLog('Content script is loading...');
+    coreLog(`URL: ${window.location.href} | Parent: ${window !== window.parent}`);
+
     await fetchSettings();
     
     setupUrlObserver();
