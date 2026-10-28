@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [Unreleased]
+
+### Fixed
+- Fixed CPU spikes and memory leaks during page initialization and navigation by optimizing `waitForElement` DOM observation root and preventing infinite loops in mutation observers.
+
 ## [2.26.0] - 2026-10-23
 
 ### Security
