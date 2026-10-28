@@ -16,7 +16,7 @@ export function waitForElement(selector: string, timeout = 7500): Promise<Elemen
             return resolve(existingElement);
         }
 
-        const observationRoot = document.body ?? document.documentElement;
+        const observationRoot = document.documentElement;
         if (!observationRoot) {
             reject(new Error('Cannot observe DOM while waiting for element: ' + selector));
             return;
