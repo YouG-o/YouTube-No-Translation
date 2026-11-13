@@ -152,11 +152,12 @@ export class TitleCache {
      * Retrieves a title from the cache.
      */
     getTitle(videoId: string): string | undefined {
-        // Trigger cleanup check on cache access
-        this.cleanupCache().catch(error => {
-            titlesErrorLog('Failed to cleanup cache during read:', error);
-        });
-        return this.cache[videoId]?.content;
+        // Check only the requested entry; writes still perform full cache cleanup.
+        const entry = this.cache[videoId];
+        if (!entry || Date.now() - entry.timestamp > this.CLEANUP_INTERVAL) {
+            return undefined;
+        }
+        return entry.content;
     }
 }
 

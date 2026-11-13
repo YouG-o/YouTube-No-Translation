@@ -8,12 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- Optimized title and description cache reads by checking only the requested entry for expiration instead of scanning the entire cache, preserving the 24-hour validity period.
 - Safari: the macOS deployment target now follows Xcode's recommended value (`RECOMMENDED_MACOSX_DEPLOYMENT_TARGET`) instead of the unsupported 10.14.
 - Safari: updated the Xcode project to recommended settings (enables `DEAD_CODE_STRIPPING`).
 - Safari: the Xcode project is now signed to run locally, so it builds without an Apple Developer account or a specific development team.
 - Clarified the Safari build steps in the README, including how to allow unsigned extensions.
 
 ### Fixed
+- Fixed tab title conflicts with YouTube Tweaks by resynchronizing MediaSession titles after changes, preserving time and percentage prefixes, and preventing frequent playback updates from indefinitely delaying title corrections.
 - Safari: generate only macOS app icon sizes, fixing the "unassigned children" warning in Xcode.
 
 ### Removed
