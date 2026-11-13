@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clarified the Safari build steps in the README, including how to allow unsigned extensions.
 
 ### Fixed
+- Fixed blank restored thumbnails by using the standard hqdefault.jpg URL for translated images and restoring the previous image if loading fails.
 - Fixed tab title conflicts with YouTube Tweaks by resynchronizing MediaSession titles after changes, preserving time and percentage prefixes, and preventing frequent playback updates from indefinitely delaying title corrections.
 - Safari: generate only macOS app icon sizes, fixing the "unassigned children" warning in Xcode.
 
@@ -714,7 +715,8 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
-[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.1...HEAD
+[Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.2...HEAD
+[2.26.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.1...v2.26.2
 [2.26.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.0...v2.26.1
 [2.26.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.1...v2.26.0
 [2.25.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.0...v2.25.1

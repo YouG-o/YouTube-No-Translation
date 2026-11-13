@@ -14,19 +14,27 @@ import { isMobileSite } from '../../utils/navigation';
 const thumbnailObservers = new Map<HTMLImageElement, MutationObserver>();
 
 /**
- * Removes the translation markers from a thumbnail URL
- * @param thumbnailUrl - The translated thumbnail URL
- * @returns The original thumbnail URL
+ * Loads the standard original thumbnail, restoring the previous URL on failure.
  */
-function removeTranslationMarkers(thumbnailUrl: string): string {
-    // Replace 'vi_lc' with 'vi' and remove language code pattern
-    let originalUrl = thumbnailUrl.replace('vi_lc', 'vi');
-    
-    // Remove language code pattern (e.g., _fr, _es, _de, _zh-Hant, _pt-BR, etc.)
-    // Pattern matches underscore followed by letters, dashes, or both, before file extension
-    originalUrl = originalUrl.replace(/_[a-zA-Z-]+(?=\.jpg)/, '');
-    
-    return originalUrl;
+function replaceTranslatedThumbnail(thumbnailImg: HTMLImageElement, videoId: string): void {
+    const previousUrl = thumbnailImg.src;
+    const originalUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+    const cleanup = () => {
+        thumbnailImg.removeEventListener('load', cleanup);
+        thumbnailImg.removeEventListener('error', handleError);
+    };
+    const handleError = () => {
+        cleanup();
+        // Do not overwrite a newer image assigned by YouTube.
+        if (thumbnailImg.src === originalUrl) {
+            thumbnailImg.src = previousUrl;
+        }
+    };
+
+    thumbnailImg.addEventListener('load', cleanup, { once: true });
+    thumbnailImg.addEventListener('error', handleError, { once: true });
+    thumbnailImg.src = originalUrl;
 }
 
 /**
@@ -76,8 +84,7 @@ function setupThumbnailObserver(thumbnailImg: HTMLImageElement, videoId: string)
                 if (!isThumbnailPlaceholder(currentSrc)) {
                     // Check if the loaded image is translated
                     if (isThumbnailTranslated(currentSrc)) {
-                        const restoredUrl = removeTranslationMarkers(currentSrc);
-                        thumbnailImg.src = restoredUrl;
+                        replaceTranslatedThumbnail(thumbnailImg, videoId);
                         
                         browsingThumbnailsLog(
                             `Restored lazy-loaded thumbnail for video %c${videoId}%c`,
@@ -103,7 +110,7 @@ function setupThumbnailObserver(thumbnailImg: HTMLImageElement, videoId: string)
 }
 
 /**
- * Restores original thumbnail for a video by removing translation markers
+ * Restores the standard original thumbnail for a video.
  * @param videoId - The YouTube video ID
  * @param titleElement - The title element to find the associated thumbnail
  */
@@ -144,8 +151,7 @@ export function restoreOriginalThumbnail(videoId: string, titleElement: HTMLElem
 
         // Case 2: Thumbnail is already loaded and translated
         if (isThumbnailTranslated(currentSrc)) {
-            const originalUrl = removeTranslationMarkers(currentSrc);
-            thumbnailImg.src = originalUrl;
+            replaceTranslatedThumbnail(thumbnailImg, videoId);
             
             // Mark as processed
             thumbnailImg.setAttribute('ynt-thumbnail', 'processed');
