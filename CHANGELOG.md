@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.26.2] - 2026-11-13
+
 ### Changed
 - Optimized title and description cache reads by checking only the requested entry for expiration instead of scanning the entire cache, preserving the 24-hour validity period.
 - Safari: the macOS deployment target now follows Xcode's recommended value (`RECOMMENDED_MACOSX_DEPLOYMENT_TARGET`) instead of the unsupported 10.14.
@@ -716,6 +718,7 @@ optimize waitForElement to reduce DOM queries (checking addedNodes only)
 *Note: This changelog was introduced in version 2.2.30. For earlier version history, please refer to the [GitHub releases](https://github.com/YouG-o/YouTube_No_Translation/releases).*
 
 [Unreleased]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.2...HEAD
+[2.26.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.2...v2.26.2
 [2.26.2]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.1...v2.26.2
 [2.26.1]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.26.0...v2.26.1
 [2.26.0]: https://github.com/YouG-o/YouTube_No_Translation/compare/v2.25.1...v2.26.0
