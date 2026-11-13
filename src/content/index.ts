@@ -63,7 +63,7 @@ async function initializeFeatures() {
     }
     
     coreLog('Content script is loading...');
-    coreLog(`URL: ${window.location.href} | Parent: ${window !== window.parent}`);
+    //coreLog(`URL: ${window.location.href} | Parent: ${window !== window.parent}`);
 
     await fetchSettings();
     

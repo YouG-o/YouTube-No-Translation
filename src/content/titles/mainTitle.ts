@@ -216,10 +216,12 @@ function updatePageTitle(mainTitle: string): void {
         return !prefix.endsWith(normalizedPreviousMediaTitle);
     };
 
-    // Preserve only a prefix that precedes the previous media title, not the stale YouTube title itself.
+    // Preserve only a prefix that precedes a known media title, not the stale YouTube title itself.
     const constructExpectedTitle = (currentTitle: string): string => {
-        if (previousMediaTitle) {
-            const suffixes = [`${previousMediaTitle} - YouTube`, previousMediaTitle];
+        const currentMediaTitle = navigator.mediaSession?.metadata?.title;
+        for (const mediaTitle of [currentMediaTitle, previousMediaTitle]) {
+            if (!mediaTitle) continue;
+            const suffixes = [`${mediaTitle} - YouTube`, mediaTitle];
             for (const suffix of suffixes) {
                 if (currentTitle.endsWith(suffix)) {
                     return `${currentTitle.slice(0, -suffix.length)}${expectedTitle}`;
@@ -251,9 +253,8 @@ function updatePageTitle(mainTitle: string): void {
             }
 
             if (!isTitleMatching(document.title)) {
-                if (pageTitleDebounceTimer !== null) {
-                    clearTimeout(pageTitleDebounceTimer);
-                }
+                // Frequent playback updates must not keep postponing the correction.
+                if (pageTitleDebounceTimer !== null) return;
                 
                 pageTitleDebounceTimer = window.setTimeout(() => {
                     const currentId = new URLSearchParams(window.location.search).get('v');
@@ -265,6 +266,8 @@ function updatePageTitle(mainTitle: string): void {
                     if (!isTitleMatching(document.title)) {
                         mainTitleLog('YouTube changed page title, reverting');
                         document.title = constructExpectedTitle(document.title);
+                        // YouTube may have replaced the metadata used by third-party title prefixes.
+                        updatePageMediaSessionTitle(mainTitle);
                     }
                     pageTitleDebounceTimer = null;
                 }, PAGE_TITLE_DEBOUNCE_MS);
@@ -386,11 +389,8 @@ export async function refreshMainTitle(): Promise<void> {
                     mainTitleLog('Main title is already original');
                 }
                 
-                // Still check if page title needs updating even if main title is correct
-                const expectedPageTitle = `${originalTitle} - YouTube`;
-                if (normalizeText(document.title) !== normalizeText(expectedPageTitle)) {
-                    updatePageTitle(originalTitle);
-                }
+                // Keep metadata and the page title observer in sync even when the title is already correct.
+                updatePageTitle(originalTitle);
                 return;
             }
 
@@ -398,11 +398,7 @@ export async function refreshMainTitle(): Promise<void> {
             try {
                 updateMainTitleElement(mainTitle, originalTitle, videoId);
                 
-                // Only update page title if it's different from expected
-                const expectedPageTitle = `${originalTitle} - YouTube`;
-                if (normalizeText(document.title) !== normalizeText(expectedPageTitle)) {
-                    updatePageTitle(originalTitle);
-                }
+                updatePageTitle(originalTitle);
             } catch (error) {
                 mainTitleErrorLog(`Failed to update main title:`, error);
             }
