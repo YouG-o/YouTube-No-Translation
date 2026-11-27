@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Simplified Chinese (zh_CN) language translation.
+
 ## [2.26.2] - 2026-11-13
 
 ### Changed

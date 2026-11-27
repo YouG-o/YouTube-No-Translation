@@ -1,0 +1,355 @@
+{
+  "extensionName": {
+    "message": "YouTube No Translation",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "让 YouTube 内容保持原始语言：标题、说明、音频……不再出现多余的翻译。",
+    "description": "Description of the extension"
+  },
+  "popup_createdBy": {
+    "message": "由 YouGo 制作 — 简体中文翻译：Goldloli",
+    "description": "Footer credit text - You can also add your name here 'Created by YouGo - Translated by [YourName]'"
+  },
+  "popup_originalTitles": {
+    "message": "原始标题",
+    "description": "Title for original titles feature"
+  },
+  "popup_originalTitles_tooltip": {
+    "message": "显示原始标题：主视频与浏览页面的标题、通知以及频道名称（在主视频页面）。",
+    "description": "Tooltip for original titles feature"
+  },
+  "popup_audioTracks": {
+    "message": "音轨",
+    "description": "Title for audio tracks feature"
+  },
+  "popup_audioTracks_tooltip": {
+    "message": "切换到首选的音轨。遗憾的是，该功能目前无法在 YouTube 移动版（m.youtube.com）上使用。",
+    "description": "Tooltip for audio tracks feature"
+  },
+  "popup_audioTracks_desktopOnly": {
+    "message": "仅限桌面端",
+    "description": "Badge text for desktop-only features"
+  },
+  "popup_audioTracks_desktopOnly_title": {
+    "message": "该功能仅在桌面浏览器上可用",
+    "description": "Title attribute for desktop-only badge"
+  },
+  "popup_originalDescriptions": {
+    "message": "原始说明",
+    "description": "Title for original descriptions feature"
+  },
+  "popup_originalDescriptions_tooltip": {
+    "message": "将已翻译的说明替换为原始说明。",
+    "description": "Tooltip for original descriptions feature"
+  },
+  "popup_originalThumbnails": {
+    "message": "原始缩略图",
+    "description": "Title for original thumbnails feature"
+  },
+  "popup_originalThumbnails_tooltip": {
+    "message": "浏览视频时，将已翻译的缩略图替换为原始缩略图。",
+    "description": "Tooltip for original thumbnails feature"
+  },
+  "popup_subtitles": {
+    "message": "字幕",
+    "description": "Title for subtitles feature"
+  },
+  "popup_subtitles_tooltip": {
+    "message": "显示首选语言的字幕（如果有）。如果没有，字幕将被关闭。自动生成的字幕会被忽略。",
+    "description": "Tooltip for subtitles feature"
+  },
+  "popup_subtitles_asrToggle": {
+    "message": "启用自动生成的字幕",
+    "description": "Title for ASR subtitles toggle"
+  },
+  "popup_subtitles_asrToggle_tooltip": {
+    "message": "启用后，如果首选语言没有人工字幕，将改用自动生成（ASR）的字幕，必要时还会进行翻译。",
+    "description": "Tooltip for ASR subtitles toggle"
+  },
+  "popup_extraSettings": {
+    "message": "更多设置",
+    "description": "Title for extra settings section"
+  },
+  "popup_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3（需要 API 密钥）",
+    "description": "Title for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_tooltip": {
+    "message": "使用 YouTube Data API v3 获取原始频道名称和说明，并在其他方法失效时作为备用方案。非常可靠，但需要你自己的 API 密钥。密钥保存在本地，只有你能访问。",
+    "description": "Tooltip for YouTube Data API setting"
+  },
+  "popup_extraSettings_youtubeDataApi_placeholder": {
+    "message": "输入你的 API 密钥…",
+    "description": "Placeholder for API key input"
+  },
+  "popup_extraSettings_youtubeDataApi_link": {
+    "message": "在此免费获取你的 API 密钥",
+    "description": "Link text for getting API key"
+  },
+  "popup_extraSettings_devLog": {
+    "message": "开发者日志"
+  },
+  "popup_extraSettings_devLog_tooltip": {
+    "message": "启用控制台日志以便调试。",
+    "description": "Tooltip for dev log setting"
+  },
+  "popup_clearCache": {
+    "message": "清除缓存",
+    "description": "Button text for clearing cache"
+  },
+  "popup_clearCache_title": {
+    "message": "清除缓存的标题和说明",
+    "description": "Title attribute for clear cache button"
+  },
+  "popup_clearCache_clearing": {
+    "message": "正在清除…",
+    "description": "Button text while clearing cache"
+  },
+  "popup_clearCache_clearedTabs": {
+    "message": "已清除！（$TABS$ 个标签页）",
+    "description": "Button text after cache cleared with tab count",
+    "placeholders": {
+      "tabs": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "popup_clearCache_cacheCleared": {
+    "message": "缓存已清除！",
+    "description": "Button text after cache cleared (fallback)"
+  },
+  "popup_clearCache_error": {
+    "message": "出错",
+    "description": "Button text on error"
+  },
+  "popup_reportIssue": {
+    "message": "报告问题",
+    "description": "Link text for reporting issues"
+  },
+  "popup_kofi_alt": {
+    "message": "在 Ko-fi 上支持我",
+    "description": "Alt text for Ko-fi image"
+  },
+  "popup_kofi_title": {
+    "message": "在 Ko-fi 上支持我",
+    "description": "Title attribute for Ko-fi link"
+  },
+  "settings_audioTracks": {
+    "message": "音轨",
+    "description": "Title for audio tracks in settings page"
+  },
+  "settings_audioTracks_tooltip": {
+    "message": "始终切换到首选的音轨。遗憾的是，该功能目前无法在 YouTube 移动版（m.youtube.com）上使用。",
+    "description": "Tooltip for audio tracks in settings page"
+  },
+  "settings_originalDescriptions_tooltip": {
+    "message": "如果说明已被翻译，将替换为原始说明。",
+    "description": "Tooltip for descriptions in settings page"
+  },
+  "settings_subtitles_tooltip": {
+    "message": "显示首选语言的字幕（如果有）。如果没有，字幕将被关闭。默认忽略自动生成的字幕。",
+    "description": "Tooltip for subtitles in settings page"
+  },
+  "settings_extraSettings_youtubeDataApi": {
+    "message": "YouTube Data API v3",
+    "description": "Title for YouTube Data API in settings (no 'API KEY NEEDED')"
+  },
+  "settings_cacheManagement": {
+    "message": "缓存管理",
+    "description": "Title for cache management section"
+  },
+  "settings_cacheManagement_tooltip": {
+    "message": "清除缓存的标题和说明。如果内容显示不正确，或想重新开始，可以使用此项。",
+    "description": "Tooltip for cache management"
+  },
+  "settings_welcome_title": {
+    "message": "欢迎使用",
+    "description": "Welcome page title prefix"
+  },
+  "settings_welcome_titleComplete": {
+    "message": "欢迎使用 $EXTENSION_NAME$",
+    "description": "Complete welcome page title with extension name",
+    "placeholders": {
+      "extension_name": {
+        "content": "$1",
+        "example": "YouTube No Translation"
+      }
+    }
+  },
+  "settings_welcome_message": {
+    "message": "感谢安装 YouTube No Translation！你可以在这里配置扩展的行为。",
+    "description": "Welcome page message"
+  },
+  "settings_welcome_reloadNotice_important": {
+    "message": "重要：",
+    "description": "Important label in reload notice"
+  },
+  "settings_welcome_reloadNotice_text": {
+    "message": "要让扩展在安装前就已打开的 YouTube 标签页上生效，你必须重新加载这些标签页。",
+    "description": "Reload notice text"
+  },
+  "settings_welcome_reloadButton": {
+    "message": "重新加载所有活动的 YouTube 标签页",
+    "description": "Button text to reload YouTube tabs"
+  },
+  "settings_welcome_reloadButton_done": {
+    "message": "已重新加载 $COUNT$ 个活动标签页！",
+    "description": "Button text after reload",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "settings_welcome_reloadButton_error": {
+    "message": "重新加载标签页时出错",
+    "description": "Button text on reload error"
+  },
+  "settings_footer_support": {
+    "message": "这个扩展是一个人怀着热情做出来的项目。你的支持能帮助我持续改进它——谢谢！💛",
+    "description": "Footer support message in settings page"
+  },
+  "language_original": {
+    "message": "原始",
+    "description": "Language option: Original"
+  },
+  "language_disabled": {
+    "message": "始终关闭",
+    "description": "Language option: Always Disabled"
+  },
+  "language_en": {
+    "message": "英语",
+    "description": "Language name: English"
+  },
+  "language_fr": {
+    "message": "法语",
+    "description": "Language name: French"
+  },
+  "language_es": {
+    "message": "西班牙语",
+    "description": "Language name: Spanish"
+  },
+  "language_ar": {
+    "message": "阿拉伯语",
+    "description": "Language name: Arabic"
+  },
+  "language_zh": {
+    "message": "中文",
+    "description": "Language name: Chinese"
+  },
+  "language_nl": {
+    "message": "荷兰语",
+    "description": "Language name: Dutch"
+  },
+  "language_de": {
+    "message": "德语",
+    "description": "Language name: German"
+  },
+  "language_he": {
+    "message": "希伯来语",
+    "description": "Language name: Hebrew"
+  },
+  "language_hi": {
+    "message": "印地语",
+    "description": "Language name: Hindi"
+  },
+  "language_id": {
+    "message": "印度尼西亚语",
+    "description": "Language name: Indonesian"
+  },
+  "language_it": {
+    "message": "意大利语",
+    "description": "Language name: Italian"
+  },
+  "language_ja": {
+    "message": "日语",
+    "description": "Language name: Japanese"
+  },
+  "language_ko": {
+    "message": "韩语",
+    "description": "Language name: Korean"
+  },
+  "language_pl": {
+    "message": "波兰语",
+    "description": "Language name: Polish"
+  },
+  "language_pt": {
+    "message": "葡萄牙语",
+    "description": "Language name: Portuguese"
+  },
+  "language_ru": {
+    "message": "俄语",
+    "description": "Language name: Russian"
+  },
+  "language_th": {
+    "message": "泰语",
+    "description": "Language name: Thai"
+  },
+  "language_tr": {
+    "message": "土耳其语",
+    "description": "Language name: Turkish"
+  },
+  "language_uk": {
+    "message": "乌克兰语",
+    "description": "Language name: Ukrainian"
+  },
+  "language_vi": {
+    "message": "越南语",
+    "description": "Language name: Vietnamese"
+  },
+  "toast_title": {
+    "message": "感谢使用 YouTube No Translation！",
+    "description": "Toast title"
+  },
+  "toast_message": {
+    "message": "我用个人时间维护和改进这个项目。如果你愿意支持后续更新，可以在 Ko-fi 上赞助——你的帮助真的很有意义。💌",
+    "description": "Toast message"
+  },
+  "toast_kofi_alt": {
+    "message": "在 Ko-fi 上支持我",
+    "description": "Alt text for Ko-fi button image"
+  },
+  "toast_kofi_title": {
+    "message": "在 Ko-fi 上支持我",
+    "description": "Title attribute for Ko-fi button"
+  },
+  "toast_remindButton": {
+    "message": "下个月再提醒我",
+    "description": "Remind button text"
+  },
+  "toast_remindButton_title": {
+    "message": "下个月会再提醒你一次",
+    "description": "Title attribute for remind button"
+  },
+  "toast_dismissButton": {
+    "message": "不用了，谢谢",
+    "description": "Dismiss button text"
+  },
+  "toast_dismissButton_title": {
+    "message": "你将不再看到此消息",
+    "description": "Title attribute for dismiss button"
+  },
+  "toast_review_prefix": {
+    "message": "不便打赏？你仍可在 ",
+    "description": "Review link text prefix"
+  },
+  "toast_review_suffix": {
+    "message": " 上留下五星好评来支持我！",
+    "description": "Review link text suffix (exclamation mark)"
+  },
+  "toast_storeName_firefox": {
+    "message": "Mozilla Add-ons",
+    "description": "Firefox store name"
+  },
+  "toast_storeName_edge": {
+    "message": "Microsoft Store",
+    "description": "Edge store name"
+  },
+  "toast_storeName_chrome": {
+    "message": "Chrome 应用商店",
+    "description": "Chrome store name"
+  }
+}
